@@ -36,7 +36,7 @@ public class NativeShareMgr : SingletonMonoBehaviour<NativeShareMgr>
         }
  
 #elif UNITY_ANDROID
-        url = AndroidRatingURI.Replace("{0}", Application.bundleIdentifier);
+        url = AndroidRatingURI.Replace("{0}", Application.identifier);
 #endif
     }
 
