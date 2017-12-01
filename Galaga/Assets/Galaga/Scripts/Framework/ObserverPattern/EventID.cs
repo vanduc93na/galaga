@@ -1,5 +1,4 @@
-﻿
-public enum EventID
+﻿public enum EventID
 {
     None = 0,
 
@@ -40,5 +39,5 @@ public enum EventID
     OnBossDie,
 
     OnUI,
-    OnReward,
+    OnReward
 }

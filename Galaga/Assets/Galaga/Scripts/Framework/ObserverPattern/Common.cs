@@ -2,9 +2,8 @@
 #define DEBUG
 #define ASSERT
 #endif
-using UnityEngine;
-using System.Collections;
 using System.Diagnostics;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class Common
@@ -35,7 +34,6 @@ public class Common
     {
         Debug.LogWarning(string.Format(format, args), context);
     }
-
 
 
     [Conditional("DEBUG")]
