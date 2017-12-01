@@ -1,0 +1,27 @@
+
+Boss6.png
+size: 493,493
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b6/1
+  rotate: false
+  xy: 2, 59
+  size: 256, 432
+  orig: 256, 432
+  offset: 0, 0
+  index: -1
+b6/4
+  rotate: true
+  xy: 260, 2
+  size: 194, 196
+  orig: 194, 196
+  offset: 0, 0
+  index: -1
+b6/5
+  rotate: true
+  xy: 260, 198
+  size: 293, 171
+  orig: 293, 171
+  offset: 0, 0
+  index: -1

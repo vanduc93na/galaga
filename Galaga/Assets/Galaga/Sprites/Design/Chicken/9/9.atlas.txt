@@ -1,0 +1,41 @@
+
+9.png
+size: 134,134
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+e7/1
+  rotate: false
+  xy: 2, 36
+  size: 67, 96
+  orig: 67, 96
+  offset: 0, 0
+  index: -1
+e7/2
+  rotate: false
+  xy: 2, 2
+  size: 50, 32
+  orig: 50, 32
+  offset: 0, 0
+  index: -1
+e7/3
+  rotate: false
+  xy: 71, 71
+  size: 29, 27
+  orig: 29, 27
+  offset: 0, 0
+  index: -1
+e7/4
+  rotate: false
+  xy: 71, 100
+  size: 50, 32
+  orig: 50, 32
+  offset: 0, 0
+  index: -1
+e7/5
+  rotate: false
+  xy: 71, 42
+  size: 29, 27
+  orig: 29, 27
+  offset: 0, 0
+  index: -1

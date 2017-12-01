@@ -1,4 +1,5 @@
-﻿using Boo.Lang;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,12 +8,24 @@ using UnityEngine;
 /// </summary>
 public class LevelInformation : ScriptableObject
 {
-
-    public List<EnemyInformation> listEnemy = new List<EnemyInformation>();
+    public List<WaveInformation> Waves = new List<WaveInformation>();
 }
 
-public class EnemyInformation : MonoBehaviour
+public class WaveInformation
 {
+    public int IdWave;
+    public Dictionary<int, List<EnemyInformation>> Enemys = new Dictionary<int, List<EnemyInformation>>();
+}
+
+public class EnemyInformation
+{
+    public int IdEnemy;
+    public TypeOfEnemy Type;
     public int Health;
-    public bool IsDead;
+}
+
+public enum TypeOfEnemy
+{
+    Enemy,
+    Gift
 }

@@ -11,4 +11,10 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
     }
+
+    void OnMouseDown()
+    {
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log("OnMouseDown");
+    }
 }

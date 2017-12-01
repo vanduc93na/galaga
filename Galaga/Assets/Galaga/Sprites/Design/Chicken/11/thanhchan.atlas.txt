@@ -1,0 +1,34 @@
+
+thanhchan.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+_0000_hp3
+  rotate: false
+  xy: 2, 60
+  size: 60, 64
+  orig: 60, 64
+  offset: 0, 0
+  index: -1
+_0001_hp2
+  rotate: false
+  xy: 2, 2
+  size: 55, 56
+  orig: 55, 56
+  offset: 0, 0
+  index: -1
+_0003_hp4
+  rotate: false
+  xy: 2, 126
+  size: 66, 64
+  orig: 66, 64
+  offset: 0, 0
+  index: -1
+_0004_thanhchan
+  rotate: false
+  xy: 2, 192
+  size: 111, 28
+  orig: 111, 28
+  offset: 0, 0
+  index: -1

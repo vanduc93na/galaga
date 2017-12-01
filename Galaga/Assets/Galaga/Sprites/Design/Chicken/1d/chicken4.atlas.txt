@@ -1,0 +1,41 @@
+
+chicken4.png
+size: 84,84
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+e4/1
+  rotate: false
+  xy: 2, 23
+  size: 45, 59
+  orig: 45, 59
+  offset: 0, 0
+  index: -1
+e4/2
+  rotate: false
+  xy: 2, 2
+  size: 34, 19
+  orig: 34, 19
+  offset: 0, 0
+  index: -1
+e4/3
+  rotate: false
+  xy: 49, 66
+  size: 21, 16
+  orig: 21, 16
+  offset: 0, 0
+  index: -1
+e4/4
+  rotate: false
+  xy: 38, 2
+  size: 34, 19
+  orig: 34, 19
+  offset: 0, 0
+  index: -1
+e4/5
+  rotate: false
+  xy: 49, 48
+  size: 21, 16
+  orig: 21, 16
+  offset: 0, 0
+  index: -1

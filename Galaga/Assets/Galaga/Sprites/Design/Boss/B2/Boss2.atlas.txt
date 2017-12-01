@@ -1,0 +1,27 @@
+
+Boss2.png
+size: 493,493
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b2/1
+  rotate: false
+  xy: 2, 59
+  size: 255, 432
+  orig: 255, 432
+  offset: 0, 0
+  index: -1
+b2/4
+  rotate: true
+  xy: 259, 2
+  size: 194, 196
+  orig: 194, 196
+  offset: 0, 0
+  index: -1
+b2/5
+  rotate: true
+  xy: 259, 198
+  size: 293, 171
+  orig: 293, 171
+  offset: 0, 0
+  index: -1
