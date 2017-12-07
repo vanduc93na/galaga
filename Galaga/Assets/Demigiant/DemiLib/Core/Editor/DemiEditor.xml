@@ -72,7 +72,7 @@
         </member>
         <member name="T:DG.DemiEditor.DeEditorPanelUtils">
             <summary>
-            Utilities for Editor Panels.
+            UtilitiesGameTool for Editor Panels.
             </summary>
         </member>
         <member name="M:DG.DemiEditor.DeEditorPanelUtils.ConnectToSourceAsset``1(System.String,System.Boolean)">

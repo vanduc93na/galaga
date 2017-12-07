@@ -12,6 +12,6 @@ public class BackgroundMovement : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        transform.DOMoveY(-12.7f, 5f, false).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+        transform.DOMoveY(-12.7f, 10f, false).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
     }
 }

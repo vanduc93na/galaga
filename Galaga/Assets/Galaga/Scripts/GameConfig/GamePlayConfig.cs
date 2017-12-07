@@ -15,6 +15,20 @@ public class GamePlayConfig : MonoBehaviour
     [SerializeField] float minDx;
     [Tooltip("vị trí y nhỏ nhất phi thuyền có thể di chuyển đến")]
     [SerializeField] float minDy;
+    [Tooltip("khoảng cách hiệu ứng di chuyển camera khi phi thuyền lượn sang trái - phải")]
+    [SerializeField] private float deltaTransform;
+    /// <summary>
+    /// config đạn
+    /// </summary>
+    [Tooltip("Loại đạn cơ bản")]
+    [SerializeField] private int basicBulletIndex;
+    [Tooltip("Số lượng đạn nhỏ nhất")]
+    [SerializeField]
+    private int minBullet;
+    [Tooltip("Số lượng đạn lớn nhất có thể bắn ra")]
+    [SerializeField]
+    private int maxBullets;
+    
 
     public float MaxDx()
     {
@@ -34,5 +48,25 @@ public class GamePlayConfig : MonoBehaviour
     public float MinDy()
     {
         return minDy;
+    }
+
+    public float DeltaTransform()
+    {
+        return deltaTransform;
+    }
+
+    public int BasicBulletIndex()
+    {
+        return basicBulletIndex;
+    }
+
+    public int GetMinBullet()
+    {
+        return minBullet;
+    }
+
+    public int GetMaxBullet()
+    {
+        return maxBullets;
     }
 }

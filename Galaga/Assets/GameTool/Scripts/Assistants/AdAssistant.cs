@@ -115,7 +115,7 @@ public class AdAssistant : SingletonMonoBehaviour<AdAssistant>
 
     public void ShowBanner()
     {
-        if (Utilities.IsInternetAvailable())
+        if (UtilitiesGameTool.IsInternetAvailable())
         {
             bannerView.Show();
             Debug.Log("Show");
