@@ -76,4 +76,9 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         applicationIsQuitting = true;
     }
+
+    public void Log(string message)
+    {
+        Debug.Log(message);
+    }
 }

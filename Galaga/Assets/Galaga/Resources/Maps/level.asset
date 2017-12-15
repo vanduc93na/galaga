@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad094a010c42683478c87b4a3c357d12, type: 3}
+  m_Name: level
+  m_EditorClassIdentifier: 
+  temp: 1
+  Waves:
+  - IdWave: 0
+    Row: 4
+    Col: 4
+    DelaySpawn: 0
+    DelayMove: 0
+    Dx: 0
+    Dy: 0
+    SizeDx: 0
+    SizeDy: 0
+    TypeWave: 1
+    TypeMove: 1
+    Enemies:
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0

@@ -17,4 +17,17 @@ public class GameTag
     /// tag của object border
     /// </summary>
     public const string BORDER = "border";
+
+    /// <summary>
+    /// enemy tag
+    /// </summary>
+    public const string ENEMY = "enemy";
+
+    /// <summary>
+    /// other tag
+    /// </summary>
+    public const string LEFT = "left";
+    public const string RIGHT = "right";
+    public const string TOP = "top";
+    public const string BOTTOM = "bottom";
 }

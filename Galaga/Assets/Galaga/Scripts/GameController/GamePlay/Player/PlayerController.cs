@@ -6,18 +6,25 @@ using UnityEngine.UI;
 
 public class PlayerController : Singleton<PlayerController>
 {
+    [Tooltip("GameObject chứa các viên đạn")]
+    [SerializeField] private GameObject _bulletsMgr;
     // game config
     [SerializeField] private GamePlayConfig config;
 
+    /// <summary>
     // đối tượng chứa 2 object con left và right để tính khoảng cách so với
     // phi thuyền -> hiệu ứng di chuyển camera khi phi thuyền di chuyển trái, phải
+    /// </summary>
     [SerializeField] private GameObject border;
-    // đối tượng quản lý các viên đạn
-    [SerializeField] private GameObject bulletsMgr;
     // private variables
+    /// <summary>
+    /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
+    /// key là id của viên đạn
+    /// </summary>
+    private Dictionary<int, GameObject> _bullets;
     private bool isMove;
     private const string FIRE_BULLET = "FireBullet";
-    private GameObject bullet;
+    private GameObject _bullet;
     private int currentNumberBulletOnScreen;
     private float fireRate;
     private GameObject gunObject;
@@ -97,7 +104,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void FireBullet()
     {
-        switch (bullet.tag)
+        switch (_bullet.tag)
         {
             case GameTag.BULLET_1:
                 FireBulletOne();
@@ -126,7 +133,8 @@ public class PlayerController : Singleton<PlayerController>
 
         for (int i = 1; i <= currentNumberBulletOnScreen; i++)
         {
-            GameObject bulletPool = Lean.LeanPool.Spawn(bullet, gunObject.transform.position, Quaternion.identity);
+            GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
+            HandleEvent.Instance.AddBullet(bulletPool);
             bulletPool.transform.localScale = new Vector3(0.5f, 0.5f, 0.1f);
             float dx = startPosX + (i - 1) * Utilities.DeltaBullet1();
             float angle = Vector2.Angle(new Vector2(dx, 10), Vector2.up);
@@ -144,7 +152,8 @@ public class PlayerController : Singleton<PlayerController>
         
         for (int i = 1; i <= currentNumberBulletOnScreen; i++)
         {
-            GameObject bulletPool = Lean.LeanPool.Spawn(bullet, gunObject.transform.position, Quaternion.identity);
+            GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
+            HandleEvent.Instance.AddBullet(bulletPool);
             bulletPool.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             Vector3 newTransformBullet = bulletPool.transform.position;
             newTransformBullet.x = newTransformBullet.x + startPosX + (i - 1) * Utilities.DeltaBullet2();
@@ -157,7 +166,8 @@ public class PlayerController : Singleton<PlayerController>
     /// </summary>
     void FireBulletThree()
     {
-        GameObject bulletPool = Lean.LeanPool.Spawn(bullet, gunObject.transform.position, Quaternion.identity);
+        GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
+        HandleEvent.Instance.AddBullet(bulletPool);
         bulletPool.transform.localScale = Vector3.one;
         bulletPool.GetComponent<BasicBullet>().InitBullet3(currentNumberBulletOnScreen);
     }
@@ -172,13 +182,19 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     #region UtilitiesGameTool Method
-
+    
     void Init()
     {
+        _bullets = new Dictionary<int, GameObject>();
+        // init _bullets
+        for (int i = 0; i < _bulletsMgr.transform.childCount; i++)
+        {
+            _bullets.Add(i, _bulletsMgr.transform.GetChild(i).gameObject);
+        }
         currentNumberBulletOnScreen = 1;
         gunObject = transform.GetChild(0).gameObject;
-        bullet = bulletsMgr.GetComponent<BulletManager>().GetBullet(GameTag.BULLET_3);
-        fireRate = bullet.GetComponent<BasicBullet>().FireRate();
+        _bullet = _bullets[1];
+        fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
         currentNumberBulletOnScreen = config.GetMinBullet();
         Invoke(FIRE_BULLET, fireRate);
         isMove = false;

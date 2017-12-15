@@ -11,8 +11,8 @@ public class BasicBullet : MonoBehaviour
     [Tooltip("Speed")] [SerializeField] private float speed;
 
     private float scaleDelta = 0.05f;
-    
-    void Update()
+
+    void FixedUpdate()
     {
         transform.Translate(Vector3.up * Time.deltaTime * speed);
     }
@@ -31,7 +31,7 @@ public class BasicBullet : MonoBehaviour
     {
         Vector3 scale = transform.localScale;
         scale.x += numberBullet * scaleDelta;
-        scale.y += (float) (numberBullet * scaleDelta) / 2;
+        scale.y += (float)(numberBullet * scaleDelta) / 2;
         transform.localScale = scale;
     }
 
@@ -52,9 +52,6 @@ public class BasicBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == GameTag.BORDER)
-        {
-            Lean.LeanPool.Despawn(this);
-        }
+        HandleEvent.Instance.OnTriggerHandle(gameObject, other.gameObject);
     }
 }

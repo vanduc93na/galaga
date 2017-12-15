@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+///     scriptable chứa thông tin lưu được của 1 level
+///     các thông tin này sẽ được đọc từ file map được tạo ra khi vào từng level
+/// </summary>
+[Serializable]
+[CreateAssetMenu(fileName = "level", menuName = "Create Map/map", order = 1)]
+public class LevelInformation : ScriptableObject
+{
+    public int temp = 1;
+    public List<WaveInformation> Waves = new List<WaveInformation>();
+}
+
+[Serializable]
+public class WaveInformation
+{
+    public int IdWave;
+    // số hàng ma trận
+    public int Row = 0;
+    // số cột ma trận
+    public int Col = 0;
+    // thời gian delay sinh ra
+    public float DelaySpawn = 0;
+    // thời gian delay di chuyển sau khi spawn - sử dụng trong cách di chuyển theo hàng, cột
+    public float DelayMove = 0;
+    // vị trí x con đầu tiên
+    public float Dx = 0;
+    // vị trí y con đầu tiên
+    public float Dy = 0;
+    // khoảng cách x so với vị trí (0, 0)
+    public float SizeDx = 0;
+    // khoảng cách y so với vị trí (0, 0)
+    public float SizeDy = 0;
+    public TypeOfWave TypeWave;
+    public TypeMove TypeMove;
+    [SerializeField]
+    public List<EnemyInformation> Enemies = new List<EnemyInformation>();
+}
+
+[Serializable]
+public class EnemyInformation
+{
+    public int IdEnemy = 01;
+    public TypeOfEnemy Type = TypeOfEnemy.Minion;
+    public int Health = 100;
+    public int IdPath = 0;
+}
+
+public enum TypeOfEnemy
+{
+    Minion,
+    Boss
+}
+
+public enum TypeMove
+{
+    // random cách di chuyển
+    Random,
+    // từng con một
+    OneByOne,
+    // di chuyển theo cột
+    MoveInRows,
+    // di chuyển theo hàng
+    MoveInLine,
+    // không theo path
+    // optional - dùng thuật toán di chuyển đến vị trí có sẵn
+    None
+}
+
+public enum TypeOfWave
+{
+    Boss,
+    Enemies
+}
