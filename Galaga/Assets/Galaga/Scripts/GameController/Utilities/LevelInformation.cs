@@ -39,6 +39,15 @@ public class WaveInformation
     public TypeMove TypeMove;
     [SerializeField]
     public List<EnemyInformation> Enemies = new List<EnemyInformation>();
+    /// <summary>
+    /// số lượng coind drop trên wave
+    /// </summary>
+    public int MinCoindDrop = 0;
+
+    public int MaxCoindDrop = 0;
+
+    public List<ItemDrop> ListItemDop = new List<ItemDrop>();
+
 }
 
 [Serializable]
@@ -50,6 +59,14 @@ public class EnemyInformation
     public int IdPath = 0;
 }
 
+[Serializable]
+public class ItemDrop
+{
+    // id loại item
+    public int IdItem = 0;
+    // số lượng
+    public int Count = 0;
+}
 public enum TypeOfEnemy
 {
     Minion,

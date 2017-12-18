@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class BaseEnemy : MonoBehaviour, IHealth
 {
+    public int test = 0;
     [SerializeField] private int _health = 0;
-
+    // danh sách items drop
+    private List<int> _itemsDrop;
     private bool _isLastEnemyOnWave = false;
-//    private EnemyInformation _enemyInfor;
+    private int _coinDrop = 0;
     private Vector2 _targetPosition;
 
     #region Public Method
@@ -33,12 +36,23 @@ public class BaseEnemy : MonoBehaviour, IHealth
             transform.DOLocalMoveY(transform.position.y - 0.05f, 0.05f);
         });
     }
+
     public void Init(EnemyInformation infor, bool isLast = false)
     {
+        
         _health = infor.Health;
         _isLastEnemyOnWave = isLast;
     }
 
+    public void SetDopItem(List<int> items)
+    {
+        _itemsDrop = new List<int>();
+        for (int i = 0; i < items.Count; i++)
+        {
+            _itemsDrop.Add(items[i]);
+        }
+        test += items.Count;
+    }
     /// <summary>
     /// di chuyển từ lúc sinh đến lúc sắp xếp xong ma trận trên màn hình
     /// </summary>
@@ -84,6 +98,18 @@ public class BaseEnemy : MonoBehaviour, IHealth
         _targetPosition = target;
     }
 
+    /// <summary>
+    /// sinh item sau khi chết
+    /// </summary>
+    /// <param name="itemObject"></param>
+    public void InstanceDropItem()
+    {
+        for (int i = 0; i < _itemsDrop.Count; i++)
+        {
+            Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[_itemsDrop[i]], transform.position, Quaternion.identity);
+        }
+        
+    }
     #endregion
 
     #region Private Method

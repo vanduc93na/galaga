@@ -52,6 +52,6 @@ public class BasicBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        HandleEvent.Instance.OnTriggerHandle(gameObject, other.gameObject);
+        HandleEvent.Instance.TriggerBulletVsOther(gameObject, other.gameObject);
     }
 }

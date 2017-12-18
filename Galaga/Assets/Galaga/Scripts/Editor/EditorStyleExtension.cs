@@ -19,6 +19,33 @@ public static class EditorStyleExtension
         fontSize = 20
     };
 
+    public static GUIStyle NormalTextStyle = new GUIStyle()
+    {
+        normal = new GUIStyleState()
+        {
+            textColor = Color.blue,
+        },
+        fontSize = 10
+    };
+
+    public static GUIStyle TitleNameStyle = new GUIStyle()
+    {
+        normal = new GUIStyleState()
+        {
+          textColor  =  Color.red,
+        },
+        fontSize = 15
+    };
+
+    public static GUIStyle TitleForHeaderStyle = new GUIStyle()
+    {
+        normal = new GUIStyleState()
+        {
+            textColor = Color.yellow,
+        },
+        fontSize = 10
+    };
+
     public static GUIStyle TypeWave = new GUIStyle()
     {
         normal = new GUIStyleState()

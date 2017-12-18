@@ -14,14 +14,14 @@ MonoBehaviour:
   temp: 1
   Waves:
   - IdWave: 0
-    Row: 4
-    Col: 4
-    DelaySpawn: 0
+    Row: 2
+    Col: 2
+    DelaySpawn: 0.1
     DelayMove: 0
     Dx: 0
-    Dy: 0
-    SizeDx: 0
-    SizeDy: 0
+    Dy: 3
+    SizeDx: 5
+    SizeDy: 4
     TypeWave: 1
     TypeMove: 1
     Enemies:
@@ -41,51 +41,12 @@ MonoBehaviour:
       Type: 0
       Health: 100
       IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
-    - IdEnemy: 1
-      Type: 0
-      Health: 100
-      IdPath: 0
+    MinCoindDrop: 0
+    MaxCoindDrop: 0
+    ListItemDop:
+    - IdItem: 1
+      Count: 10
+    - IdItem: 1
+      Count: 10
+    - IdItem: 1
+      Count: 10

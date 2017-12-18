@@ -26,6 +26,7 @@ public class MapManagerEditor : EditorWindow
     private int _col = 0;
     private int _rowChange = 0;
     private int _colChange = 0;
+    private int _sizeListDropItem = 0;
 
     void OnGUI()
     {
@@ -107,8 +108,7 @@ public class MapManagerEditor : EditorWindow
                 EditorGUILayout.BeginVertical();
                 GUILayout.Space(10);
                 EditorGUILayout.LabelField("Wave: " + i, EditorStyleExtension.WaveNameStyle, GUILayout.Width(100));
-                GUILayout.Space(20);
-
+                GUILayout.Space(10);
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(20);
                 EditorGUITool.Label("Type Wave", 100, 80, false);
@@ -150,13 +150,7 @@ public class MapManagerEditor : EditorWindow
             _col = wave.Col;
         }
         _row = EditorGUILayout.IntField(_row, GUILayout.Width(100));
-            _col = EditorGUILayout.IntField(_col, GUILayout.Width(100));
-//        }
-//        else
-//        {
-//            wave.Row = EditorGUILayout.IntField(wave.Row, GUILayout.Width(100));
-//            wave.Col = EditorGUILayout.IntField(wave.Col, GUILayout.Width(100));
-//        }
+        _col = EditorGUILayout.IntField(_col, GUILayout.Width(100));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
@@ -201,6 +195,55 @@ public class MapManagerEditor : EditorWindow
                 MoveRandom(wave);
                 break;
         }
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.BeginVertical();
+        EditorGUITool.BorderBox(5, 5, () =>
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField("Drop Item", EditorStyleExtension.TitleNameStyle, GUILayout.Width(100));
+            GUILayout.Space(10);
+            EditorGUILayout.LabelField("Set Coin Drop", EditorStyleExtension.TitleForHeaderStyle, GUILayout.Width(100));
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(10);
+            EditorGUITool.Label("Min Coin", 100, 80, false);
+            wave.MinCoindDrop = EditorGUILayout.IntField("", wave.MinCoindDrop, GUILayout.Width(50));
+            GUILayout.Space(20);
+            EditorGUITool.Label("Max Coin", 100, 80, false);
+            wave.MaxCoindDrop = EditorGUILayout.IntField("", wave.MaxCoindDrop, GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.LabelField("Set List Item", EditorStyleExtension.TitleForHeaderStyle, GUILayout.Width(100));
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(10);
+            EditorGUITool.Label("Size List", 100, 80, false);
+            _sizeListDropItem = EditorGUILayout.IntField("", _sizeListDropItem, GUILayout.Width(50));
+            if (_sizeListDropItem != wave.ListItemDop.Count)
+            {
+                wave.ListItemDop.Clear();
+                for (int i = 0; i < _sizeListDropItem; i++)
+                {
+                    ItemDrop item = new ItemDrop();
+                    wave.ListItemDop.Add(item);
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginVertical();
+            for (int i = 0; i < wave.ListItemDop.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("id", EditorStyleExtension.NormalTextStyle, GUILayout.Width(20));
+                GUILayout.Space(10);
+                wave.ListItemDop[i].IdItem =
+                    EditorGUILayout.IntField("", wave.ListItemDop[i].IdItem, GUILayout.Width(20));
+                GUILayout.Space(10);
+                EditorGUILayout.LabelField("count", EditorStyleExtension.NormalTextStyle, GUILayout.Width(20));
+                GUILayout.Space(10);
+                wave.ListItemDop[i].Count =
+                    EditorGUILayout.IntField("", wave.ListItemDop[i].Count, GUILayout.Width(20));
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndVertical();
+        });
         EditorGUILayout.EndVertical();
     }
     void ShowWaveBoss(WaveInformation wave)

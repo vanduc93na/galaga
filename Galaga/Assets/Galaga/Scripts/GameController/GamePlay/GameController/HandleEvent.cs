@@ -5,6 +5,10 @@ using UnityEngine;
 public class HandleEvent : Singleton<HandleEvent>
 {
     /// <summary>
+    /// prefab danh sách items drop
+    /// </summary>
+    [SerializeField] private GameObject _itemsMgr;
+    /// <summary>
     /// quản lý tất cả các enemy sau khi sinh ra, nếu enemy nào chết thì sẽ bị remove khỏi danh sách
     /// khi hoàn thành level thì danh sách này sẽ được reset về rỗng
     /// </summary>
@@ -16,6 +20,11 @@ public class HandleEvent : Singleton<HandleEvent>
     /// </summary>
     private Dictionary<GameObject, BasicBullet> _bulletsSpawn;
 
+    /// <summary>
+    /// dict chứa danh sách items với key là id của items
+    /// </summary>
+    public Dictionary<int, GameObject> ItemsGameObject;
+
     void Awake()
     {
         Init();
@@ -24,6 +33,11 @@ public class HandleEvent : Singleton<HandleEvent>
 
     void Init()
     {
+        ItemsGameObject = new Dictionary<int, GameObject>();
+        for (int i = 0; i < _itemsMgr.transform.childCount; i++)
+        {
+            ItemsGameObject.Add(i, _itemsMgr.transform.GetChild(i).gameObject);
+        }
         _enemiesOnWave = new Dictionary<GameObject, BaseEnemy>();
         _bulletsSpawn = new Dictionary<GameObject, BasicBullet>();
     }
@@ -43,6 +57,7 @@ public class HandleEvent : Singleton<HandleEvent>
     {
         if (_enemiesOnWave.ContainsKey(enemy))
         {
+            _enemiesOnWave[enemy].InstanceDropItem();
             _enemiesOnWave.Remove(enemy);
         }
     }
@@ -54,7 +69,7 @@ public class HandleEvent : Singleton<HandleEvent>
     /// </summary>
     /// <param name="trigger">object va chạm</param>
     /// <param name="targetTriggerObject">object bị va chạm</param>
-    public void OnTriggerHandle(GameObject trigger, GameObject targetTriggerObject)
+    public void TriggerBulletVsOther(GameObject trigger, GameObject targetTriggerObject)
     {
         if (_bulletsSpawn.ContainsKey(trigger))
         {

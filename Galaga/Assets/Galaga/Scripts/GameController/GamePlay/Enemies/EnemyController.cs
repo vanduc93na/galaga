@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using DG.Tweening.Plugins;
 using UnityEngine;
 
 /// <summary>
-/// thực hiện việc sinh và quản lý enemy
+/// thực hiện việc sinh và quản lý sinh
 /// </summary>
 public class EnemyController : Singleton<EnemyController>
 {
@@ -73,6 +74,19 @@ public class EnemyController : Singleton<EnemyController>
 
     IEnumerator SpawnEnemyTypeMoveOneByOne(WaveInformation wave)
     {
+        // danh sách tổng item trên wave
+        // nếu item được cộng vào enemy thì danh sách này sẽ bị xóa item đó
+        List<int> itemOnWave = new List<int>();
+        for (int i = 0; i < wave.ListItemDop.Count; i++)
+        {
+            for (int j = 0; j < wave.ListItemDop[i].Count; j++)
+            {
+                itemOnWave.Add(wave.ListItemDop[i].IdItem);
+            }
+        }
+
+        int[] listRandom = Randomized(wave.Enemies.Count, itemOnWave.Count);
+
         for (int i = 0; i < wave.Row; i++)
         {
             for (int j = 0; j < wave.Col; j++)
@@ -96,6 +110,8 @@ public class EnemyController : Singleton<EnemyController>
                 StartCoroutine(DelayMove(0.1f,
                     _listMoveConfig[wave.Enemies[wave.Row * i + j].IdPath] ,
                     enemySpawn.GetComponent<BaseEnemy>()));
+                // gọi hàm drop item
+                SetRandomDropItems(listRandom, i * wave.Row + j, enemySpawn, ref itemOnWave);
             }
         }
 
@@ -147,6 +163,60 @@ public class EnemyController : Singleton<EnemyController>
         return new Vector3(valueX, valueY, transform.position.z);
     }
 
+    /// <summary>
+    /// hàm set drop item cho enemy
+    /// </summary>
+    /// <param name="listRandom">danh sách random enemy được khởi tạo</param>
+    /// <param name="index">vị trí enemy thứ bao nhiêu trong ma trận</param>
+    /// <param name="spawnEnemy">gameobject enemy</param>
+    /// <param name="items">danh sách tổng item</param>
+    private void SetRandomDropItems(int[] listRandom, int index, GameObject spawnEnemy, ref List<int> items)
+    {
+        List<int> itemOfOneEnemy = new List<int>();
+        for (int i = 0; i < listRandom[index]; i++)
+        {
+            itemOfOneEnemy.Add(items[i]);
+        }
+        // xóa danh sách list item
+        for (int i = 0; i < listRandom[index]; i++)
+        {
+            if (i < items.Count)
+            {
+                items.RemoveAt(0);
+            }
+        }
+        spawnEnemy.GetComponent<BaseEnemy>().SetDopItem(itemOfOneEnemy);
+    }
+
+    /// <summary>
+    /// hàm sinh random danh sách enemy sẽ được set drop item
+    /// </summary>
+    /// <param name="totalEnemy">tổng enemy</param>
+    /// <param name="totalItemDrop">tổng item</param>
+    /// <returns>mảng chứa các phần tử là số lượng drop </returns>
+    private int[] Randomized(int totalEnemy, int totalItemDrop)
+    {
+        int[] randomList = new int[totalEnemy];
+        for (int i = 0; i < totalEnemy; i++)
+        {
+            randomList[i] = 0;
+        }
+        int index = 0;
+        int totalRandom = 0;
+        while (true)
+        {
+            int random = (int) Random.Range(1f, 6.5f);
+            index += random;
+            randomList[index % totalEnemy] += 1;
+            totalRandom += 1;
+            if (totalRandom == totalItemDrop)
+            {
+                break;
+            }
+        }
+
+        return randomList;
+    }
 
     #endregion
 
