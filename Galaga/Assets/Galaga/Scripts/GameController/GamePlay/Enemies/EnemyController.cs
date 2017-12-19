@@ -205,14 +205,14 @@ public class EnemyController : Singleton<EnemyController>
         int totalRandom = 0;
         while (true)
         {
-            int random = (int) Random.Range(1f, 6.5f);
-            index += random;
-            randomList[index % totalEnemy] += 1;
-            totalRandom += 1;
             if (totalRandom == totalItemDrop)
             {
                 break;
             }
+            int random = (int) Random.Range(1f, 6.5f);
+            index += random;
+            randomList[index % totalEnemy] += 1;
+            totalRandom += 1;
         }
 
         return randomList;

@@ -14,39 +14,422 @@ MonoBehaviour:
   temp: 1
   Waves:
   - IdWave: 0
-    Row: 2
-    Col: 2
-    DelaySpawn: 0.1
+    Row: 10
+    Col: 10
+    DelaySpawn: 0
     DelayMove: 0
-    Dx: 0
+    Dx: -2
     Dy: 3
     SizeDx: 5
     SizeDy: 4
+    DeltaMatrix: 5050
     TypeWave: 1
     TypeMove: 1
     Enemies:
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
       IdPath: 0
     MinCoindDrop: 0
     MaxCoindDrop: 0
     ListItemDop:
     - IdItem: 1
-      Count: 10
-    - IdItem: 1
-      Count: 10
-    - IdItem: 1
-      Count: 10
+      Count: 3
+    - IdItem: 2
+      Count: 2

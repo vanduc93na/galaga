@@ -27,6 +27,8 @@ public class MapManagerEditor : EditorWindow
     private int _rowChange = 0;
     private int _colChange = 0;
     private int _sizeListDropItem = 0;
+    private Dictionary<int, int> _healthEnemies = new Dictionary<int, int>();
+    private int _deltaEnemyMatrix = -1;
 
     void OnGUI()
     {
@@ -196,6 +198,34 @@ public class MapManagerEditor : EditorWindow
                 break;
         }
         EditorGUILayout.EndVertical();
+        AddKeyDictionary(wave);
+        EditorGUILayout.BeginVertical();
+        EditorGUITool.BorderBox(5, 5, () =>
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField("Health Enemy", EditorStyleExtension.TitleNameStyle, GUILayout.Width(100));
+            GUILayout.Space(10);
+            var listKey = _healthEnemies.Keys.ToList();
+            listKey.Sort();
+            for (int i = 0;i < listKey.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("id = " + listKey[i],
+                    EditorStyleExtension.NormalTextStyle, GUILayout.Width(50));
+                GUILayout.Space(10);
+                _healthEnemies[listKey[i]] = EditorGUILayout.IntField("", _healthEnemies[listKey[i]], GUILayout.Width(50));
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+        });
+        for (int i = 0; i < wave.Enemies.Count; i++)
+        {
+            if (_healthEnemies.ContainsKey(wave.Enemies[i].IdEnemy))
+            {
+                wave.Enemies[i].Health = _healthEnemies[wave.Enemies[i].IdEnemy];
+            }
+        }
+        EditorGUILayout.EndVertical();
         EditorGUILayout.BeginVertical();
         EditorGUITool.BorderBox(5, 5, () =>
         {
@@ -296,6 +326,11 @@ public class MapManagerEditor : EditorWindow
                         EditorGUILayout.EndHorizontal();
                     }
                 }
+                wave.DeltaMatrix = 0;
+                for (int i = 0; i < wave.Enemies.Count; i++)
+                {
+                    wave.DeltaMatrix += wave.Enemies[i].IdEnemy * (i + 1);
+                }
             });
             EditorGUILayout.EndVertical();
         }
@@ -339,7 +374,60 @@ public class MapManagerEditor : EditorWindow
 
     #endregion
 
+    #region Utilities
 
+    private void AddKeyDictionary(WaveInformation wave)
+    {
+        int count = 0;
+        for (int i = 0; i < wave.Enemies.Count; i++)
+        {
+            count += wave.Enemies[i].IdEnemy * (i + 1);
+        }
+
+        Dictionary<int, int> temp = new Dictionary<int, int>();
+        for (int i = 0; i < wave.Enemies.Count; i++)
+        {
+            if (!temp.ContainsKey(wave.Enemies[i].IdEnemy))
+            {
+                temp.Add(wave.Enemies[i].IdEnemy, 1);
+            }
+            else
+            {
+                temp[wave.Enemies[i].IdEnemy] += 1;
+            }
+        }
+        if (wave.DeltaMatrix != count || temp.Count != _healthEnemies.Count)
+        {
+            _deltaEnemyMatrix = count;
+            _healthEnemies.Clear();
+            foreach (int key in temp.Keys)
+            {
+                _healthEnemies.Add(key, 0);
+            }
+            var listKeySort = _healthEnemies.Keys.ToList();
+            listKeySort.Sort();
+            for (int i = 0; i < wave.Enemies.Count; i++)
+            {
+                if (_healthEnemies.ContainsKey(wave.Enemies[i].IdEnemy))
+                {
+                    _healthEnemies[wave.Enemies[i].IdEnemy] = wave.Enemies[i].Health;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < wave.Enemies.Count; i++)
+            {
+                if (_healthEnemies.ContainsKey(wave.Enemies[i].IdEnemy))
+                {
+                    _healthEnemies[wave.Enemies[i].IdEnemy] = wave.Enemies[i].Health;
+                }
+            }
+            return;
+        }
+    }
+
+    #endregion
 
 }
 #endif

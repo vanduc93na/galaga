@@ -31,10 +31,12 @@ public class WaveInformation
     public float Dx = 0;
     // vị trí y con đầu tiên
     public float Dy = 0;
-    // khoảng cách x so với vị trí (0, 0)
+    // khoảng cách x cả đội hình
     public float SizeDx = 0;
-    // khoảng cách y so với vị trí (0, 0)
+    // khoảng cách y cả đội hình
     public float SizeDy = 0;
+    // chỉ số đánh dấu ma trận thay đổi
+    public int DeltaMatrix = 0;
     public TypeOfWave TypeWave;
     public TypeMove TypeMove;
     [SerializeField]
