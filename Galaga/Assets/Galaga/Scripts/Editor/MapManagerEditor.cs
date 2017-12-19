@@ -156,6 +156,11 @@ public class MapManagerEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
+        EditorGUITool.Label("Overlapping", 100, 80, false);
+        wave.OverLapping = EditorGUILayout.Toggle(wave.OverLapping);
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
         EditorGUITool.Label("Delay Spawn", 100, 80, false);
         wave.DelaySpawn = EditorGUILayout.FloatField("", wave.DelaySpawn, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();

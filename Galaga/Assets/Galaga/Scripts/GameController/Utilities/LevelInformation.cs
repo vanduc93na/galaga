@@ -21,6 +21,8 @@ public class WaveInformation
     public int IdWave;
     // số hàng ma trận
     public int Row = 0;
+    // sắp xếp quái chồng chéo
+    public bool OverLapping = false;
     // số cột ma trận
     public int Col = 0;
     // thời gian delay sinh ra
@@ -35,7 +37,7 @@ public class WaveInformation
     public float SizeDx = 0;
     // khoảng cách y cả đội hình
     public float SizeDy = 0;
-    // chỉ số đánh dấu ma trận thay đổi
+    // chỉ số đánh dấu ma trận thay đổi trên màn hình - không sử dụng trong game
     public int DeltaMatrix = 0;
     public TypeOfWave TypeWave;
     public TypeMove TypeMove;
