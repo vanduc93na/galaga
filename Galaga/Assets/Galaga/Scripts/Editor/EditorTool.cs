@@ -204,11 +204,11 @@ public class EditorGUITool
     /// <param name="width"></param>
     /// <param name="windowSize"></param>
     /// <param name="isCenter"></param>
-    public static void Label(string name, float width, float windowSize, bool isCenter)
+    public static void Label(string name, float width, float windowSize, bool isCenter, string tooltip = "")
     {
         Rect _rect = EditorGUILayout.BeginHorizontal(GUILayout.Width(width));
         GUI.color = new Color(.8f, .8f, .8f);
-        GUI.Label(new Rect(_rect.x + (windowSize - width) / 2, _rect.y, width, _rect.height), GUIContent.none, EditorStyles.toolbarButton);
+        GUI.Label(new Rect(_rect.x + (windowSize - width) / 2, _rect.y, width, _rect.height), new GUIContent("", tooltip), EditorStyles.toolbarButton);
         GUI.color = Color.white;
         EditorGUILayout.BeginVertical();
         GUI.color = Color.cyan;

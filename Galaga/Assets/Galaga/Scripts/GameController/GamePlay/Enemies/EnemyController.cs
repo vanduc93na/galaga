@@ -72,49 +72,30 @@ public class EnemyController : Singleton<EnemyController>
 
     #region Methods For TypeMove
 
-    IEnumerator SpawnEnemyTypeMoveOneByOne(WaveInformation wave)
+    IEnumerator SpawnEnemyTypeMoveOneByOne(WaveInformation wave, List<GameObject> enemies)
     {
-        // danh sách tổng item trên wave
-        // nếu item được cộng vào enemy thì danh sách này sẽ bị xóa item đó
-        List<int> itemOnWave = new List<int>();
-        for (int i = 0; i < wave.ListItemDop.Count; i++)
-        {
-            for (int j = 0; j < wave.ListItemDop[i].Count; j++)
-            {
-                itemOnWave.Add(wave.ListItemDop[i].IdItem);
-            }
-        }
-
-        int[] listRandom = Randomized(wave.Enemies.Count, itemOnWave.Count);
-
         for (int i = 0; i < wave.Row; i++)
         {
             for (int j = 0; j < wave.Col; j++)
             {
                 yield return new WaitForSeconds(wave.DelaySpawn);
-                GameObject enemySpawn = Lean.LeanPool.Spawn(_enemies[wave.Enemies[i * wave.Row + j].IdEnemy],
-                    _startPositionSpawnVector3[GameTag.LEFT],
-                    Quaternion.identity);
-                enemySpawn.transform.SetParent(transform);
-                // add enemy to controller
-                HandleEvent.Instance.AddEnemy(enemySpawn);
-                enemySpawn.GetComponent<BaseEnemy>().SetTargetPosition(GetTargetPosition(i, j, wave));
-                if (i * wave.Row + j + 1 == wave.Enemies.Count)
+                switch (wave.TypeSort)
                 {
-                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[i * wave.Row + j], true);
+                    case TypeSort.LeftToRightAndTopDown:
+                        StartCoroutine(DelayMove(0.1f,
+                            _listMoveConfig[wave.Enemies[wave.Row * i + j].IdPath],
+                            HandleEvent.Instance.GetBaseEnemyScript(enemies[i * wave.Row + j])));
+                        break;
+                    case TypeSort.BottomUpAndRightToLeft:
+                        StartCoroutine(DelayMove(0.1f,
+                            _listMoveConfig[wave.Enemies[wave.Row * i + j].IdPath],
+                            HandleEvent.Instance.GetBaseEnemyScript(enemies[enemies.Count - (i * wave.Row + j) - 1])));
+                        break;
                 }
-                else
-                {
-                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[i * wave.Row + j]);
-                }
-                StartCoroutine(DelayMove(0.1f,
-                    _listMoveConfig[wave.Enemies[wave.Row * i + j].IdPath] ,
-                    enemySpawn.GetComponent<BaseEnemy>()));
-                // gọi hàm drop item
-                SetRandomDropItems(listRandom, i * wave.Row + j, enemySpawn, ref itemOnWave);
+                
             }
         }
-
+        
     }
 
     IEnumerator SpawnEnemyTypeMoveInRow(WaveInformation wave)
@@ -159,6 +140,10 @@ public class EnemyController : Singleton<EnemyController>
         float dx = (float) (wave.SizeDx / wave.Col);
         float dy = (float) (wave.SizeDy / wave.Row);
         float valueX = wave.Dx + col * dx;
+        if (row % 2 == 1)
+        {
+            valueX = wave.OverLapping ? valueX - (float)dx / 2 : valueX;
+        }
         float valueY = wave.Dy - row * dy;
         return new Vector3(valueX, valueY, transform.position.z);
     }
@@ -170,7 +155,7 @@ public class EnemyController : Singleton<EnemyController>
     /// <param name="index">vị trí enemy thứ bao nhiêu trong ma trận</param>
     /// <param name="spawnEnemy">gameobject enemy</param>
     /// <param name="items">danh sách tổng item</param>
-    private void SetRandomDropItems(int[] listRandom, int index, GameObject spawnEnemy, ref List<int> items)
+    private void SetRandomDropItems(int[] listRandom, int index, GameObject spawnEnemy, ref List<int> items, int totalCoin, int[] listRandomCoin)
     {
         List<int> itemOfOneEnemy = new List<int>();
         for (int i = 0; i < listRandom[index]; i++)
@@ -185,6 +170,7 @@ public class EnemyController : Singleton<EnemyController>
                 items.RemoveAt(0);
             }
         }
+        spawnEnemy.GetComponent<BaseEnemy>().SetCoind(listRandomCoin[index]);
         spawnEnemy.GetComponent<BaseEnemy>().SetDopItem(itemOfOneEnemy);
     }
 
@@ -223,13 +209,57 @@ public class EnemyController : Singleton<EnemyController>
     #endregion
 
     #region Public Method
-
+    /// <summary>
+    /// tất cả enemy sẽ được sinh tại đây và được cộng vào 1 list
+    /// và được setting các thông số như coin, item, path,..
+    /// cách di chuyển sẽ quyết định lựa chọn con nào trong list để di chuyển
+    /// </summary>
+    /// <param name="wave"></param>
     public void SpawnEnemy(WaveInformation wave)
     {
+        HandleEvent.Instance.Reset();
+        // danh sách tổng item trên wave
+        // nếu item được cộng vào enemy thì danh sách này sẽ bị xóa item đó
+        List<int> itemOnWave = new List<int>();
+        List<GameObject> enemies = new List<GameObject>();
+        for (int i = 0; i < wave.ListItemDop.Count; i++)
+        {
+            for (int j = 0; j < wave.ListItemDop[i].Count; j++)
+            {
+                itemOnWave.Add(wave.ListItemDop[i].IdItem);
+            }
+        }
+        int totalCoin = (int)Random.Range(wave.MinCoindDrop, wave.MaxCoindDrop);
+        int[] listRandom = Randomized(wave.Enemies.Count, itemOnWave.Count);
+        int[] listCoinDrop = Randomized(wave.Enemies.Count, totalCoin);
+        for (int i = 0; i < wave.Row; i++)
+        {
+            for (int j = 0; j < wave.Col; j++)
+            {
+                GameObject enemySpawn = Lean.LeanPool.Spawn(_enemies[wave.Enemies[i * wave.Row + j].IdEnemy],
+                    _startPositionSpawnVector3[GameTag.LEFT],
+                    Quaternion.identity);
+                enemies.Add(enemySpawn);
+                enemySpawn.transform.SetParent(transform);
+                // add enemy to controller
+                HandleEvent.Instance.AddEnemy(enemySpawn);
+                enemySpawn.GetComponent<BaseEnemy>().SetTargetPosition(GetTargetPosition(i, j, wave));
+                if (i * wave.Row + j + 1 == wave.Enemies.Count)
+                {
+                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[i * wave.Row + j], true);
+                }
+                else
+                {
+                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[i * wave.Row + j]);
+                }
+                // gọi hàm drop item
+                SetRandomDropItems(listRandom, i * wave.Row + j, enemySpawn, ref itemOnWave, totalCoin, listCoinDrop);
+            }
+        }
         switch (wave.TypeMove)
         {
             case TypeMove.OneByOne:
-                StartCoroutine(SpawnEnemyTypeMoveOneByOne(wave));
+                StartCoroutine(SpawnEnemyTypeMoveOneByOne(wave, enemies));
                 break;
             case TypeMove.MoveInLine:
                 StartCoroutine(SpawnEnemyTypeMoveInLine(wave));

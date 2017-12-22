@@ -20,10 +20,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Item
+  - Bullet
+  - Enemy
+  - Player
   - 
   - 
   - 

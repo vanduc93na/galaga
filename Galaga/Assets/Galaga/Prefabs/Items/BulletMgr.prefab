@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 114513944871740004}
   - component: {fileID: 212603010628949174}
   - component: {fileID: 50452833937396360}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bullet4
   m_TagString: bullet4
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 212391615718605822}
   - component: {fileID: 70643298896688506}
   - component: {fileID: 50180267341772980}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bullet1
   m_TagString: bullet1
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 212049538545477306}
   - component: {fileID: 70971957677224342}
   - component: {fileID: 50060965920071352}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bullet2
   m_TagString: bullet2
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 212801141573850182}
   - component: {fileID: 50566596106355898}
   - component: {fileID: 70011441336306184}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bullet3
   m_TagString: bullet3
   m_Icon: {fileID: 0}

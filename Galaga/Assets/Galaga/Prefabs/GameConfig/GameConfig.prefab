@@ -57,5 +57,5 @@ MonoBehaviour:
   minDy: -5
   deltaTransform: 0.1
   basicBulletIndex: 1
-  minBullet: 1
+  minBullet: 3
   maxBullets: 13

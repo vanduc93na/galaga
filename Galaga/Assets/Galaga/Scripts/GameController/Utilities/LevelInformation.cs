@@ -39,6 +39,10 @@ public class WaveInformation
     public float SizeDy = 0;
     // chỉ số đánh dấu ma trận thay đổi trên màn hình - không sử dụng trong game
     public int DeltaMatrix = 0;
+    // tốc độ tùy chỉnh, mặc định = 0 thì sẽ sử dụng tốc độ di chuyển của từng path
+    // tốc độ thật của enemy sẽ bằng tốc độ của path cộng với giá trị này(có thể âm)
+    public float CustomSpeed = 0;
+    public TypeSort TypeSort;
     public TypeOfWave TypeWave;
     public TypeMove TypeMove;
     [SerializeField]
@@ -49,7 +53,7 @@ public class WaveInformation
     public int MinCoindDrop = 0;
 
     public int MaxCoindDrop = 0;
-
+    
     public List<ItemDrop> ListItemDop = new List<ItemDrop>();
 
 }
@@ -77,6 +81,9 @@ public enum TypeOfEnemy
     Boss
 }
 
+/// <summary>
+/// di chuyển
+/// </summary>
 public enum TypeMove
 {
     // random cách di chuyển
@@ -91,9 +98,20 @@ public enum TypeMove
     // optional - dùng thuật toán di chuyển đến vị trí có sẵn
     None
 }
-
+/// <summary>
+/// kiểu wave
+/// </summary>
 public enum TypeOfWave
 {
     Boss,
     Enemies
+}
+
+/// <summary>
+/// kiểu sắp xếp vào ma trận
+/// </summary>
+public enum TypeSort
+{
+    LeftToRightAndTopDown,
+    BottomUpAndRightToLeft
 }

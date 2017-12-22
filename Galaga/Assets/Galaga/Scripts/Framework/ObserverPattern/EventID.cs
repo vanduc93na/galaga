@@ -5,6 +5,5 @@
     EnemyDead,
     NextWave,
     NextLevel,
-    LastEnemyMoveDone
-    
+    LastEnemyMoveDone,
 }

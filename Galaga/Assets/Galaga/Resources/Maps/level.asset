@@ -14,15 +14,18 @@ MonoBehaviour:
   temp: 1
   Waves:
   - IdWave: 0
-    Row: 2
-    Col: 2
-    DelaySpawn: 0
+    Row: 3
+    OverLapping: 1
+    Col: 3
+    DelaySpawn: 0.1
     DelayMove: 0
     Dx: -2
     Dy: 3
     SizeDx: 5
     SizeDy: 4
-    DeltaMatrix: 10
+    DeltaMatrix: 45
+    CustomSpeed: 0
+    TypeSort: 0
     TypeWave: 1
     TypeMove: 1
     Enemies:
@@ -42,15 +45,32 @@ MonoBehaviour:
       Type: 0
       Health: 100
       IdPath: 0
-    MinCoindDrop: 0
-    MaxCoindDrop: 0
-    ListItemDop:
-    - IdItem: 1
-      Count: 3
-    - IdItem: 2
-      Count: 2
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 100
+      IdPath: 0
+    MinCoindDrop: 50
+    MaxCoindDrop: 50
+    ListItemDop: []
   - IdWave: 0
     Row: 2
+    OverLapping: 0
     Col: 2
     DelaySpawn: 0
     DelayMove: 0
@@ -59,6 +79,8 @@ MonoBehaviour:
     SizeDx: 5
     SizeDy: 4
     DeltaMatrix: 10
+    CustomSpeed: 0
+    TypeSort: 0
     TypeWave: 1
     TypeMove: 1
     Enemies:
@@ -80,13 +102,10 @@ MonoBehaviour:
       IdPath: 0
     MinCoindDrop: 0
     MaxCoindDrop: 0
-    ListItemDop:
-    - IdItem: 1
-      Count: 3
-    - IdItem: 2
-      Count: 2
+    ListItemDop: []
   - IdWave: 0
     Row: 2
+    OverLapping: 0
     Col: 2
     DelaySpawn: 0
     DelayMove: 0
@@ -95,6 +114,8 @@ MonoBehaviour:
     SizeDx: 5
     SizeDy: 4
     DeltaMatrix: 10
+    CustomSpeed: 0
+    TypeSort: 0
     TypeWave: 1
     TypeMove: 1
     Enemies:
@@ -116,8 +137,4 @@ MonoBehaviour:
       IdPath: 0
     MinCoindDrop: 0
     MaxCoindDrop: 0
-    ListItemDop:
-    - IdItem: 1
-      Count: 3
-    - IdItem: 2
-      Count: 2
+    ListItemDop: []

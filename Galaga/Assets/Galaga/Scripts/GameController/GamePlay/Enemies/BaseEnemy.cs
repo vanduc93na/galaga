@@ -13,6 +13,8 @@ public class BaseEnemy : MonoBehaviour, IHealth
     private bool _isLastEnemyOnWave = false;
     private int _coinDrop = 0;
     private Vector2 _targetPosition;
+    private bool _onMove = false;
+
 
     #region Public Method
     public void OnHit(int dame)
@@ -31,9 +33,9 @@ public class BaseEnemy : MonoBehaviour, IHealth
 
     public void AnimationOnHit()
     {
-        transform.DOLocalMoveY(transform.position.y + 0.05f, 0.05f).OnComplete(() =>
+        transform.DOLocalMoveY(transform.position.y + 0.04f, 0.02f).OnComplete(() =>
         {
-            transform.DOLocalMoveY(transform.position.y - 0.05f, 0.05f);
+            transform.DOLocalMoveY(transform.position.y - 0.04f, 0.02f);
         });
     }
 
@@ -44,6 +46,12 @@ public class BaseEnemy : MonoBehaviour, IHealth
         _isLastEnemyOnWave = isLast;
     }
 
+    public void SetCoind(int coin)
+    {
+        _coinDrop = coin;
+        test = coin;
+    }
+
     public void SetDopItem(List<int> items)
     {
         _itemsDrop = new List<int>();
@@ -51,7 +59,6 @@ public class BaseEnemy : MonoBehaviour, IHealth
         {
             _itemsDrop.Add(items[i]);
         }
-        test += items.Count;
     }
     /// <summary>
     /// di chuyển từ lúc sinh đến lúc sắp xếp xong ma trận trên màn hình
@@ -67,16 +74,21 @@ public class BaseEnemy : MonoBehaviour, IHealth
         // thêm vị trí cuối cùng vào waypoint
         tmp.Add(_targetPosition);
         Vector3[] wp = tmp.ToArray();
+        _onMove = true;
         if (_isLastEnemyOnWave)
         {
             transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null).OnComplete(() =>
             {
+                _onMove = false;
                 this.PostEvent(EventID.LastEnemyMoveDone);
             });
         }
         else
         {
-            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null);
+            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null).OnComplete(() =>
+            {
+                _onMove = false;
+            });
         }
     }
 
@@ -84,9 +96,21 @@ public class BaseEnemy : MonoBehaviour, IHealth
     /// di chuyển sau khi sắp xếp xong đội hình
     /// </summary>
     /// <param name="wp"></param>
-    public void MovePathOnWave(Vector3[] wp)
+    public void MovePathOnWave(MoveInformation moveInfor)
     {
-        
+        List<Vector3> tmp = new List<Vector3>();
+        for (int i = 0; i < moveInfor.Waypoint.Count; i++)
+        {
+            tmp.Add(moveInfor.Waypoint[i]);
+        }
+        // thêm vị trí cuối cùng vào waypoint
+        tmp.Add(_targetPosition);
+        Vector3[] wp = tmp.ToArray();
+        _onMove = true;
+        transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null).OnComplete(() =>
+        {
+            _onMove = false;
+        });
     }
 
     /// <summary>
@@ -104,11 +128,28 @@ public class BaseEnemy : MonoBehaviour, IHealth
     /// <param name="itemObject"></param>
     public void InstanceDropItem()
     {
+        // instance item
         for (int i = 0; i < _itemsDrop.Count; i++)
         {
-            Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[_itemsDrop[i]], transform.position, Quaternion.identity);
+            GameObject item = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[_itemsDrop[i]], transform.position, Quaternion.identity);
+            HandleEvent.Instance.AddItem(item);
+        }
+        // instance coin
+        for (int i = 0; i < _coinDrop; i++)
+        {
+            GameObject coin = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[0], transform.position, Quaternion.identity);
+            HandleEvent.Instance.AddItem(coin);
         }
         
+    }
+
+    /// <summary>
+    /// kiểm tran trạng thái của quái trên màn hình có đang di chuyển không
+    /// </summary>
+    /// <returns></returns>
+    public bool OnMoving()
+    {
+        return _onMove;
     }
     #endregion
 

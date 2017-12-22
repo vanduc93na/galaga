@@ -144,7 +144,7 @@ public class MapManagerEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("row * col", 100, 80, false);
+        EditorGUITool.Label("row * col", 100, 80, false, "độ lớn ma trận");
 
         if (wave.Row != 0 && wave.Col != 0)
         {
@@ -156,37 +156,45 @@ public class MapManagerEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Overlapping", 100, 80, false);
+        EditorGUITool.Label("Overlapping", 100, 80, false, "sắp xếp chéo đội hình trong ma trận");
         wave.OverLapping = EditorGUILayout.Toggle(wave.OverLapping);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Delay Spawn", 100, 80, false);
+        EditorGUITool.Label("Delay Spawn", 100, 80, false, "thời gian delay giữa 2 con đi cùng nhau");
         wave.DelaySpawn = EditorGUILayout.FloatField("", wave.DelaySpawn, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Dx", 100, 80, false);
+        EditorGUITool.Label("Dx", 100, 80, false, "vị trí x của con đầu tiên");
         wave.Dx = EditorGUILayout.FloatField("", wave.Dx, GUILayout.Width(50));
         GUILayout.Space(20);
-        EditorGUITool.Label("Dy", 100, 80, false);
+        EditorGUITool.Label("Dy", 100, 80, false, "vị trí ý của con đầu tiên");
         wave.Dy = EditorGUILayout.FloatField("", wave.Dy, GUILayout.Width(50));
         GUILayout.Space(20);
-        EditorGUITool.Label("Size Dx", 100, 80, false);
+        EditorGUITool.Label("Size Dx", 100, 80, false, "độ lớn x cả đội hình");
         wave.SizeDx = EditorGUILayout.FloatField("", wave.SizeDx, GUILayout.Width(50));
         GUILayout.Space(20);
-        EditorGUITool.Label("Size Dy", 100, 80, false);
+        EditorGUITool.Label("Size Dy", 100, 80, false, "độ lớn y cả đội hình");
         wave.SizeDy = EditorGUILayout.FloatField("", wave.SizeDy, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
-
+        if (wave.TypeMove == TypeMove.OneByOne)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Type Sort", 100, 80, false, "kiểu sắp xếp vào ma trận");
+            wave.TypeSort = (TypeSort)EditorGUILayout.EnumPopup(wave.TypeSort, GUILayout.Width(200));
+            EditorGUILayout.EndHorizontal();
+        }
         if (wave.TypeMove == TypeMove.MoveInRows || wave.TypeMove == TypeMove.MoveInLine)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(20);
-            EditorGUITool.Label("Delay Move", 100, 80, false);
+            EditorGUITool.Label("Delay Move", 100, 80, false, "thời gian delay giữa các hàng hoặc cột");
             wave.DelaySpawn = EditorGUILayout.FloatField("", wave.DelaySpawn, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
         }
+        SetMatrix(wave);
         switch (wave.TypeMove)
         {
             case TypeMove.OneByOne:
@@ -240,10 +248,10 @@ public class MapManagerEditor : EditorWindow
             EditorGUILayout.LabelField("Set Coin Drop", EditorStyleExtension.TitleForHeaderStyle, GUILayout.Width(100));
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
-            EditorGUITool.Label("Min Coin", 100, 80, false);
+            EditorGUITool.Label("Min Coin", 100, 80, false, "số lượng coin nhỏ nhất");
             wave.MinCoindDrop = EditorGUILayout.IntField("", wave.MinCoindDrop, GUILayout.Width(50));
             GUILayout.Space(20);
-            EditorGUITool.Label("Max Coin", 100, 80, false);
+            EditorGUITool.Label("Max Coin", 100, 80, false, "số lượng coin lớn nhất");
             wave.MaxCoindDrop = EditorGUILayout.IntField("", wave.MaxCoindDrop, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.LabelField("Set List Item", EditorStyleExtension.TitleForHeaderStyle, GUILayout.Width(100));
@@ -280,6 +288,7 @@ public class MapManagerEditor : EditorWindow
             EditorGUILayout.EndVertical();
         });
         EditorGUILayout.EndVertical();
+
     }
     void ShowWaveBoss(WaveInformation wave)
     {
@@ -308,7 +317,7 @@ public class MapManagerEditor : EditorWindow
 
     #region Type Move
 
-    void MoveOneByOne(WaveInformation wave)
+    void SetMatrix(WaveInformation wave)
     {
         InitWave(wave);
         if (wave.Enemies != null)
@@ -343,6 +352,11 @@ public class MapManagerEditor : EditorWindow
         {
             LoadLevel();
         }
+    }
+
+    void MoveOneByOne(WaveInformation wave)
+    {
+        
     }
 
     void MoveInLine(WaveInformation wave)

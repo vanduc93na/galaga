@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameTag
 {
+    public const string PLAYER = "Player";
     public const string GUN = "gun";
     /// <summary>
     /// tag của viên đạn
