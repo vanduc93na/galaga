@@ -28,7 +28,7 @@ public class BaseItem : MonoBehaviour
 
     public void MoveToPlayer(Vector3 playerPos, Action callBack)
     {
-        transform.DOMove(playerPos, 0.5f).OnComplete(() =>
+        transform.DOMove(playerPos, 0.1f).OnComplete(() =>
         {
             callBack();
         });

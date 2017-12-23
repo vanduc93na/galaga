@@ -185,6 +185,10 @@ public class MapManagerEditor : EditorWindow
             EditorGUITool.Label("Type Sort", 100, 80, false, "kiểu sắp xếp vào ma trận");
             wave.TypeSort = (TypeSort)EditorGUILayout.EnumPopup(wave.TypeSort, GUILayout.Width(200));
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Path", 100, 80, false, "path cho từng con");
+            EditorGUILayout.EndHorizontal();
         }
         if (wave.TypeMove == TypeMove.MoveInRows || wave.TypeMove == TypeMove.MoveInLine)
         {

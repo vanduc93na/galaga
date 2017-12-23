@@ -19,7 +19,7 @@ MonoBehaviour:
     Col: 3
     DelaySpawn: 0.1
     DelayMove: 0
-    Dx: -2
+    Dx: -1.5
     Dy: 3
     SizeDx: 5
     SizeDy: 4
