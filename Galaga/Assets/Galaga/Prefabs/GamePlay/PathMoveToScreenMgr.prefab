@@ -27,6 +27,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1914708571641714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4572352673627710}
+  - component: {fileID: 114624385309280568}
+  m_Layer: 0
+  m_Name: 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1935524682876098
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,12 +53,25 @@ GameObject:
   - component: {fileID: 4672615640811038}
   - component: {fileID: 114698271618913780}
   m_Layer: 0
-  m_Name: 1
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4572352673627710
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1914708571641714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4637812236664518}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4637812236664518
 Transform:
   m_ObjectHideFlags: 1
@@ -53,6 +82,7 @@ Transform:
   m_LocalPosition: {x: -0.4070421, y: 1.4204817, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4572352673627710}
   - {fileID: 4672615640811038}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -63,12 +93,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1935524682876098}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4637812236664518}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114262570728971384
 MonoBehaviour:
@@ -81,6 +111,151 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f070cdf84109da47bca3ccffec4e563, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114624385309280568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1914708571641714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -333801856, guid: aa0b1eebb5db27a419fa4564bbe5c9c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateType: 0
+  isSpeedBased: 0
+  hasOnStart: 0
+  hasOnPlay: 0
+  hasOnUpdate: 0
+  hasOnStepComplete: 0
+  hasOnComplete: 0
+  hasOnTweenCreated: 0
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onPlay:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onUpdate:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onStepComplete:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onComplete:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onTweenCreated:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  delay: 0
+  duration: 5
+  easeType: 1
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loops: 1
+  loopType: 0
+  orientType: 0
+  lookAtTransform: {fileID: 4572352673627710}
+  lookAtPosition: {x: 0, y: 0, z: 0}
+  lookAhead: 1
+  autoPlay: 1
+  autoKill: 1
+  relative: 0
+  isLocal: 1
+  isClosedPath: 0
+  pathResolution: 10
+  pathMode: 1
+  lockRotation: 0
+  assignForwardAndUp: 0
+  forwardDirection: {x: 0, y: 0, z: 1}
+  upDirection: {x: 0, y: 1, z: 0}
+  wps:
+  - {x: -6.2577496, y: 0.6333562, z: 0}
+  - {x: -1.6428866, y: 3.4136217, z: 0}
+  - {x: 0.75911236, y: 3.867542, z: 0}
+  - {x: 2.9908905, y: 2.6759999, z: 0}
+  - {x: 3.3502436, y: -0.5581869, z: 0}
+  - {x: 2.5369687, y: -2.14691, z: 0}
+  - {x: -0.12981606, y: -2.5251775, z: 0}
+  - {x: -2.7598631, y: -0.9150274, z: 0}
+  fullWps: []
+  path:
+    type: 0
+    subdivisionsXSegment: 10
+    subdivisions: 90
+    wps:
+    - {x: -0.4070421, y: 1.4204817, z: 0}
+    - {x: -6.2577496, y: 0.6333562, z: 0}
+    - {x: -1.6428866, y: 3.4136217, z: 0}
+    - {x: 0.75911236, y: 3.867542, z: 0}
+    - {x: 2.9908905, y: 2.6759999, z: 0}
+    - {x: 3.3502436, y: -0.5581869, z: 0}
+    - {x: 2.5369687, y: -2.14691, z: 0}
+    - {x: -0.12981606, y: -2.5251775, z: 0}
+    - {x: -2.7598631, y: -0.9150274, z: 0}
+    controlPoints: []
+    length: 27.081665
+    wpLengths:
+    - 0
+    - 5.903418
+    - 5.3876557
+    - 2.4445128
+    - 2.529942
+    - 3.2540894
+    - 1.7847849
+    - 2.6934786
+    - 3.0837853
+    isFinalized: 1
+    timesTable:
+    - 0
+    - 0.2179858
+    - 0.41692686
+    - 0.50719136
+    - 0.6006103
+    - 0.72076875
+    - 0.78667253
+    - 0.8861301
+    - 1
+    lengthsTable: []
+  inspectorMode: 0
+  pathType: 0
+  handlesType: 0
+  livePreview: 1
+  handlesDrawMode: 0
+  perspectiveHandleSize: 0.5
+  showIndexes: 1
+  pathColor: {r: 1, g: 1, b: 1, a: 0.5}
+  lastSrcPosition: {x: -0.4070421, y: 1.4204817, z: 0}
+  wpsDropdown: 1
 --- !u!114 &114698271618913780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,7 +306,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   delay: 0
-  duration: 10
+  duration: 5
   easeType: 1
   easeCurve:
     serializedVersion: 2
@@ -169,51 +344,63 @@ MonoBehaviour:
   forwardDirection: {x: 0, y: 0, z: 1}
   upDirection: {x: 0, y: 1, z: 0}
   wps:
-  - {x: -6.2577496, y: 0.6333562, z: 0}
-  - {x: -1.6428866, y: 3.4136217, z: 0}
-  - {x: 0.75911236, y: 3.867542, z: 0}
-  - {x: 2.9908905, y: 2.6759999, z: 0}
-  - {x: 3.3502436, y: -0.5581869, z: 0}
-  - {x: 2.5369687, y: -2.14691, z: 0}
-  - {x: -0.12981606, y: -2.5251775, z: 0}
-  - {x: -2.6831224, y: -0.9553678, z: 0}
+  - {x: 5.7895474, y: 3.8052664, z: 0}
+  - {x: 5.419942, y: 1.5036325, z: 0}
+  - {x: 4.781532, y: -0.24359381, z: 0}
+  - {x: 2.8327034, y: -1.2516087, z: 0}
+  - {x: -0.1913408, y: -1.8396174, z: 0}
+  - {x: -1.535361, y: 0.7812215, z: 0}
+  - {x: -0.66174793, y: 3.2004576, z: 0}
+  - {x: 1.2198794, y: 3.620463, z: 0}
+  - {x: 2.3118954, y: 1.6716342, z: 0}
+  - {x: 0.4302678, y: 0.109211445, z: 0}
+  - {x: -1.1153548, y: 0.9324237, z: 0}
   fullWps: []
   path:
     type: 0
     subdivisionsXSegment: 10
-    subdivisions: 90
+    subdivisions: 120
     wps:
     - {x: -0.4070421, y: 1.4204817, z: 0}
-    - {x: -6.2577496, y: 0.6333562, z: 0}
-    - {x: -1.6428866, y: 3.4136217, z: 0}
-    - {x: 0.75911236, y: 3.867542, z: 0}
-    - {x: 2.9908905, y: 2.6759999, z: 0}
-    - {x: 3.3502436, y: -0.5581869, z: 0}
-    - {x: 2.5369687, y: -2.14691, z: 0}
-    - {x: -0.12981606, y: -2.5251775, z: 0}
-    - {x: -2.6831224, y: -0.9553678, z: 0}
+    - {x: 5.7895474, y: 3.8052664, z: 0}
+    - {x: 5.419942, y: 1.5036325, z: 0}
+    - {x: 4.781532, y: -0.24359381, z: 0}
+    - {x: 2.8327034, y: -1.2516087, z: 0}
+    - {x: -0.1913408, y: -1.8396174, z: 0}
+    - {x: -1.535361, y: 0.7812215, z: 0}
+    - {x: -0.66174793, y: 3.2004576, z: 0}
+    - {x: 1.2198794, y: 3.620463, z: 0}
+    - {x: 2.3118954, y: 1.6716342, z: 0}
+    - {x: 0.4302678, y: 0.109211445, z: 0}
+    - {x: -1.1153548, y: 0.9324237, z: 0}
     controlPoints: []
-    length: 26.995157
+    length: 29.98204
     wpLengths:
     - 0
-    - 5.903418
-    - 5.3876557
-    - 2.4445128
-    - 2.529942
-    - 3.2540894
-    - 1.7847849
-    - 2.6934786
-    - 2.997278
+    - 6.6396475
+    - 2.3311212
+    - 1.8602062
+    - 2.194089
+    - 3.0806813
+    - 2.945367
+    - 2.5721397
+    - 1.9279331
+    - 2.2339275
+    - 2.4457488
+    - 1.7511789
     isFinalized: 1
     timesTable:
     - 0
-    - 0.21868433
-    - 0.41826293
-    - 0.50881666
-    - 0.602535
-    - 0.7230785
-    - 0.78919345
-    - 0.8889698
+    - 0.22145416
+    - 0.29920474
+    - 0.3612488
+    - 0.4344289
+    - 0.53717977
+    - 0.6354175
+    - 0.72120684
+    - 0.78550977
+    - 0.8600186
+    - 0.9415924
     - 1
     lengthsTable: []
   inspectorMode: 0

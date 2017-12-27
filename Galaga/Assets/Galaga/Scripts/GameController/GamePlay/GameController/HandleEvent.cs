@@ -150,6 +150,11 @@ public class HandleEvent : Singleton<HandleEvent>
             _enemiesOnWave[enemy].InstanceDropItem();
             _enemiesOnWave.Remove(enemy);
         }
+
+        if (_enemiesOnWave.Count == 0)
+        {
+            this.PostEvent(EventID.NextWave);
+        }
     }
 
     #region Public Methods
@@ -171,8 +176,11 @@ public class HandleEvent : Singleton<HandleEvent>
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
                 }
             }
-            Lean.LeanPool.Despawn(trigger);
-            _bulletsSpawn.Remove(trigger);
+            if (targetTriggerObject.tag == GameTag.BORDER || targetTriggerObject.tag == GameTag.ENEMY)
+            {
+                Lean.LeanPool.Despawn(trigger);
+                _bulletsSpawn.Remove(trigger);
+            }
         }
     }
 

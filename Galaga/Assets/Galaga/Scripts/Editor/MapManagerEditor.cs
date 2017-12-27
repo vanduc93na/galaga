@@ -27,7 +27,9 @@ public class MapManagerEditor : EditorWindow
     private int _rowChange = 0;
     private int _colChange = 0;
     private int _sizeListDropItem = 0;
+    private int _sizePath = 0;
     private Dictionary<int, int> _healthEnemies = new Dictionary<int, int>();
+    private Dictionary<int, int> _pathRoadToScreen = new Dictionary<int, int>();
     private int _deltaEnemyMatrix = -1;
 
     void OnGUI()
@@ -139,6 +141,19 @@ public class MapManagerEditor : EditorWindow
         GUILayout.Space(30);
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
+        EditorGUITool.Label("Clear Enemies", 100, 80, false, "giết hết quái để qua wave ?");
+        wave.ClearEnemiesToCompleteWave = EditorGUILayout.Toggle(wave.ClearEnemiesToCompleteWave);
+        EditorGUILayout.EndHorizontal();
+        if (!wave.ClearEnemiesToCompleteWave)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Time Complete", 100, 80, false, "Thời gian hoàn thành wave");
+            wave.TimeCompleteWave = EditorGUILayout.FloatField("", wave.TimeCompleteWave, GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
+        }
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
         EditorGUITool.Label("Type Move", 100, 80, false);
         wave.TypeMove = (TypeMove)EditorGUILayout.EnumPopup(wave.TypeMove, GUILayout.Width(200));
         EditorGUILayout.EndHorizontal();
@@ -178,26 +193,17 @@ public class MapManagerEditor : EditorWindow
         EditorGUITool.Label("Size Dy", 100, 80, false, "độ lớn y cả đội hình");
         wave.SizeDy = EditorGUILayout.FloatField("", wave.SizeDy, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
-        if (wave.TypeMove == TypeMove.OneByOne)
-        {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(20);
-            EditorGUITool.Label("Type Sort", 100, 80, false, "kiểu sắp xếp vào ma trận");
-            wave.TypeSort = (TypeSort)EditorGUILayout.EnumPopup(wave.TypeSort, GUILayout.Width(200));
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(20);
-            EditorGUITool.Label("Path", 100, 80, false, "path cho từng con");
-            EditorGUILayout.EndHorizontal();
-        }
-        if (wave.TypeMove == TypeMove.MoveInRows || wave.TypeMove == TypeMove.MoveInLine)
-        {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(20);
-            EditorGUITool.Label("Delay Move", 100, 80, false, "thời gian delay giữa các hàng hoặc cột");
-            wave.DelaySpawn = EditorGUILayout.FloatField("", wave.DelaySpawn, GUILayout.Width(50));
-            EditorGUILayout.EndHorizontal();
-        }
+
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
+        EditorGUITool.Label("Delay Move", 100, 80, false, "thời gian delay giữa các đợt - từng path");
+        wave.DelayMove = EditorGUILayout.FloatField("", wave.DelayMove, GUILayout.Width(50));
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
+        EditorGUITool.Label("Custom Speed", 100, 80,false, " Tùy chọn tốc độ bay \n Tốc độ thật của enemy sẽ được cộng từ tốc độ cơ bản của path và tốc độ này \n Giá trị này có thể âm");
+        wave.CustomSpeed = EditorGUILayout.FloatField("", wave.CustomSpeed, GUILayout.Width(50));
+        EditorGUILayout.EndHorizontal();
         SetMatrix(wave);
         switch (wave.TypeMove)
         {
@@ -216,6 +222,56 @@ public class MapManagerEditor : EditorWindow
         }
         EditorGUILayout.EndVertical();
         AddKeyDictionary(wave);
+
+        EditorGUILayout.BeginVertical();
+        EditorGUITool.BorderBox(5, 5, () =>
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField("Path Enemy", EditorStyleExtension.TitleNameStyle, GUILayout.Width(100));
+            GUILayout.Space(10);
+            AddKeyForPath(wave);
+            switch (wave.TypeMove)
+            {
+                case TypeMove.OneByOne:
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Space(10);
+                    EditorGUITool.Label("Type Sort", 100, 80, false, "kiểu sắp xếp vào ma trận");
+                    wave.TypeSort = (TypeSort)EditorGUILayout.EnumPopup(wave.TypeSort, GUILayout.Width(200));
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginVertical();
+                    var listKey = _pathRoadToScreen.Keys.ToList();
+                    listKey.Sort();
+                    for (int i = 0; i < listKey.Count; i++)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Id Path Of IdEnemy = " + listKey[i],
+                            EditorStyleExtension.NormalTextStyle, GUILayout.Width(50));
+                        GUILayout.Space(100);
+                        _pathRoadToScreen[listKey[i]] = EditorGUILayout.IntField("", _pathRoadToScreen[listKey[i]], GUILayout.Width(50));
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    for (int i = 0; i < wave.Enemies.Count; i++)
+                    {
+                        if (_pathRoadToScreen.ContainsKey(wave.Enemies[i].IdEnemy))
+                        {
+                            wave.Enemies[i].IdPath = _pathRoadToScreen[wave.Enemies[i].IdEnemy];
+                        }
+                    }
+                    EditorGUILayout.EndVertical();
+                    break;
+                case TypeMove.MoveInRows:
+                    break;
+                case TypeMove.MoveInLine:
+                    break;
+                case TypeMove.Random:
+                    break;
+                case TypeMove.None:
+                    break;
+            }
+            
+            EditorGUILayout.EndVertical();
+        });
+        EditorGUILayout.EndVertical();
         EditorGUILayout.BeginVertical();
         EditorGUITool.BorderBox(5, 5, () =>
         {
@@ -224,7 +280,7 @@ public class MapManagerEditor : EditorWindow
             GUILayout.Space(10);
             var listKey = _healthEnemies.Keys.ToList();
             listKey.Sort();
-            for (int i = 0;i < listKey.Count; i++)
+            for (int i = 0; i < listKey.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("id = " + listKey[i],
@@ -312,7 +368,7 @@ public class MapManagerEditor : EditorWindow
                 EnemyInformation enemy = new EnemyInformation();
                 enemy.IdEnemy = 1;
                 enemy.Health = 100;
-                enemy.IdPath = 0;
+                enemy.IdPath = -1;
                 wave.Enemies.Add(enemy);
             }
         }
@@ -360,7 +416,7 @@ public class MapManagerEditor : EditorWindow
 
     void MoveOneByOne(WaveInformation wave)
     {
-        
+
     }
 
     void MoveInLine(WaveInformation wave)
@@ -399,6 +455,52 @@ public class MapManagerEditor : EditorWindow
 
     #region Utilities
 
+    /// <summary>
+    /// kiểm tra _pathRoadToScreen nếu rỗng thì tạo mới
+    /// nếu không rỗng thì lấy giá trị cũ theo từng type move của wave
+    /// </summary>
+    private void AddKeyForPath(WaveInformation wave)
+    {
+        switch (wave.TypeMove)
+        {
+            case TypeMove.OneByOne:
+                _pathRoadToScreen = new Dictionary<int, int>();
+                // kiểm tra có tồn tại idPath chưa
+//                if (wave.Enemies.Count > 0 && wave.Enemies[0].IdPath == -1)
+//                {
+                    for (int i = 0; i < wave.Enemies.Count; i++)
+                    {
+                        if (!_pathRoadToScreen.ContainsKey(wave.Enemies[i].IdEnemy))
+                        {
+                            _pathRoadToScreen.Add(wave.Enemies[i].IdEnemy,
+                                wave.Enemies[i].IdPath);
+                        }
+                    }
+//                }
+                // nếu chưa
+//                else
+//                {
+//                    _pathRoadToScreen = new Dictionary<int, int>();
+//                    for (int )
+//                }
+                break;
+            case TypeMove.MoveInLine:
+                break;
+            case TypeMove.MoveInRows:
+                break;
+            case TypeMove.Random:
+                break;
+            case TypeMove.None:
+                break;
+        }
+    }
+
+
+    /// <summary>
+    /// add key và vualue cho _healthEnemy
+    /// nếu rỗng thì tạo mới, nếu không rỗng thì lấy giá trị trong map đã có
+    /// </summary>
+    /// <param name="wave"></param>
     private void AddKeyDictionary(WaveInformation wave)
     {
         int count = 0;

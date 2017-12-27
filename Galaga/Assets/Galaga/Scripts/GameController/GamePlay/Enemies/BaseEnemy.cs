@@ -157,6 +157,7 @@ public class BaseEnemy : MonoBehaviour, IHealth
     
     void OnDead()
     {
+        
         Lean.LeanPool.Despawn(this);
     }
 

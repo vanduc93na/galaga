@@ -19,41 +19,81 @@ public class LevelInformation : ScriptableObject
 public class WaveInformation
 {
     public int IdWave;
-    // số hàng ma trận
+    /// <summary>
+    /// số hàng ma trận
+    /// </summary>
     public int Row = 0;
-    // sắp xếp quái chồng chéo
+    /// <summary>
+    /// sắp xếp quái chồng chéo
+    /// </summary>
     public bool OverLapping = false;
-    // số cột ma trận
+    /// <summary>
+    /// số cột ma trận
+    /// </summary>
     public int Col = 0;
-    // thời gian delay sinh ra
+    /// <summary>
+    /// thời gian delay sinh ra
+    /// </summary>
     public float DelaySpawn = 0;
-    // thời gian delay di chuyển sau khi spawn - sử dụng trong cách di chuyển theo hàng, cột
+    /// <summary>
+    /// thời gian delay di chuyển sau khi spawn - sử dụng trong cách di chuyển theo hàng, cột
+    /// </summary>
     public float DelayMove = 0;
-    // vị trí x con đầu tiên
+    /// <summary>
+    /// vị trí x con đầu tiên
+    /// </summary>
     public float Dx = 0;
-    // vị trí y con đầu tiên
+
+    /// <summary>
+    /// vị trí y con đầu tiên
+    /// </summary>
     public float Dy = 0;
-    // khoảng cách x cả đội hình
+    /// <summary>
+    /// khoảng cách x cả đội hình
+    /// </summary>
     public float SizeDx = 0;
-    // khoảng cách y cả đội hình
+    /// <summary>
+    /// khoảng cách y cả đội hình
+    /// </summary>
     public float SizeDy = 0;
-    // chỉ số đánh dấu ma trận thay đổi trên màn hình - không sử dụng trong game
+    /// <summary>
+    /// chỉ số đánh dấu ma trận thay đổi trên màn hình - không sử dụng trong game
+    /// </summary>
     public int DeltaMatrix = 0;
-    // tốc độ tùy chỉnh, mặc định = 0 thì sẽ sử dụng tốc độ di chuyển của từng path
-    // tốc độ thật của enemy sẽ bằng tốc độ của path cộng với giá trị này(có thể âm)
+    /// <summary>
+    /// tốc độ tùy chỉnh, mặc định = 0 thì sẽ sử dụng tốc độ di chuyển của từng path
+    /// tốc độ thật của enemy sẽ bằng tốc độ của path cộng với giá trị này(có thể âm)
+    /// </summary>
     public float CustomSpeed = 0;
+    /// <summary>
+    /// điều kiện hoàn thành wave
+    /// == true: phải giết hết quái mới complete wave
+    /// == false: tính theo time để hoàn thành wave - dành cho những wave quái không sắp xếp thành ma trận mà sẽ list những quái bay theo đội hình tấn công
+    /// </summary>
+    public bool ClearEnemiesToCompleteWave = true;
+    /// <summary>
+    /// thời gian để hoàn thành wave nếu như wave không cần phải clear hết quái
+    /// </summary>
+    public float TimeCompleteWave = 0;
+
     public TypeSort TypeSort;
     public TypeOfWave TypeWave;
     public TypeMove TypeMove;
-    [SerializeField]
+    /// <summary>
+    /// danh sánh enemies
+    /// </summary>
     public List<EnemyInformation> Enemies = new List<EnemyInformation>();
     /// <summary>
-    /// số lượng coind drop trên wave
+    /// số lượng coin nhỏ nhất drop trên wave
     /// </summary>
     public int MinCoindDrop = 0;
-
+    /// <summary>
+    /// số lượng coin lớn nhất drop trên wave
+    /// </summary>
     public int MaxCoindDrop = 0;
-    
+    /// <summary>
+    /// danh sách các item drop trong 1 wave
+    /// </summary>
     public List<ItemDrop> ListItemDop = new List<ItemDrop>();
 
 }
@@ -61,10 +101,30 @@ public class WaveInformation
 [Serializable]
 public class EnemyInformation
 {
-    public int IdEnemy = 01;
+    public int IdEnemy = 1;
     public TypeOfEnemy Type = TypeOfEnemy.Minion;
     public int Health = 100;
-    public int IdPath = 0;
+    public int IdPath = -1;
+}
+
+[Serializable]
+public class BossInfor
+{
+    public int IdBoss = 0;
+    public int Health = 0;
+    public List<int> Paths = new List<int>();
+    /// <summary>
+    /// biến kiểm tra xem con boss này có sinh quái ko
+    /// </summary>
+    public bool IsSpawnEnemies = false;
+    /// <summary>
+    /// nếu sinh quái thì danh sách này sẽ chứa list id của quái
+    /// </summary>
+    public List<EnemyInformation> EnemiesSpawnFromBoss = new List<EnemyInformation>();
+    /// <summary>
+    /// số lượng quái được sinh ra từng đợt
+    /// </summary>
+    public int CountEnemiesAttack = 0;
 }
 
 [Serializable]
@@ -78,7 +138,7 @@ public class ItemDrop
 public enum TypeOfEnemy
 {
     Minion,
-    Boss
+    Gift
 }
 
 /// <summary>
@@ -113,5 +173,6 @@ public enum TypeOfWave
 public enum TypeSort
 {
     LeftToRightAndTopDown,
-    BottomUpAndRightToLeft
+    BottomUpAndRightToLeft,
+    SpiralMatrix
 }

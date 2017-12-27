@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GamePlayConfig : MonoBehaviour
 {
+    [Tooltip("thời gian chờ đợi giữa 2 wave")]
+    [SerializeField]
+    private float timeDelayBetweenWave = 0;
     /// <summary>
     /// config vị trí mà phi thuyển có thể di chuyển trên màn hình
     /// </summary>
@@ -68,5 +71,10 @@ public class GamePlayConfig : MonoBehaviour
     public int GetMaxBullet()
     {
         return maxBullets;
+    }
+
+    public float GetTimeDelayBetweenWaves()
+    {
+        return timeDelayBetweenWave;
     }
 }

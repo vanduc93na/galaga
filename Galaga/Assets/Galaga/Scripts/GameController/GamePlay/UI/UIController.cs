@@ -7,12 +7,14 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject panel;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		
 	}
 

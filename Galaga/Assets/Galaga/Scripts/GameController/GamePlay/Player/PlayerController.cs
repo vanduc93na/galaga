@@ -193,7 +193,7 @@ public class PlayerController : Singleton<PlayerController>
         }
         currentNumberBulletOnScreen = 1;
         gunObject = transform.GetChild(0).gameObject;
-        _bullet = _bullets[1];
+        _bullet = _bullets[0];
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
         currentNumberBulletOnScreen = config.GetMinBullet();
         Invoke(FIRE_BULLET, fireRate);

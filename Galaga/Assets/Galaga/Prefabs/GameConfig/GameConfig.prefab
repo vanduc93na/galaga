@@ -51,11 +51,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38882ac25c2562649a99995b31443318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeDelayBetweenWave: 2
   maxDx: 2.5
   maxDy: 5.5
   minDx: -2.5
   minDy: -5
   deltaTransform: 0.1
   basicBulletIndex: 1
-  minBullet: 3
+  minBullet: 6
   maxBullets: 13

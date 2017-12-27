@@ -14,72 +14,140 @@ MonoBehaviour:
   temp: 1
   Waves:
   - IdWave: 0
-    Row: 3
+    Row: 5
     OverLapping: 1
-    Col: 3
+    Col: 5
     DelaySpawn: 0.1
-    DelayMove: 0
+    DelayMove: 0.1
     Dx: -1.5
     Dy: 3
     SizeDx: 5
     SizeDy: 4
-    DeltaMatrix: 45
+    DeltaMatrix: 429
     CustomSpeed: 0
-    TypeSort: 0
+    ClearEnemiesToCompleteWave: 1
+    TimeCompleteWave: 0
+    TypeSort: 1
     TypeWave: 1
     TypeMove: 1
     Enemies:
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
       IdPath: 0
     - IdEnemy: 1
       Type: 0
-      Health: 100
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 2
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
+      IdPath: 0
+    - IdEnemy: 1
+      Type: 0
+      Health: 10
       IdPath: 0
     MinCoindDrop: 50
     MaxCoindDrop: 50
     ListItemDop: []
   - IdWave: 0
     Row: 2
-    OverLapping: 0
+    OverLapping: 1
     Col: 2
     DelaySpawn: 0
-    DelayMove: 0
+    DelayMove: 0.1
     Dx: -2
     Dy: 3
     SizeDx: 5
     SizeDy: 4
     DeltaMatrix: 10
     CustomSpeed: 0
+    ClearEnemiesToCompleteWave: 1
+    TimeCompleteWave: 0
     TypeSort: 0
     TypeWave: 1
     TypeMove: 1
@@ -100,8 +168,8 @@ MonoBehaviour:
       Type: 0
       Health: 100
       IdPath: 0
-    MinCoindDrop: 0
-    MaxCoindDrop: 0
+    MinCoindDrop: 5
+    MaxCoindDrop: 10
     ListItemDop: []
   - IdWave: 0
     Row: 2
@@ -115,6 +183,8 @@ MonoBehaviour:
     SizeDy: 4
     DeltaMatrix: 10
     CustomSpeed: 0
+    ClearEnemiesToCompleteWave: 1
+    TimeCompleteWave: 0
     TypeSort: 0
     TypeWave: 1
     TypeMove: 1

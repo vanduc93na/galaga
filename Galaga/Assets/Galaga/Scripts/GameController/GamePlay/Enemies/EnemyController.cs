@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Plugins;
 using UnityEngine;
@@ -38,7 +39,7 @@ public class EnemyController : Singleton<EnemyController>
 
     void RegisterEvent()
     {
-        
+
     }
 
     void Init()
@@ -74,29 +75,54 @@ public class EnemyController : Singleton<EnemyController>
 
     IEnumerator SpawnEnemyTypeMoveOneByOne(WaveInformation wave, List<GameObject> enemies)
     {
-        int index = 0;
-        for (int i = 0; i < wave.Row; i++)
+        Dictionary<int, int> enemyWithPath = new Dictionary<int, int>();
+        for (int i = 0; i < wave.Enemies.Count; i++)
         {
-            for (int j = 0; j < wave.Col; j++)
+            if (!enemyWithPath.ContainsKey(wave.Enemies[i].IdEnemy))
             {
-                yield return new WaitForSeconds(wave.DelaySpawn);
-                switch (wave.TypeSort)
-                {
-                    case TypeSort.LeftToRightAndTopDown:
-                        StartCoroutine(DelayMove(0.1f,
-                            _listMoveConfig[wave.Enemies[index].IdPath],
-                            HandleEvent.Instance.GetBaseEnemyScript(enemies[index])));
-                        break;
-                    case TypeSort.BottomUpAndRightToLeft:
-                        StartCoroutine(DelayMove(0.1f,
-                            _listMoveConfig[wave.Enemies[index].IdPath],
-                            HandleEvent.Instance.GetBaseEnemyScript(enemies[enemies.Count - (index) - 1])));
-                        break;
-                }
-                index++;
+                enemyWithPath.Add(wave.Enemies[i].IdEnemy,
+                    wave.Enemies[i].IdPath);
             }
         }
-        
+        var listKey = enemyWithPath.Keys.ToList();
+        for (int pathIndex = 0; pathIndex < listKey.Count; pathIndex++)
+        {
+            int index = 0;
+            for (int i = 0; i < wave.Row; i++)
+            {
+                for (int j = 0; j < wave.Col; j++)
+                {
+
+                    if (wave.Enemies[index].IdEnemy == listKey[pathIndex])
+                    {
+                        yield return new WaitForSeconds(wave.DelaySpawn);
+                        MoveInformation moveInfor = new MoveInformation();
+                        moveInfor.Waypoint = _listMoveConfig[wave.Enemies[index].IdPath].Waypoint;
+                        moveInfor.Mode = _listMoveConfig[wave.Enemies[index].IdPath].Mode;
+                        moveInfor.Type = _listMoveConfig[wave.Enemies[index].IdPath].Type;
+                        moveInfor.Duration = _listMoveConfig[wave.Enemies[index].IdPath].Duration + wave.CustomSpeed;
+                        switch (wave.TypeSort)
+                        {
+                            case TypeSort.LeftToRightAndTopDown:
+                                
+                                StartCoroutine(DelayMove(0,
+                                    moveInfor,
+                                    HandleEvent.Instance.GetBaseEnemyScript(enemies[index])));
+                                break;
+                            case TypeSort.BottomUpAndRightToLeft:
+                                StartCoroutine(DelayMove(0,
+                                    moveInfor,
+                                    HandleEvent.Instance.GetBaseEnemyScript(enemies[enemies.Count - (index) - 1])));
+                                break;
+                        }
+                    }
+
+                    index++;
+                }
+            }
+        }
+
+
     }
 
     IEnumerator SpawnEnemyTypeMoveInRow(WaveInformation wave)
@@ -138,8 +164,8 @@ public class EnemyController : Singleton<EnemyController>
     /// <returns>Vector 3 là vị trí cuối cùng mà enemy phải xếp vào</returns>
     private Vector3 GetTargetPosition(int row, int col, WaveInformation wave)
     {
-        float dx = (float) (wave.SizeDx / wave.Col);
-        float dy = (float) (wave.SizeDy / wave.Row);
+        float dx = (float)(wave.SizeDx / wave.Col);
+        float dy = (float)(wave.SizeDy / wave.Row);
         float valueX = wave.Dx + col * dx;
         if (row % 2 == 1)
         {
@@ -196,7 +222,7 @@ public class EnemyController : Singleton<EnemyController>
             {
                 break;
             }
-            int random = (int) Random.Range(1f, 6.5f);
+            int random = (int)Random.Range(1f, 6.5f);
             index += random;
             randomList[index % totalEnemy] += 1;
             totalRandom += 1;
@@ -256,6 +282,7 @@ public class EnemyController : Singleton<EnemyController>
                 }
                 // gọi hàm drop item
                 SetRandomDropItems(listRandom, index, enemySpawn, ref itemOnWave, totalCoin, listCoinDrop);
+                index++;
             }
         }
         switch (wave.TypeMove)

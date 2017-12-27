@@ -13,26 +13,29 @@ public class GameController : Singleton<GameController>
 {
     public GameStage gameStage;
 
+    [SerializeField] private GamePlayConfig _gamePlayConfig;
     private LevelInformation _currentLevel;
     private WaveInformation _currentWave;
     private LevelInformation[] _levelsInfor;
     private int _indexWave;
+    private int _currentLevelIndex;
     void Awake()
     {
         // đăng ký sự kiện bắt đầu game
-        this.RegisterListener(EventID.PlayGame, (param) => StartGame((int) param));
+        this.RegisterListener(EventID.PlayGame, (param) => StartGame((int)param));
         this.RegisterListener(EventID.NextWave, (param) => NextWave());
         Init();
     }
 
-    #region Private Mathod
+    #region Private Method
 
     void Init()
     {
         _levelsInfor = Resources.LoadAll<LevelInformation>("Maps");
         _indexWave = 0;
+        _currentLevelIndex = 0;
     }
-
+    
 
     #endregion
 
@@ -41,29 +44,63 @@ public class GameController : Singleton<GameController>
     /// </summary>
     void StartGame(int level)
     {
-        _indexWave = 0;
         gameStage = GameStage.Play;
         _currentLevel = _levelsInfor[level - 1];
         _currentWave = _currentLevel.Waves[_indexWave];
+        _currentLevelIndex = level;
         Play();
     }
 
     void Play()
     {
+        
         switch (_currentWave.TypeWave)
         {
             case TypeOfWave.Enemies:
+                if (!_currentWave.ClearEnemiesToCompleteWave)
+                {
+                    StartCoroutine(TimeToCompleteWave(_currentWave.TimeCompleteWave));
+                }
                 EnemyController.Instance.SpawnEnemy(_currentWave);
                 break;
             case TypeOfWave.Boss:
                 break;
         }
-        
+
+    }
+
+    void NextLevel()
+    {
+        if (_currentLevelIndex < 0 || _currentLevelIndex >= _levelsInfor.Length - 1)
+        {
+            print("last level");
+            return;
+        }
+        _currentLevelIndex++;
     }
 
     void NextWave()
     {
+        if (_indexWave >= _currentLevel.Waves.Count - 1)
+        {
+            print("complete level");
+            this.PostEvent(EventID.NextLevel);
+            return;
+        }
         _indexWave++;
+        StartCoroutine(WaitForSecondsNextWave(_gamePlayConfig.GetTimeDelayBetweenWaves()));
+    }
+
+    IEnumerator TimeToCompleteWave(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        this.PostEvent(EventID.NextWave);
+    }
+
+    IEnumerator WaitForSecondsNextWave(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        StartGame(_currentLevelIndex);
     }
 }
 
