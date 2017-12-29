@@ -21,13 +21,30 @@ public class MapManagerEditor : EditorWindow
     private LevelInformation[] _levels;
     private LevelInformation _level;
     private Vector3 _scrollPossition;
+    /// <summary>
+    /// index level
+    /// </summary>
     private int _selectedIndex = 0;
+    /// <summary>
+    /// số hàng thay đổi trên editor
+    /// </summary>
     private int _row = 0;
+    /// <summary>
+    /// số cột thay đổi trên editor
+    /// </summary>
     private int _col = 0;
-    private int _rowChange = 0;
-    private int _colChange = 0;
+    /// <summary>
+    /// độ lớn list drop item của wave enemy
+    /// </summary>
     private int _sizeListDropItem = 0;
-    private int _sizePath = 0;
+    /// <summary>
+    /// độ lớn list boss
+    /// </summary>
+    private int _sizeBoss = 0;
+    /// <summary>
+    /// độ lớn list quái sinh ra từ boss
+    /// </summary>
+    private int _sizeSpawnEnemies = 0;
     private Dictionary<int, int> _healthEnemies = new Dictionary<int, int>();
     private Dictionary<int, int> _pathRoadToScreen = new Dictionary<int, int>();
     private int _deltaEnemyMatrix = -1;
@@ -115,7 +132,7 @@ public class MapManagerEditor : EditorWindow
                 GUILayout.Space(10);
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(20);
-                EditorGUITool.Label("Type Wave", 100, 80, false);
+                EditorGUITool.Label("Type Wave", 120, 80, false);
                 waves.TypeWave = (TypeOfWave)EditorGUILayout.EnumPopup(waves.TypeWave, GUILayout.Width(200));
                 EditorGUILayout.EndHorizontal();
 
@@ -141,25 +158,25 @@ public class MapManagerEditor : EditorWindow
         GUILayout.Space(30);
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Clear Enemies", 100, 80, false, "giết hết quái để qua wave ?");
+        EditorGUITool.Label("Clear Enemies", 120, 80, false, "giết hết quái để qua wave ?");
         wave.ClearEnemiesToCompleteWave = EditorGUILayout.Toggle(wave.ClearEnemiesToCompleteWave);
         EditorGUILayout.EndHorizontal();
         if (!wave.ClearEnemiesToCompleteWave)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(20);
-            EditorGUITool.Label("Time Complete", 100, 80, false, "Thời gian hoàn thành wave");
+            EditorGUITool.Label("Time Complete", 120, 80, false, "Thời gian hoàn thành wave");
             wave.TimeCompleteWave = EditorGUILayout.FloatField("", wave.TimeCompleteWave, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Type Move", 100, 80, false);
+        EditorGUITool.Label("Type Move", 120, 80, false);
         wave.TypeMove = (TypeMove)EditorGUILayout.EnumPopup(wave.TypeMove, GUILayout.Width(200));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("row * col", 100, 80, false, "độ lớn ma trận");
+        EditorGUITool.Label("row * col", 120, 80, false, "độ lớn ma trận");
 
         if (wave.Row != 0 && wave.Col != 0)
         {
@@ -171,37 +188,37 @@ public class MapManagerEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Overlapping", 100, 80, false, "sắp xếp chéo đội hình trong ma trận");
+        EditorGUITool.Label("Overlapping", 120, 80, false, "sắp xếp chéo đội hình trong ma trận");
         wave.OverLapping = EditorGUILayout.Toggle(wave.OverLapping);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Delay Spawn", 100, 80, false, "thời gian delay giữa 2 con đi cùng nhau");
+        EditorGUITool.Label("Delay Spawn", 120, 80, false, "thời gian delay giữa 2 con đi cùng nhau");
         wave.DelaySpawn = EditorGUILayout.FloatField("", wave.DelaySpawn, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Dx", 100, 80, false, "vị trí x của con đầu tiên");
+        EditorGUITool.Label("Dx", 120, 80, false, "vị trí x của con đầu tiên");
         wave.Dx = EditorGUILayout.FloatField("", wave.Dx, GUILayout.Width(50));
         GUILayout.Space(20);
-        EditorGUITool.Label("Dy", 100, 80, false, "vị trí ý của con đầu tiên");
+        EditorGUITool.Label("Dy", 120, 80, false, "vị trí ý của con đầu tiên");
         wave.Dy = EditorGUILayout.FloatField("", wave.Dy, GUILayout.Width(50));
         GUILayout.Space(20);
-        EditorGUITool.Label("Size Dx", 100, 80, false, "độ lớn x cả đội hình");
+        EditorGUITool.Label("Size Dx", 120, 80, false, "độ lớn x cả đội hình");
         wave.SizeDx = EditorGUILayout.FloatField("", wave.SizeDx, GUILayout.Width(50));
         GUILayout.Space(20);
-        EditorGUITool.Label("Size Dy", 100, 80, false, "độ lớn y cả đội hình");
+        EditorGUITool.Label("Size Dy", 120, 80, false, "độ lớn y cả đội hình");
         wave.SizeDy = EditorGUILayout.FloatField("", wave.SizeDy, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Delay Move", 100, 80, false, "thời gian delay giữa các đợt - từng path");
+        EditorGUITool.Label("Delay Move", 120, 80, false, "thời gian delay giữa các đợt - từng path");
         wave.DelayMove = EditorGUILayout.FloatField("", wave.DelayMove, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Custom Speed", 100, 80,false, " Tùy chọn tốc độ bay \n Tốc độ thật của enemy sẽ được cộng từ tốc độ cơ bản của path và tốc độ này \n Giá trị này có thể âm");
+        EditorGUITool.Label("Custom Speed", 120, 80,false, " Tùy chọn tốc độ bay \n Tốc độ thật của enemy sẽ được cộng từ tốc độ cơ bản của path và tốc độ này \n Giá trị này có thể âm");
         wave.CustomSpeed = EditorGUILayout.FloatField("", wave.CustomSpeed, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
         SetMatrix(wave);
@@ -235,7 +252,7 @@ public class MapManagerEditor : EditorWindow
                 case TypeMove.OneByOne:
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(10);
-                    EditorGUITool.Label("Type Sort", 100, 80, false, "kiểu sắp xếp vào ma trận");
+                    EditorGUITool.Label("Type Sort", 120, 80, false, "kiểu sắp xếp vào ma trận");
                     wave.TypeSort = (TypeSort)EditorGUILayout.EnumPopup(wave.TypeSort, GUILayout.Width(200));
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginVertical();
@@ -308,16 +325,16 @@ public class MapManagerEditor : EditorWindow
             EditorGUILayout.LabelField("Set Coin Drop", EditorStyleExtension.TitleForHeaderStyle, GUILayout.Width(100));
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
-            EditorGUITool.Label("Min Coin", 100, 80, false, "số lượng coin nhỏ nhất");
+            EditorGUITool.Label("Min Coin", 120, 80, false, "số lượng coin nhỏ nhất");
             wave.MinCoindDrop = EditorGUILayout.IntField("", wave.MinCoindDrop, GUILayout.Width(50));
             GUILayout.Space(20);
-            EditorGUITool.Label("Max Coin", 100, 80, false, "số lượng coin lớn nhất");
+            EditorGUITool.Label("Max Coin", 120, 80, false, "số lượng coin lớn nhất");
             wave.MaxCoindDrop = EditorGUILayout.IntField("", wave.MaxCoindDrop, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.LabelField("Set List Item", EditorStyleExtension.TitleForHeaderStyle, GUILayout.Width(100));
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
-            EditorGUITool.Label("Size List", 100, 80, false);
+            EditorGUITool.Label("Size List", 120, 80, false);
             _sizeListDropItem = EditorGUILayout.IntField("", _sizeListDropItem, GUILayout.Width(50));
             if (_sizeListDropItem != wave.ListItemDop.Count)
             {
@@ -352,7 +369,122 @@ public class MapManagerEditor : EditorWindow
     }
     void ShowWaveBoss(WaveInformation wave)
     {
+        EditorGUILayout.BeginVertical();
+        GUILayout.Space(30);
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
+        EditorGUITool.Label("Size Boss", 120, 80, false, "số lượng boss");
+        _sizeBoss = EditorGUILayout.IntField("", _sizeBoss, GUILayout.Width(50));
+        if (_sizeBoss != wave.WaveBossInformation.BossInfors.Count)
+        {
+            wave.WaveBossInformation.BossInfors.Clear();
+            for (int i = 0; i < _sizeBoss; i++)
+            {
+                BossInfor boss = new BossInfor();
+                wave.WaveBossInformation.BossInfors.Add(boss);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
+        EditorGUITool.Label("Delay Boss", 120, 80, false, "thời gian delay sinh boss");
+        wave.WaveBossInformation.DelaySpawnBoss =
+            EditorGUILayout.FloatField("", wave.WaveBossInformation.DelaySpawnBoss, GUILayout.Width(50));
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginVertical();
+        EditorGUITool.BorderBox(5, 5, () =>
+        {
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField("Boss Information", EditorStyleExtension.TitleNameStyle, GUILayout.Width(100));
+            GUILayout.Space(20);
+            for (int i = 0; i < wave.WaveBossInformation.BossInfors.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Id", EditorStyleExtension.NormalTextStyle, GUILayout.Width(20));
+                wave.WaveBossInformation.BossInfors[i].IdBoss = EditorGUILayout.IntField("",
+                    wave.WaveBossInformation.BossInfors[i].IdBoss, GUILayout.Width(50));
+                GUILayout.Space(20);
+                EditorGUILayout.LabelField("health", EditorStyleExtension.NormalTextStyle, GUILayout.Width(40));
+                wave.WaveBossInformation.BossInfors[i].Health = EditorGUILayout.IntField("",
+                    wave.WaveBossInformation.BossInfors[i].Health, GUILayout.Width(50));
+                GUILayout.Space(20);
+                EditorGUILayout.LabelField("path", EditorStyleExtension.NormalTextStyle, GUILayout.Width(40));
+                wave.WaveBossInformation.BossInfors[i].IdPath = EditorGUILayout.IntField("",
+                    wave.WaveBossInformation.BossInfors[i].IdPath, GUILayout.Width(50));
 
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+        });
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
+        EditorGUITool.Label("Spawn Enemies", 120, 80, false, "sinh quái ra để tấn công");
+        wave.WaveBossInformation.IsSpawnEnemies =
+            EditorGUILayout.Toggle(wave.WaveBossInformation.IsSpawnEnemies);
+        EditorGUILayout.EndHorizontal();
+        if (wave.WaveBossInformation.IsSpawnEnemies)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Size Enemies", 120, 80, false, "");
+            _sizeSpawnEnemies = EditorGUILayout.IntField("", _sizeSpawnEnemies, GUILayout.Width(50));
+            if (_sizeSpawnEnemies != wave.WaveBossInformation.EnemySpawns.Count)
+            {
+                wave.WaveBossInformation.EnemySpawns.Clear();
+                for (int i = 0; i < _sizeSpawnEnemies; i++)
+                {
+                    EnemyInformation enemy = new EnemyInformation();
+                    wave.WaveBossInformation.EnemySpawns.Add(enemy);
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginVertical();
+            EditorGUITool.BorderBox(5, 5, () =>
+            {
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.LabelField("Spawn enemy information", EditorStyleExtension.TitleNameStyle, GUILayout.Width(100));
+                GUILayout.Space(20);
+                for (int i = 0; i < wave.WaveBossInformation.EnemySpawns.Count; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("id", EditorStyleExtension.NormalTextStyle, GUILayout.Width(20));
+                    wave.WaveBossInformation.EnemySpawns[i].IdEnemy = EditorGUILayout.IntField("",
+                        wave.WaveBossInformation.EnemySpawns[i].IdEnemy, GUILayout.Width(50));
+                    
+                    EditorGUILayout.LabelField("health", EditorStyleExtension.NormalTextStyle, GUILayout.Width(40));
+                    wave.WaveBossInformation.EnemySpawns[i].Health = EditorGUILayout.IntField("",
+                        wave.WaveBossInformation.EnemySpawns[i].Health, GUILayout.Width(50));
+                    
+                    EditorGUILayout.EndHorizontal();
+                }
+                EditorGUILayout.EndVertical();
+            });
+            EditorGUILayout.EndVertical();
+            
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Type Spawn", 120, 80, false, "kiểu sinh từ boss");
+            wave.WaveBossInformation.TypeSpawn =
+                (TypeSpawnBlock) EditorGUILayout.EnumPopup(wave.WaveBossInformation.TypeSpawn, GUILayout.Width(100));
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Count Block", 120, 80, false, "số lượng enemy sinh ra trong 1 block");
+            wave.WaveBossInformation.CountBlock =
+                EditorGUILayout.IntField("", wave.WaveBossInformation.CountBlock, GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Delay Spawn", 120, 80, false, "thời gian delay giữa 2 con");
+            wave.WaveBossInformation.DelaySpawnenemy =
+                EditorGUILayout.FloatField("", wave.WaveBossInformation.DelaySpawnenemy, GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
+        }
+        
+        EditorGUILayout.EndVertical();
     }
 
     void InitWave(WaveInformation wave)

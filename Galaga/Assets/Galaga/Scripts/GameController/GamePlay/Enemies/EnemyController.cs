@@ -267,6 +267,7 @@ public class EnemyController : Singleton<EnemyController>
                 GameObject enemySpawn = Lean.LeanPool.Spawn(_enemies[wave.Enemies[index].IdEnemy],
                     _startPositionSpawnVector3[GameTag.LEFT],
                     Quaternion.identity);
+                enemySpawn.transform.position = _startPositionSpawnVector3[GameTag.LEFT];
                 enemies.Add(enemySpawn);
                 enemySpawn.transform.SetParent(transform);
                 // add enemy to controller

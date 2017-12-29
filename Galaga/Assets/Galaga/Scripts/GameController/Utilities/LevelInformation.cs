@@ -96,6 +96,8 @@ public class WaveInformation
     /// </summary>
     public List<ItemDrop> ListItemDop = new List<ItemDrop>();
 
+    public WaveBoss WaveBossInformation = new WaveBoss();
+
 }
 
 [Serializable]
@@ -108,24 +110,56 @@ public class EnemyInformation
 }
 
 [Serializable]
-public class BossInfor
+public class WaveBoss
 {
-    public int IdBoss = 0;
-    public int Health = 0;
-    public List<int> Paths = new List<int>();
+    public List<BossInfor> BossInfors = new List<BossInfor>();
     /// <summary>
     /// biến kiểm tra xem con boss này có sinh quái ko
     /// </summary>
     public bool IsSpawnEnemies = false;
     /// <summary>
-    /// nếu sinh quái thì danh sách này sẽ chứa list id của quái
+    /// danh sách enemy sẽ được sinh ra từ boss. Enemy sẽ được ngẫu nhiên chọn trong danh sách này
     /// </summary>
-    public List<EnemyInformation> EnemiesSpawnFromBoss = new List<EnemyInformation>();
+    public List<EnemyInformation> EnemySpawns = new List<EnemyInformation>();
     /// <summary>
-    /// số lượng quái được sinh ra từng đợt
+    /// kiểu sinh quái từ boss
     /// </summary>
-    public int CountEnemiesAttack = 0;
+    public TypeSpawnBlock TypeSpawn;
+    /// <summary>
+    /// số lượng con sinh ra trong 1 block
+    /// </summary>
+    public int CountBlock = 0;
+    /// <summary>
+    /// thời gian delay giữa 2 con boss
+    /// </summary>
+    public float DelaySpawnBoss = 0;
+    /// <summary>
+    /// thời gian delay giữa 2 enemy sinh ra từ boss
+    /// </summary>
+    public float DelaySpawnenemy = 0;
+    /// <summary>
+    /// số lượng coin nhỏ nhất drop
+    /// </summary>
+    public int MinCoin = 0;
+    /// <summary>
+    /// số lượng coin lớn nhất drop
+    /// </summary>
+    public int MaxCoin = 0;
+
+    public List<int> ListItemDrop = new List<int>();
 }
+
+[Serializable]
+public class BossInfor
+{
+    public int IdBoss = 0;
+    public int Health = 0;
+    /// <summary>
+    /// path move to screen
+    /// </summary>
+    public int IdPath = 0;
+}
+
 
 [Serializable]
 public class ItemDrop
@@ -175,4 +209,13 @@ public enum TypeSort
     LeftToRightAndTopDown,
     BottomUpAndRightToLeft,
     SpiralMatrix
+}
+/// <summary>
+/// kiểu sinh quái từ boss
+/// </summary>
+public enum TypeSpawnBlock
+{
+    FromLeft,
+    FromRight,
+    Both
 }

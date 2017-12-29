@@ -4,9 +4,8 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class BaseEnemy : MonoBehaviour, IHealth
+public class BaseEnemy : MonoBehaviour
 {
-    public int test = 0;
     [SerializeField] private int _health = 0;
     // danh sách items drop
     private List<int> _itemsDrop;
@@ -14,7 +13,13 @@ public class BaseEnemy : MonoBehaviour, IHealth
     private int _coinDrop = 0;
     private Vector2 _targetPosition;
     private bool _onMove = false;
+    private Vector3 _rootPos;
 
+
+    void Awake()
+    {
+        _rootPos = transform.position;
+    }
 
     #region Public Method
     public void OnHit(int dame)
@@ -49,7 +54,6 @@ public class BaseEnemy : MonoBehaviour, IHealth
     public void SetCoind(int coin)
     {
         _coinDrop = coin;
-        test = coin;
     }
 
     public void SetDopItem(List<int> items)
@@ -77,16 +81,18 @@ public class BaseEnemy : MonoBehaviour, IHealth
         _onMove = true;
         if (_isLastEnemyOnWave)
         {
-            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null).OnComplete(() =>
+            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
             {
+                transform.DOLocalRotate(Vector3.up, 0.2f);
                 _onMove = false;
                 this.PostEvent(EventID.LastEnemyMoveDone);
             });
         }
         else
         {
-            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null).OnComplete(() =>
+            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
             {
+                transform.DOLocalRotate(Vector3.up, 0.2f);
                 _onMove = false;
             });
         }
@@ -157,7 +163,8 @@ public class BaseEnemy : MonoBehaviour, IHealth
     
     void OnDead()
     {
-        
+        DOTween.Kill(transform);
+        transform.position = _rootPos;
         Lean.LeanPool.Despawn(this);
     }
 

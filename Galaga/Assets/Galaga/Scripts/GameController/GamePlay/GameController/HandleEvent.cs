@@ -4,7 +4,10 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
-public class HandleEvent : Singleton<HandleEvent>
+/// <summary>
+/// xử lý các sự kiện và quản lý các sự kiện cho enemy
+/// </summary>
+public partial class HandleEvent : Singleton<HandleEvent>
 {
     /// <summary>
     /// prefab danh sách items drop
@@ -181,6 +184,7 @@ public class HandleEvent : Singleton<HandleEvent>
                 Lean.LeanPool.Despawn(trigger);
                 _bulletsSpawn.Remove(trigger);
             }
+
         }
     }
 

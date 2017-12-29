@@ -6,4 +6,5 @@
     NextWave,
     NextLevel,
     LastEnemyMoveDone,
+    BossDead
 }
