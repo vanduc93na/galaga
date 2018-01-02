@@ -68,11 +68,13 @@ public partial class HandleEvent : Singleton<HandleEvent>
 
     void Awake()
     {
-        Init();
-        RegisterEvent();
+        InitForEnemies();
+        RegisterEnemiesEvents();
+        InitBoss();
+        RegisterBossEvents();
     }
 
-    void Init()
+    void InitForEnemies()
     {
         _listItemsOnWave = new Dictionary<GameObject, BaseItem>();
         ItemsGameObject = new Dictionary<int, GameObject>();
@@ -94,7 +96,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
     }
 
-    void RegisterEvent()
+    void RegisterEnemiesEvents()
     {
         this.RegisterListener(EventID.EnemyDead, (param) => RemoveEnemy((GameObject)param));
         // event enemy cuối đến vị trí cuối cùng - dùng để thực hiện di chuyển enemy sau khi xếp map
@@ -178,8 +180,18 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 {
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
                 }
+                
             }
-            if (targetTriggerObject.tag == GameTag.BORDER || targetTriggerObject.tag == GameTag.ENEMY)
+            if (targetTriggerObject.tag == GameTag.BOSS)
+            {
+                if (_bosses.ContainsKey(targetTriggerObject))
+                {
+                    int dame = _bulletsSpawn[trigger].Dame();
+                    _bosses[targetTriggerObject].OnHit(dame);
+                }
+            }
+            
+            if (targetTriggerObject.tag == GameTag.BORDER || targetTriggerObject.tag == GameTag.ENEMY || targetTriggerObject.tag == GameTag.BOSS)
             {
                 Lean.LeanPool.Despawn(trigger);
                 _bulletsSpawn.Remove(trigger);

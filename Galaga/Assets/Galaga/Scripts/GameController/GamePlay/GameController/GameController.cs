@@ -64,6 +64,7 @@ public class GameController : Singleton<GameController>
                 EnemyController.Instance.SpawnEnemy(_currentWave);
                 break;
             case TypeOfWave.Boss:
+                BossController.Instance.SpawnBoss(_currentWave.WaveBossInformation);
                 break;
         }
 
