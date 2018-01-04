@@ -152,11 +152,10 @@ public partial class HandleEvent : Singleton<HandleEvent>
     {
         if (_enemiesOnWave.ContainsKey(enemy))
         {
-            _enemiesOnWave[enemy].InstanceDropItem();
             _enemiesOnWave.Remove(enemy);
         }
 
-        if (_enemiesOnWave.Count == 0)
+        if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
         {
             this.PostEvent(EventID.NextWave);
         }
@@ -217,6 +216,10 @@ public partial class HandleEvent : Singleton<HandleEvent>
                     RemoveItem(item);
                     Lean.LeanPool.Despawn(item);
                 }
+                else
+                {
+                    print("_listItemOnWave doen't contains key: " + item);
+                }
             });
         }
         else
@@ -226,9 +229,11 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 RemoveItem(item);
                 Lean.LeanPool.Despawn(item);
             }
+            else
+            {
+                print("_listItemOnWave doen't contains key: " + item);
+            }
         }
-
-
     }
 
     public void AddItem(GameObject item)

@@ -158,6 +158,9 @@ public class BossInfor
     /// path move to screen
     /// </summary>
     public int IdPath = 0;
+
+    public int MinCoin = 0;
+    public int MaxCoin = 0;
 }
 
 

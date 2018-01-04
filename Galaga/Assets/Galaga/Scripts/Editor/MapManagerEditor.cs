@@ -411,7 +411,14 @@ public class MapManagerEditor : EditorWindow
                 EditorGUILayout.LabelField("path", EditorStyleExtension.NormalTextStyle, GUILayout.Width(40));
                 wave.WaveBossInformation.BossInfors[i].IdPath = EditorGUILayout.IntField("",
                     wave.WaveBossInformation.BossInfors[i].IdPath, GUILayout.Width(50));
-
+                GUILayout.Space(20);
+                EditorGUILayout.LabelField("Min Coin", EditorStyleExtension.NormalTextStyle, GUILayout.Width(60));
+                wave.WaveBossInformation.BossInfors[i].MinCoin = EditorGUILayout.IntField("",
+                    wave.WaveBossInformation.BossInfors[i].MinCoin, GUILayout.Width(50));
+                GUILayout.Space(20);
+                EditorGUILayout.LabelField("Max Coin", EditorStyleExtension.NormalTextStyle, GUILayout.Width(60));
+                wave.WaveBossInformation.BossInfors[i].MaxCoin = EditorGUILayout.IntField("",
+                    wave.WaveBossInformation.BossInfors[i].MaxCoin, GUILayout.Width(50));
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndVertical();

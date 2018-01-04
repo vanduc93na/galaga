@@ -14,7 +14,8 @@ public class BaseEnemy : MonoBehaviour
     private Vector2 _targetPosition;
     private bool _onMove = false;
     private Vector3 _rootPos;
-
+    private bool _isFromBoss = false;
+    private GameObject _boss;
 
     void Awake()
     {
@@ -44,9 +45,9 @@ public class BaseEnemy : MonoBehaviour
         });
     }
 
-    public void Init(EnemyInformation infor, bool isLast = false)
+    public void Init(EnemyInformation infor, bool isLast = false, bool isFromBoss = false)
     {
-        
+        _isFromBoss = isFromBoss;
         _health = infor.Health;
         _isLastEnemyOnWave = isLast;
     }
@@ -116,6 +117,8 @@ public class BaseEnemy : MonoBehaviour
         transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, moveInfor.Mode, 10, null).OnComplete(() =>
         {
             _onMove = false;
+            this.PostEvent(EventID.EnemyDead, this.gameObject);
+            Lean.LeanPool.Despawn(this);
         });
     }
 
@@ -135,11 +138,15 @@ public class BaseEnemy : MonoBehaviour
     public void InstanceDropItem()
     {
         // instance item
-        for (int i = 0; i < _itemsDrop.Count; i++)
+        if (_itemsDrop != null)
         {
-            GameObject item = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[_itemsDrop[i]], transform.position, Quaternion.identity);
-            HandleEvent.Instance.AddItem(item);
+            for (int i = 0; i < _itemsDrop.Count; i++)
+            {
+                GameObject item = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[_itemsDrop[i]], transform.position, Quaternion.identity);
+                HandleEvent.Instance.AddItem(item);
+            }
         }
+        
         // instance coin
         for (int i = 0; i < _coinDrop; i++)
         {
@@ -163,6 +170,7 @@ public class BaseEnemy : MonoBehaviour
     
     void OnDead()
     {
+        InstanceDropItem();
         DOTween.Kill(transform);
         transform.position = _rootPos;
         Lean.LeanPool.Despawn(this);

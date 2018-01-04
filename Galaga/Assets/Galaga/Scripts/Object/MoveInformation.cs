@@ -17,5 +17,5 @@ public class MoveInformation
     // type move
     public PathType Type = PathType.Linear;
 
-    public PathMode Mode = PathMode.Ignore;
+    public PathMode Mode = PathMode.Sidescroller2D;
 }

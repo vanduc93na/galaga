@@ -236,7 +236,27 @@ public class EnemyController : Singleton<EnemyController>
     #endregion
 
     #region Public Method
+
     /// <summary>
+    /// sinh enemy từ boss
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="parentTransform"></param>
+    /// <returns></returns>
+    public GameObject SpawnEnemy(EnemyInformation enemy, Transform parentTransform)
+    {
+        var obj = Lean.LeanPool.Spawn(_enemies[enemy.IdEnemy], parentTransform.position, Quaternion.identity);
+        obj.transform.SetParent(transform);
+        var baseEnemy = obj.GetComponent<BaseEnemy>();
+        baseEnemy.SetCoind((int)Random.Range(0, 3));
+        baseEnemy.Init(enemy, false, true);
+        baseEnemy.SetTargetPosition(parentTransform.position);
+        HandleEvent.Instance.AddEnemy(obj);
+        return obj;
+    }
+    
+    /// <summary>
+    /// sinh enemy nếu như wave ko có boss
     /// tất cả enemy sẽ được sinh tại đây và được cộng vào 1 list
     /// và được setting các thông số như coin, item, path,..
     /// cách di chuyển sẽ quyết định lựa chọn con nào trong list để di chuyển

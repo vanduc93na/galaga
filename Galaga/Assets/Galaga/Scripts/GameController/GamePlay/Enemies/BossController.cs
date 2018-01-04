@@ -35,8 +35,10 @@ public class BossController : Singleton<BossController>
         for (int i = 0; i < waveBoss.BossInfors.Count; i++)
         {
             GameObject boss = Lean.LeanPool.Spawn(_bossMgr[waveBoss.BossInfors[i].IdBoss], transform.position, Quaternion.identity);
-            boss.GetComponent<BaseBoss>().SetInfor(waveBoss.BossInfors[i].Health);
+            boss.transform.SetParent(transform);
+            boss.GetComponent<BaseBoss>().SetInforBoss(waveBoss.BossInfors[i]);
             boss.GetComponent<BaseBoss>().MoveToScreen(_listMove[1]);
+            boss.GetComponent<BaseBoss>().SetWaveInfor(waveBoss);
             HandleEvent.Instance.AddBoss(boss);
         }
     }
