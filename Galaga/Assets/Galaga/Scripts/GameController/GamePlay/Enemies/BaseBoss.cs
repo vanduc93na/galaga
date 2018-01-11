@@ -28,7 +28,7 @@ public class BaseBoss : MonoBehaviour
 
     private float _minX = -2.2f, _minY = -4.2f, _maxX = 2.2f, _maxY = 4.2f;
 
-    void Awake()
+    protected void Awake()
     {
         _isMove = false;
         _moveInfor = new MoveInformation();
@@ -153,6 +153,12 @@ public class BaseBoss : MonoBehaviour
 
     private void OnDead()
     {
+        int coins = Random.Range(_bossInfor.MinCoin, _bossInfor.MaxCoin);
+        for (int i = 0; i < coins; i++)
+        {
+            GameObject coin = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[0], transform.position, Quaternion.identity);
+            HandleEvent.Instance.AddItem(coin);
+        }
         this.PostEvent(EventID.BossDead, this.gameObject);
         Lean.LeanPool.Despawn(this);
     }
@@ -181,11 +187,14 @@ public class BaseBoss : MonoBehaviour
     {
         float randomAttackEnemie = Random.Range(0f, 1f);
 
-        if (_waveBossInfor.IsSpawnEnemies && randomAttackEnemie < 1.3f)
+        if (_waveBossInfor.IsSpawnEnemies && randomAttackEnemie < 1.3f && gameObject.activeSelf)
         {
             StartCoroutine(SpawnEnemyAttack());
         }
-        Invoke(ATTACK_METHOD, _timeDelaySpawnEnemiesAttack);
+        if (gameObject.activeSelf)
+        {
+            Invoke(ATTACK_METHOD, _timeDelaySpawnEnemiesAttack);
+        }
     }
 
     
@@ -207,43 +216,54 @@ public class BaseBoss : MonoBehaviour
         moveFromRight.Type = _moveInfor.Type;
         List<GameObject> enemiesObj = new List<GameObject>();
         HandleEvent.Instance.Reset();
+        
         switch (_waveBossInfor.TypeSpawn)
         {
             case TypeSpawnBlock.FromLeft:
-                for (int i = 0; i < _waveBossInfor.CountBlock; i++)
+                if (_waveBossInfor.EnemySpawns.Count > 0)
                 {
-                    int randomId = Random.Range(0, _waveBossInfor.EnemySpawns.Count - 1);
-                    enemiesObj.Add(EnemyController.Instance.SpawnEnemy(_waveBossInfor.EnemySpawns[randomId], transform));
+                    for (int i = 0; i < _waveBossInfor.CountBlock; i++)
+                    {
+                        int randomId = Random.Range(0, _waveBossInfor.EnemySpawns.Count - 1);
+                        enemiesObj.Add(EnemyController.Instance.SpawnEnemy(_waveBossInfor.EnemySpawns[randomId], transform));
+                    }
+                    for (int i = 0; i < enemiesObj.Count; i++)
+                    {
+                        yield return new WaitForSeconds(_waveBossInfor.DelaySpawnenemy);
+                        enemiesObj[i].GetComponent<BaseEnemy>().MovePathOnWave(_moveInfor);
+                    }
                 }
-                for (int i = 0; i < enemiesObj.Count; i++)
-                {
-                    yield return new WaitForSeconds(_waveBossInfor.DelaySpawnenemy);
-                    enemiesObj[i].GetComponent<BaseEnemy>().MovePathOnWave(_moveInfor);
-                }
+                
                 break;
             case TypeSpawnBlock.FromRight:
-                for (int i = 0; i < _waveBossInfor.CountBlock; i++)
+                if (_waveBossInfor.EnemySpawns.Count > 0)
                 {
-                    int randomId = Random.Range(0, _waveBossInfor.EnemySpawns.Count - 1);
-                    enemiesObj.Add(EnemyController.Instance.SpawnEnemy(_waveBossInfor.EnemySpawns[randomId], transform));
-                }
-                for (int i = 0; i < enemiesObj.Count; i++)
-                {
-                    yield return new WaitForSeconds(_waveBossInfor.DelaySpawnenemy);
-                    enemiesObj[i].GetComponent<BaseEnemy>().MovePathOnWave(moveFromRight);
+                    for (int i = 0; i < _waveBossInfor.CountBlock; i++)
+                    {
+                        int randomId = Random.Range(0, _waveBossInfor.EnemySpawns.Count - 1);
+                        enemiesObj.Add(EnemyController.Instance.SpawnEnemy(_waveBossInfor.EnemySpawns[randomId], transform));
+                    }
+                    for (int i = 0; i < enemiesObj.Count; i++)
+                    {
+                        yield return new WaitForSeconds(_waveBossInfor.DelaySpawnenemy);
+                        enemiesObj[i].GetComponent<BaseEnemy>().MovePathOnWave(moveFromRight);
+                    }
                 }
                 break;
             case TypeSpawnBlock.Both:
-                for (int i = 0; i < _waveBossInfor.CountBlock * 2; i++)
+                if (_waveBossInfor.EnemySpawns.Count > 0)
                 {
-                    int randomId = Random.Range(0, _waveBossInfor.EnemySpawns.Count - 1);
-                    enemiesObj.Add(EnemyController.Instance.SpawnEnemy(_waveBossInfor.EnemySpawns[randomId], transform));
-                }
-                for (int i = 0; i < enemiesObj.Count/2; i++)
-                {
-                    yield return new WaitForSeconds(_waveBossInfor.DelaySpawnenemy);
-                    enemiesObj[i].GetComponent<BaseEnemy>().MovePathOnWave(_moveInfor);
-                    enemiesObj[i + enemiesObj.Count/2].GetComponent<BaseEnemy>().MovePathOnWave(moveFromRight);
+                    for (int i = 0; i < _waveBossInfor.CountBlock * 2; i++)
+                    {
+                        int randomId = Random.Range(0, _waveBossInfor.EnemySpawns.Count - 1);
+                        enemiesObj.Add(EnemyController.Instance.SpawnEnemy(_waveBossInfor.EnemySpawns[randomId], transform));
+                    }
+                    for (int i = 0; i < enemiesObj.Count / 2; i++)
+                    {
+                        yield return new WaitForSeconds(_waveBossInfor.DelaySpawnenemy);
+                        enemiesObj[i].GetComponent<BaseEnemy>().MovePathOnWave(_moveInfor);
+                        enemiesObj[i + enemiesObj.Count / 2].GetComponent<BaseEnemy>().MovePathOnWave(moveFromRight);
+                    }
                 }
                 break;
         }

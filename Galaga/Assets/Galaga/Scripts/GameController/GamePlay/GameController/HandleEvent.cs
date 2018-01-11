@@ -213,8 +213,9 @@ public partial class HandleEvent : Singleton<HandleEvent>
             {
                 if (_listItemsOnWave.ContainsKey(item))
                 {
-                    RemoveItem(item);
+                    this.PostEvent(EventID.EatCoin);
                     Lean.LeanPool.Despawn(item);
+                    RemoveItem(item);
                 }
                 else
                 {

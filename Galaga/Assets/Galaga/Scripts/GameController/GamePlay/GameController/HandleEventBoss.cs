@@ -31,6 +31,10 @@ public partial class HandleEvent
         {
             print("dict _bosses doesn't contain key: " + bossObj);
         }
+        if (_bosses.Count == 0 && _enemiesOnWave.Count == 0)
+        {
+            this.PostEvent(EventID.NextWave);
+        }
     }
 
     #endregion

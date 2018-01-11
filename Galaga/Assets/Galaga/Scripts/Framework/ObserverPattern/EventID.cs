@@ -6,5 +6,7 @@
     NextWave,
     NextLevel,
     LastEnemyMoveDone,
-    BossDead
+    BossDead,
+    EatCoin,
+    HitPlayer
 }
