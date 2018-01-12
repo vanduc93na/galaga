@@ -52,6 +52,9 @@ public class BasicBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        //Nó bi do cái này này
+        // Đây layder dèault va chậm tất cả
+        // nên khi viên đạn này gặp cáilaseser kia ở dèault là nó hủy cái laser kia
         HandleEvent.Instance.TriggerBulletVsOther(gameObject, other.gameObject);
     }
 }

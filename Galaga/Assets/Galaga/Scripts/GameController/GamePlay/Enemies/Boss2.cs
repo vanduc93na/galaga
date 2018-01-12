@@ -15,38 +15,9 @@ public class Boss2 : BaseBoss
     public LayerMask LayerMask;
 
     // Use this for initialization
-    void Awake()
-    {
-//        laserSpawn = Lean.LeanPool.Spawn(_lineRenderer, transform.position, Quaternion.identity);
-        base.Awake();
-//        _lineRenderer.useWorldSpace = true;
-//        _lineRenderer.enabled = false;
-//        _isFire = false;
-    }
-
+    
     // Update is called once per frame
-    void Update()
-    {
-//        hit = Physics2D.Raycast(_gunTransform.position, -_gunTransform.up, LayerMask);
-//        if (_isFire)
-//        {
-//            Debug.Log("fire");
-//            laserSpawn.enabled = true;
-//            laserSpawn.SetPosition(0, _gunTransform.position);
-//            laserSpawn.SetPosition(1, hit.point);
-//            if (hit.collider.gameObject.tag == GameTag.PLAYER)
-//            {
-//                this.PostEvent(EventID.HitPlayer);
-//                Debug.Log("hit");
-////                _isFire = false;
-//            }
-//        }
-//        else
-//        {
-//            laserSpawn.enabled = false;
-//        }
-    }
-
+    
     private void OnEnable()
     {
         if (gameObject.activeSelf)

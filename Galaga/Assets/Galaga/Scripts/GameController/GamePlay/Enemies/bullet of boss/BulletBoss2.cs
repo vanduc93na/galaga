@@ -20,18 +20,19 @@ public class BulletBoss2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hit = Physics2D.Raycast(transform.position, -transform.up, _layerMask);
+        hit = Physics2D.Raycast(transform.position, Vector2.down, 100, _layerMask);
         _lineRenderer.enabled = true;
-        if (hit.collider.gameObject.tag == GameTag.PLAYER || hit.collider.gameObject.tag == GameTag.BORDER)
+        //Debug.Log(hit.collider.gameObject.name);
+        _lineRenderer.SetPosition(0, transform.position);
+        if (hit.collider != null && (hit.collider.gameObject.tag == GameTag.PLAYER || hit.collider.gameObject.tag == GameTag.BORDER))
         {
-            _lineRenderer.SetPosition(0, transform.position);
-            _lineRenderer.SetPosition(1, hit.point);
+           _lineRenderer.SetPosition(1, hit.point);
         }
         else
         {
-            
+            _lineRenderer.SetPosition(1, transform.position + Vector3.down * 100);
         }
-        
+
     }
 
     public void SetParentTransform(Vector3 parentTrans)
