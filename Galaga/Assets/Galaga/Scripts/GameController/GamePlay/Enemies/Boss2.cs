@@ -46,4 +46,5 @@ public class Boss2 : BaseBoss
         _isFire = false;
         //        Lean.LeanPool.Despawn(laserSpawn);
     }
+
 }

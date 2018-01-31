@@ -153,7 +153,7 @@ public class EnemyController : Singleton<EnemyController>
         yield return new WaitForSeconds(seconds);
     }
 
-    #region Utilities Method
+    #region UtilitiesGameTool Method
 
     /// <summary>
     /// tính vị trí cuối cùng của enemy
@@ -284,10 +284,27 @@ public class EnemyController : Singleton<EnemyController>
         {
             for (int j = 0; j < wave.Col; j++)
             {
+                string startPos = GameTag.LEFT;
+                switch (wave.Enemies[index].StartPosition)
+                {
+                    case StartPosition.Left:
+                        startPos = GameTag.LEFT;
+                        break;
+                    case StartPosition.Right:
+                        startPos = GameTag.RIGHT;
+                        break;
+                    case StartPosition.Top:
+                        startPos = GameTag.TOP;
+                        break;
+                    case StartPosition.Bottom:
+                        startPos = GameTag.BOTTOM;
+                        break;
+                }
+                
                 GameObject enemySpawn = Lean.LeanPool.Spawn(_enemies[wave.Enemies[index].IdEnemy],
-                    _startPositionSpawnVector3[GameTag.LEFT],
+                    _startPositionSpawnVector3[startPos],
                     Quaternion.identity);
-                enemySpawn.transform.position = _startPositionSpawnVector3[GameTag.LEFT];
+                enemySpawn.transform.position = _startPositionSpawnVector3[startPos];
                 enemies.Add(enemySpawn);
                 enemySpawn.transform.SetParent(transform);
                 // add enemy to controller
@@ -302,7 +319,7 @@ public class EnemyController : Singleton<EnemyController>
                     enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index]);
                 }
                 // gọi hàm drop item
-                SetRandomDropItems(listRandom, index, enemySpawn, ref itemOnWave, totalCoin, listCoinDrop);
+                SetRandomDropItems(listRandom, index, enemySpawn, ref itemOnWave, totalCoin, listCoinDrop);            
                 index++;
             }
         }

@@ -101,6 +101,8 @@ public partial class HandleEvent : Singleton<HandleEvent>
         this.RegisterListener(EventID.EnemyDead, (param) => RemoveEnemy((GameObject)param));
         // event enemy cuối đến vị trí cuối cùng - dùng để thực hiện di chuyển enemy sau khi xếp map
         this.RegisterListener(EventID.LastEnemyMoveDone, (param) => MoveEnemyOnWave());
+
+        this.RegisterListener(EventID.LastEnemyMoveDone, (param) => EnemyAttack());
     }
 
     /// <summary>
@@ -137,6 +139,11 @@ public partial class HandleEvent : Singleton<HandleEvent>
         {
             CancelInvoke(MOVE_ON_WAVE_METHOD);
         }
+    }
+
+    private void EnemyAttack()
+    {
+        
     }
 
     IEnumerator DelayTime(float seconds)

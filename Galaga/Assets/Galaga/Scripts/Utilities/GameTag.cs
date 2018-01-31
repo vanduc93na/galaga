@@ -33,4 +33,6 @@ public class GameTag
     public const string RIGHT = "right";
     public const string TOP = "top";
     public const string BOTTOM = "bottom";
+
+    public const string ITEM = "item";
 }

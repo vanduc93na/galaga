@@ -42,7 +42,7 @@ public class GameController : Singleton<GameController>
     /// <summary>
     /// bắt đầu load level game
     /// </summary>
-    void StartGame(int level)
+    public void StartGame(int level)
     {
         gameStage = GameStage.Play;
         _currentLevel = _levelsInfor[level - 1];
@@ -51,9 +51,8 @@ public class GameController : Singleton<GameController>
         Play();
     }
 
-    void Play()
+    public void Play()
     {
-        
         switch (_currentWave.TypeWave)
         {
             case TypeOfWave.Enemies:
@@ -70,7 +69,7 @@ public class GameController : Singleton<GameController>
 
     }
 
-    void NextLevel()
+    public void NextLevel()
     {
         if (_currentLevelIndex < 0 || _currentLevelIndex >= _levelsInfor.Length - 1)
         {
@@ -78,6 +77,7 @@ public class GameController : Singleton<GameController>
             return;
         }
         _currentLevelIndex++;
+        Play();
     }
 
     void NextWave()

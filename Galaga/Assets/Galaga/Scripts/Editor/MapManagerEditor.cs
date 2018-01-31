@@ -15,6 +15,7 @@ public class MapManagerEditor : EditorWindow
     static void Init()
     {
         GetWindow<MapManagerEditor>().minSize = new Vector2(500, 500);
+//        GetWindow<MapManagerEditor>(typeof(LevelInformation));
     }
 
     private List<int> _idPath;
@@ -48,6 +49,7 @@ public class MapManagerEditor : EditorWindow
     private Dictionary<int, int> _healthEnemies = new Dictionary<int, int>();
     private Dictionary<int, int> _pathRoadToScreen = new Dictionary<int, int>();
     private int _deltaEnemyMatrix = -1;
+    private StartPosition _startPos;
 
     void OnGUI()
     {
@@ -221,10 +223,22 @@ public class MapManagerEditor : EditorWindow
         EditorGUITool.Label("Custom Speed", 120, 80,false, " Tùy chọn tốc độ bay \n Tốc độ thật của enemy sẽ được cộng từ tốc độ cơ bản của path và tốc độ này \n Giá trị này có thể âm");
         wave.CustomSpeed = EditorGUILayout.FloatField("", wave.CustomSpeed, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
+
         SetMatrix(wave);
         switch (wave.TypeMove)
         {
             case TypeMove.OneByOne:
+                EditorGUILayout.BeginVertical();
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                EditorGUITool.Label("Spawn Pos", 120, 80, false, "Điểm bắt đầu sinh enemy");
+                _startPos = (StartPosition) EditorGUILayout.EnumPopup(_startPos, GUILayout.Width(100));
+                for (int i = 0; i < wave.Enemies.Count; i++)
+                {
+                    wave.Enemies[i].StartPosition = _startPos;
+                }
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
                 MoveOneByOne(wave);
                 break;
             case TypeMove.MoveInLine:
@@ -374,6 +388,7 @@ public class MapManagerEditor : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
         EditorGUITool.Label("Size Boss", 120, 80, false, "số lượng boss");
+        _sizeBoss = wave.WaveBossInformation.BossInfors.Count;
         _sizeBoss = EditorGUILayout.IntField("", _sizeBoss, GUILayout.Width(50));
         if (_sizeBoss != wave.WaveBossInformation.BossInfors.Count)
         {
@@ -592,7 +607,7 @@ public class MapManagerEditor : EditorWindow
 
     #endregion
 
-    #region Utilities
+    #region UtilitiesGameTool
 
     /// <summary>
     /// kiểm tra _pathRoadToScreen nếu rỗng thì tạo mới

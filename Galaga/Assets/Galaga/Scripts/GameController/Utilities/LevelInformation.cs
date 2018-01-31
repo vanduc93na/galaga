@@ -75,7 +75,7 @@ public class WaveInformation
     /// thời gian để hoàn thành wave nếu như wave không cần phải clear hết quái
     /// </summary>
     public float TimeCompleteWave = 0;
-
+    
     public TypeSort TypeSort;
     public TypeOfWave TypeWave;
     public TypeMove TypeMove;
@@ -107,6 +107,7 @@ public class EnemyInformation
     public TypeOfEnemy Type = TypeOfEnemy.Minion;
     public int Health = 100;
     public int IdPath = -1;
+    public StartPosition StartPosition = StartPosition.Left;
 }
 
 [Serializable]
@@ -221,4 +222,12 @@ public enum TypeSpawnBlock
     FromLeft,
     FromRight,
     Both
+}
+
+public enum StartPosition
+{
+    Left,
+    Right,
+    Top,
+    Bottom
 }

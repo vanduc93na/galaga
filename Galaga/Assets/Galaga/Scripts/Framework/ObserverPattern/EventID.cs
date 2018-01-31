@@ -8,5 +8,7 @@
     LastEnemyMoveDone,
     BossDead,
     EatCoin,
-    HitPlayer
+    HitPlayer,
+    GameOver,
+    GameWin
 }
