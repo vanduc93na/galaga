@@ -8,7 +8,7 @@ public class PlayerBasic : PlayerController
     [SerializeField]
     private GameObject _bulletsMgr;
 
-    [SerializeField] private int currentNumberBulletOnScreen;
+    [SerializeField] private int _currentNumberBulletOnScreen;
     
     // private variables
     /// <summary>
@@ -22,9 +22,51 @@ public class PlayerBasic : PlayerController
     private float fireRate;
     private GameObject gunObject;
 
+    void Awake()
+    {
+        RegisterEvent();
+    }
+
     void Start()
     {
         Init();
+    }
+
+    void RegisterEvent()
+    {
+        this.RegisterListener(EventID.EatItem, (param) => EatItem((GameObject) param));
+    }
+
+    void EatItem(GameObject obj)
+    {
+        switch (obj.tag)
+        {
+            case GameTag.ITEM_ADD_BULLET:
+                AddBullet();
+                break;
+            case GameTag.ITEM_BULLET_1:
+                ChangeBullet1();
+                break;
+            case GameTag.ITEM_BULLET_2:
+                ChangeBullet2();
+                break;
+            case GameTag.ITEM_BULLET_3:
+                ChangeBullet3();
+                break;
+        }
+    }
+
+    void PlayerDead()
+    {
+        print("Player Dead - GameOver");
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == GameTag.ENEMY || other.gameObject.tag == GameTag.ENEMY_BULLET)
+        {
+            PlayerDead();
+        }
     }
 
     #region Attack
@@ -60,16 +102,16 @@ public class PlayerBasic : PlayerController
     /// </summary>
     void FireBulletOne()
     {
-        float startPosX = Utilities.StartPosXBullet1(currentNumberBulletOnScreen);
+        float startPosX = Utilities.StartPosXBullet1(_currentNumberBulletOnScreen);
 
-        for (int i = 1; i <= currentNumberBulletOnScreen; i++)
+        for (int i = 1; i <= _currentNumberBulletOnScreen; i++)
         {
             GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
             HandleEvent.Instance.AddBullet(bulletPool);
             bulletPool.transform.localScale = new Vector3(0.5f, 0.5f, 0.1f);
             float dx = startPosX + (i - 1) * Utilities.DeltaBullet1();
             float angle = Vector2.Angle(new Vector2(dx, 10), Vector2.up);
-            angle = i <= (int)(currentNumberBulletOnScreen / 2) ? angle : -1 * angle;
+            angle = i <= (int)(_currentNumberBulletOnScreen / 2) ? angle : -1 * angle;
             bulletPool.GetComponent<BasicBullet>().InitBullet1(angle);
         }
     }
@@ -79,9 +121,9 @@ public class PlayerBasic : PlayerController
     /// </summary>
     void FireBulletTwo()
     {
-        float startPosX = Utilities.StartPosXBullet2(currentNumberBulletOnScreen);
+        float startPosX = Utilities.StartPosXBullet2(_currentNumberBulletOnScreen);
 
-        for (int i = 1; i <= currentNumberBulletOnScreen; i++)
+        for (int i = 1; i <= _currentNumberBulletOnScreen; i++)
         {
             GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
             HandleEvent.Instance.AddBullet(bulletPool);
@@ -100,7 +142,7 @@ public class PlayerBasic : PlayerController
         GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
         HandleEvent.Instance.AddBullet(bulletPool);
         bulletPool.transform.localScale = Vector3.one;
-        bulletPool.GetComponent<BasicBullet>().InitBullet3(currentNumberBulletOnScreen);
+        bulletPool.GetComponent<BasicBullet>().InitBullet3(_currentNumberBulletOnScreen);
     }
 
     /// <summary>
@@ -122,12 +164,36 @@ public class PlayerBasic : PlayerController
         {
             _bullets.Add(i, _bulletsMgr.transform.GetChild(i).gameObject);
         }
-        currentNumberBulletOnScreen = 1;
+        _currentNumberBulletOnScreen = 1;
         gunObject = transform.GetChild(0).gameObject;
         _bullet = _bullets[0];
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
         Invoke(FIRE_BULLET, fireRate);
     }
     #endregion
-    
+
+
+    void AddBullet()
+    {
+        _currentNumberBulletOnScreen++;
+        if (_currentNumberBulletOnScreen > config.GetMaxBullet())
+        {
+            _currentNumberBulletOnScreen = config.GetMaxBullet();
+        }
+    }
+
+    void ChangeBullet1()
+    {
+        _bullet = _bullets[0];
+    }
+
+    void ChangeBullet2()
+    {
+        _bullet = _bullets[1];
+    }
+
+    void ChangeBullet3()
+    {
+        _bullet = _bullets[2];
+    }
 }

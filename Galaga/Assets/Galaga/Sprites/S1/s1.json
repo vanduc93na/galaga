@@ -1,0 +1,24 @@
+{"skeleton":{"images":"img/"},
+"bones":[{"name":"root"}],
+"slots":[
+	{"name":"Body","bone":"root","attachment":"Body"},
+	{"name":"L_Wing_3","bone":"root","attachment":"L_Wing_3"},
+	{"name":"L_Wing_2","bone":"root","attachment":"L_Wing_2"},
+	{"name":"L_Wing_1","bone":"root","attachment":"L_Wing_1"},
+	{"name":"R_Wing_3","bone":"root","attachment":"R_Wing_3"},
+	{"name":"R_Wing_2","bone":"root","attachment":"R_Wing_2"},
+	{"name":"R_Wing_1","bone":"root","attachment":"R_Wing_1"}
+],
+"skins":{
+	"default":{
+		"R_Wing_1":{"R_Wing_1":{"x":109,"y":42,"width":30,"height":36}},
+		"R_Wing_2":{"R_Wing_2":{"x":138,"y":31,"width":40,"height":34}},
+		"R_Wing_3":{"R_Wing_3":{"x":113,"y":15,"width":22,"height":30}},
+		"L_Wing_1":{"L_Wing_1":{"x":49,"y":42,"width":30,"height":36}},
+		"L_Wing_2":{"L_Wing_2":{"x":20,"y":31,"width":40,"height":34}},
+		"L_Wing_3":{"L_Wing_3":{"x":45,"y":15,"width":22,"height":30}},
+		"Body":{"Body":{"x":79,"y":49,"width":42,"height":74}}
+	}
+},
+"animations":{"animation":{}}
+}

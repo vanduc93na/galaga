@@ -33,56 +33,61 @@ public class Boss1 : BaseBoss
     /// </summary>
     void NormalAttack()
     {
-        for (int i = 1; i <= _numberOfBullet; i++)
+        if (gameObject.activeSelf)
         {
-            var bullet = Lean.LeanPool.Spawn(_bullet, _bulletPossition.position, Quaternion.identity);
-            bullet.transform.position = _bulletPossition.position;
-            Vector3 tmp = bullet.transform.position;
+            StartCoroutine(AttackAnimation());
+            for (int i = 1; i <= _numberOfBullet; i++)
+            {
+                var bullet = Lean.LeanPool.Spawn(_bullet, _bulletPossition.position, Quaternion.identity);
+                bullet.transform.position = _bulletPossition.position;
+                Vector3 tmp = bullet.transform.position;
 
-            if (_numberOfBullet % 2 == 1)
-            {
-                if (i <= _numberOfBullet / 2)
+                if (_numberOfBullet % 2 == 1)
                 {
-                    bullet.transform.Rotate(tmp.x, tmp.y, tmp.z - (_numberOfBullet / 2 - i + 1) * 10);
-                }
-                else if (i - 1 > _numberOfBullet / 2)
-                {
-                    bullet.transform.Rotate(tmp.x, tmp.y, tmp.z + (i - _numberOfBullet / 2 - 1) * 10);
-                }
-                else
-                {
-                    bullet.transform.Rotate(tmp.x, tmp.y, tmp.z);
-                }
-            }
-            else
-            {
-                if (i <= _numberOfBullet / 2)
-                {
-                    if (i == _numberOfBullet / 2)
+                    if (i <= _numberOfBullet / 2)
                     {
-                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z - 5);
+                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z - (_numberOfBullet / 2 - i + 1) * 10);
+                    }
+                    else if (i - 1 > _numberOfBullet / 2)
+                    {
+                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z + (i - _numberOfBullet / 2 - 1) * 10);
                     }
                     else
                     {
-                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z - (5 + (_numberOfBullet/2 - i) * 10));
+                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z);
                     }
                 }
                 else
                 {
-                    if (i == _numberOfBullet / 2 + 1)
+                    if (i <= _numberOfBullet / 2)
                     {
-                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z + 5);
+                        if (i == _numberOfBullet / 2)
+                        {
+                            bullet.transform.Rotate(tmp.x, tmp.y, tmp.z - 5);
+                        }
+                        else
+                        {
+                            bullet.transform.Rotate(tmp.x, tmp.y, tmp.z - (5 + (_numberOfBullet / 2 - i) * 10));
+                        }
                     }
                     else
                     {
-                        bullet.transform.Rotate(tmp.x, tmp.y, tmp.z + (5 + (i - _numberOfBullet/2 - 1) * 10));
+                        if (i == _numberOfBullet / 2 + 1)
+                        {
+                            bullet.transform.Rotate(tmp.x, tmp.y, tmp.z + 5);
+                        }
+                        else
+                        {
+                            bullet.transform.Rotate(tmp.x, tmp.y, tmp.z + (5 + (i - _numberOfBullet / 2 - 1) * 10));
+                        }
                     }
                 }
-            }
 
+            }
+            float fireRate = Random.Range(_minFireRate, _maxFireRate);
+            Invoke(NORMAL_ATTACK_METHOD, fireRate);
         }
-        float fireRate = Random.Range(_minFireRate, _maxFireRate);
-        Invoke(NORMAL_ATTACK_METHOD, fireRate);
+        
     }
 
 }

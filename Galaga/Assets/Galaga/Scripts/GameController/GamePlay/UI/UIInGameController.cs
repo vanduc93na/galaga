@@ -18,7 +18,7 @@ public class UIInGameController : Singleton<UIInGameController>
     void Awake()
     {
         PlayerPrefs.SetInt(PlayerPrefString.SELECTED_LEVEL, 1);
-        this.RegisterListener(EventID.EatCoin, (param) => EatCoin());
+        this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject) param));
     }
     
 	void Start ()
@@ -42,13 +42,16 @@ public class UIInGameController : Singleton<UIInGameController>
     /// </summary>
     public void StartGame()
     {
-        this.PostEvent(EventID.PlayGame, 1);
+//        this.PostEvent(EventID.PlayGame, 1);
         loadingPanel.gameObject.SetActive(false);
     }
 
-    void EatCoin()
+    void EatCoin(GameObject obj)
     {
-        _coinText.text = (int.Parse(_coinText.text) + 1).ToString();
+        if (obj.tag == GameTag.ITEM_COIN)
+        {
+            _coinText.text = (int.Parse(_coinText.text) + 1).ToString();
+        }
     }
 
     public void GoMenu()

@@ -24,6 +24,7 @@ public class GameTag
     /// </summary>
     public const string ENEMY = "enemy";
 
+    public const string ENEMY_BULLET = "enemy_bullet";
     public const string BOSS = "boss";
 
     /// <summary>
@@ -35,4 +36,13 @@ public class GameTag
     public const string BOTTOM = "bottom";
 
     public const string ITEM = "item";
+    public const string ITEM_ADD_BULLET = "item_add";
+    public const string ITEM_BULLET_1 = "item_bullet_1";
+    public const string ITEM_BULLET_2 = "item_bullet_2";
+    public const string ITEM_BULLET_3 = "item_bullet_3";
+    public const string ITEM_COIN = "coin";
+
+    public const string ENEMY_IDLE = "Idle";
+    public const string ENEMY_ATTACK = "Attack";
+    public const string ENEMY_DIE = "Die";
 }

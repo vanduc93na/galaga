@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using NUnit.Framework.Internal.Builders;
+//using NUnit.Framework.Internal.Builders;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private bool isMove;
     // game config
     [SerializeField]
-    private GamePlayConfig config;
+    protected GamePlayConfig config;
     /// <summary>
     // đối tượng chứa 2 object con left và right để tính khoảng cách so với
     // phi thuyền -> hiệu ứng di chuyển camera khi phi thuyền di chuyển trái, phải

@@ -171,7 +171,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
     #region Public Methods
 
     /// <summary>
-    /// lắng nghe và xử lý các va chạm xảy ra
+    /// lắng nghe và xử lý các va chạm xảy ra của viên đạn
     /// </summary>
     /// <param name="trigger">object va chạm</param>
     /// <param name="targetTriggerObject">object bị va chạm</param>
@@ -207,7 +207,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
     }
 
     /// <summary>
-    /// xư lý va chạm của viên đạn
+    /// xư lý va chạm của item với player
     /// </summary>
     /// <param name="item"></param>
     /// <param name="other"></param>
@@ -220,7 +220,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
             {
                 if (_listItemsOnWave.ContainsKey(item))
                 {
-                    this.PostEvent(EventID.EatCoin);
+                    this.PostEvent(EventID.EatItem, item);
                     Lean.LeanPool.Despawn(item);
                     RemoveItem(item);
                 }
@@ -230,7 +230,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 }
             });
         }
-        else
+        else if (other.tag == GameTag.BORDER)
         {
             if (_listItemsOnWave.ContainsKey(item))
             {

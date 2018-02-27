@@ -7,7 +7,7 @@
     NextLevel,
     LastEnemyMoveDone,
     BossDead,
-    EatCoin,
+    EatItem,
     HitPlayer,
     GameOver,
     GameWin

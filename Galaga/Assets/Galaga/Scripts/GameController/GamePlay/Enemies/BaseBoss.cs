@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Spine.Unity;
 using UnityEngine;
 
 public class BaseBoss : MonoBehaviour
@@ -11,20 +12,21 @@ public class BaseBoss : MonoBehaviour
     [SerializeField] private float _timeDelayMove = 0;
     [Tooltip("thanh máu")]
     [SerializeField] private Transform _healthTransform;
-
+    [SerializeField]
+    private SkeletonAnimation _skAnim;
     [Tooltip("path cho enemies di chuyển")] [SerializeField] private GameObject _pathObj;
     private MoveInformation _moveInfor;
     private Vector2 _nextPosition;
-    private Animator anim;
+//    private Animator anim;
     private int _hitState;
     private int _deadState;
-    private SpriteRenderer _renderer;
     protected BossInfor _bossInfor;
     private int _health = 0;
     private const string MOVE_METHOD = "MoveToTarget";
-    private const string ATTACK_METHOD = "Attack";
+    private const string ATTACK_METHOD = "SpawnEnemiesAttack";
     protected WaveBoss _waveBossInfor;
     protected bool _isMove;
+    
 
     private float _minX = -2.2f, _minY = -4.2f, _maxX = 2.2f, _maxY = 4.2f;
 
@@ -43,8 +45,8 @@ public class BaseBoss : MonoBehaviour
         {
             print("object: " + _pathObj + " doen't contains component DOTweenPath");
         }
-        _renderer = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+//        _renderer = GetComponent<SpriteRenderer>();
+//        anim = GetComponent<Animator>();
         _hitState = GetComponent<BossHashIDs>().Hit;
         _deadState = GetComponent<BossHashIDs>().Dead;
         _bossInfor = new BossInfor();
@@ -69,7 +71,7 @@ public class BaseBoss : MonoBehaviour
         _healthTransform.localScale = new Vector3(((float)_bossInfor.Health / _health), 1, 1);
         if (_bossInfor.Health <= 0)
         {
-            OnDeadAnimation();
+            StartCoroutine(OnDieAnimation());
         }
         else
         {
@@ -129,30 +131,10 @@ public class BaseBoss : MonoBehaviour
 
     #region Private Method
 
-    private void OnDeadAnimation()
+    IEnumerator OnDieAnimation()
     {
-        anim.SetBool(_deadState, true);
-    }
-
-    private void OnHitAnimation()
-    {
-        StartCoroutine(SpriteColorOutHit(0.05f));
-
-        if (_isMove) return;
-
-        transform.DOLocalMoveY(transform.position.y + 0.01f, 0.02f).OnComplete(() =>
-        {
-            transform.DOLocalMoveY(transform.position.y - 0.01f, 0.02f);
-        });
-    }
-
-    private void IdleAnimationFromHit()
-    {
-        anim.SetBool(_hitState, false);
-    }
-
-    private void OnDead()
-    {
+        _skAnim.AnimationName = GameTag.ENEMY_DIE;
+        yield return new WaitForSeconds(0.8f);
         int coins = Random.Range(_bossInfor.MinCoin, _bossInfor.MaxCoin);
         for (int i = 0; i < coins; i++)
         {
@@ -161,32 +143,26 @@ public class BaseBoss : MonoBehaviour
         }
         this.PostEvent(EventID.BossDead, this.gameObject);
         Lean.LeanPool.Despawn(this);
+
     }
 
-    /// <summary>
-    /// tạo hiệu ứng chuyển màu khi trúng đạn
-    /// </summary>
-    /// <param name="seconds"></param>
-    /// <returns></returns>
-    IEnumerator SpriteColorOutHit(float seconds)
+    private void OnHitAnimation()
     {
-        _renderer.color = new Color(227 / 255f, 150 / 255f, 150 / 255f, 1);
-        yield return new WaitForSeconds(seconds);
-        _renderer.color = new Color(1, 1, 1, 1);
-    }
+        if (_isMove) return;
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-
+        transform.DOLocalMoveY(transform.position.y + 0.01f, 0.02f).OnComplete(() =>
+        {
+            transform.DOLocalMoveY(transform.position.y - 0.01f, 0.02f);
+        });
     }
+    
 
     /// <summary>
     /// dùng invoke gọi trong hàn OnEnable
     /// </summary>
-    void Attack()
+    void SpawnEnemiesAttack()
     {
         float randomAttackEnemie = Random.Range(0f, 1f);
-
         if (_waveBossInfor.IsSpawnEnemies && randomAttackEnemie < 1.3f && gameObject.activeSelf)
         {
             StartCoroutine(SpawnEnemyAttack());
@@ -197,6 +173,13 @@ public class BaseBoss : MonoBehaviour
         }
     }
 
+    protected IEnumerator AttackAnimation()
+    {
+        _skAnim.AnimationName = GameTag.ENEMY_ATTACK;
+        yield return new WaitForSeconds(1f);
+        _skAnim.AnimationName = GameTag.ENEMY_IDLE;
+
+    }
     
     /// <summary>
     /// tấn công bằng cách sinh enemy

@@ -22,7 +22,6 @@ public class GameController : Singleton<GameController>
     void Awake()
     {
         // đăng ký sự kiện bắt đầu game
-        this.RegisterListener(EventID.PlayGame, (param) => StartGame((int)param));
         this.RegisterListener(EventID.NextWave, (param) => NextWave());
         Init();
     }

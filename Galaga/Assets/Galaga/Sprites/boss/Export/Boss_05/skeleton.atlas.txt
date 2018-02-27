@@ -1,0 +1,90 @@
+
+skeleton.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Layer 10
+  rotate: false
+  xy: 2, 1532
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 11
+  rotate: false
+  xy: 2, 1022
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 12
+  rotate: false
+  xy: 504, 1532
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 13
+  rotate: false
+  xy: 2, 512
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 14
+  rotate: false
+  xy: 504, 1022
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 15
+  rotate: false
+  xy: 1006, 1532
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 16
+  rotate: false
+  xy: 2, 2
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+Layer 9
+  rotate: false
+  xy: 504, 512
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+idle (1)
+  rotate: false
+  xy: 1006, 1022
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+idle (2)
+  rotate: false
+  xy: 1508, 1532
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+idle (3)
+  rotate: false
+  xy: 504, 2
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1
+idle (4)
+  rotate: false
+  xy: 1006, 512
+  size: 500, 508
+  orig: 500, 508
+  offset: 0, 0
+  index: -1

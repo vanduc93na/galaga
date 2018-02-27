@@ -18,9 +18,9 @@ public class LoadingBar : MonoBehaviour
             if (value > 100) value = 100;
             yield return new WaitForSeconds(0.015f);
             _barSlider.value = (float)value / 100;
-            GameController.Instance.StartGame(PlayerPrefs.GetInt(PlayerPrefString.SELECTED_LEVEL));
+            
         }
-
+        GameController.Instance.StartGame(PlayerPrefs.GetInt(PlayerPrefString.SELECTED_LEVEL));
         gameObject.SetActive(false);
     }
     
