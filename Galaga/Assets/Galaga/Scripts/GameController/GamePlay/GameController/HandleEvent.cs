@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 
 /// <summary>
-/// xử lý các sự kiện và quản lý các sự kiện cho enemy
+/// xử lý các sự kiện và quản lý các hành động enemy
 /// </summary>
 public partial class HandleEvent : Singleton<HandleEvent>
 {
@@ -26,6 +26,11 @@ public partial class HandleEvent : Singleton<HandleEvent>
     [SerializeField] private GameObject _player;
 
     /// <summary>
+    /// đạn của enemy
+    /// </summary>
+    [SerializeField] private GameObject _bulletEnemy;
+
+    /// <summary>
     /// quản lý tất cả các enemy sau khi sinh ra, nếu enemy nào chết thì sẽ bị remove khỏi danh sách
     /// khi hoàn thành level thì danh sách này sẽ được reset về rỗng
     /// </summary>
@@ -40,6 +45,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
 
 
     private const string MOVE_ON_WAVE_METHOD = "MoveEnemyOnWave";
+    private const string ENEMY_ATTACK = "EnemyAttack";
     /// <summary>
     /// danh sách vector 3 chứa các path của _pathMoveOnWave object
     /// </summary>
@@ -96,19 +102,23 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
     }
 
+    void Start()
+    {
+        EnemyAttack();
+        MoveEnemyOnWave();
+    }
+
     void RegisterEnemiesEvents()
     {
         this.RegisterListener(EventID.EnemyDead, (param) => RemoveEnemy((GameObject)param));
         // event enemy cuối đến vị trí cuối cùng - dùng để thực hiện di chuyển enemy sau khi xếp map
         this.RegisterListener(EventID.LastEnemyMoveDone, (param) => MoveEnemyOnWave());
-
-        this.RegisterListener(EventID.LastEnemyMoveDone, (param) => EnemyAttack());
     }
 
     /// <summary>
     /// di chuyển quái random trong ma trận sau khi sắp xếp
     /// </summary>
-    private void MoveEnemyOnWave()
+    void MoveEnemyOnWave()
     {
         if (_enemiesOnWave.Count > 0)
         {
@@ -141,9 +151,17 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
     }
 
-    private void EnemyAttack()
+    void EnemyAttack()
     {
-        
+        if (_enemiesOnWave.Count > 0)
+        {
+            int random = Random.Range(0, _enemiesOnWave.Count - 1);
+            var listEnemy = _enemiesOnWave.Keys.ToList();
+            _enemiesOnWave[listEnemy[random]].Attack(_bulletEnemy);
+        }
+        float timerInvoke = Random.Range(0.5f, 1f);
+        Invoke(ENEMY_ATTACK, timerInvoke);
+
     }
 
     IEnumerator DelayTime(float seconds)

@@ -50,6 +50,10 @@ public class BaseEnemy : MonoBehaviour
         _isFromBoss = isFromBoss;
         _health = infor.Health;
         _isLastEnemyOnWave = isLast;
+        if (_isLastEnemyOnWave)
+        {
+            print("last");
+        }
     }
 
     public void SetCoind(int coin)
@@ -80,23 +84,16 @@ public class BaseEnemy : MonoBehaviour
         tmp.Add(_targetPosition);
         Vector3[] wp = tmp.ToArray();
         _onMove = true;
-        if (_isLastEnemyOnWave)
+        transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
         {
-            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
+            transform.DOLocalRotate(Vector3.up, 0.2f);
+            _onMove = false;
+            if (_isLastEnemyOnWave)
             {
-                transform.DOLocalRotate(Vector3.up, 0.2f);
-                _onMove = false;
                 this.PostEvent(EventID.LastEnemyMoveDone);
-            });
-        }
-        else
-        {
-            transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
-            {
-                transform.DOLocalRotate(Vector3.up, 0.2f);
-                _onMove = false;
-            });
-        }
+            }
+
+        });
     }
 
     /// <summary>
@@ -146,14 +143,14 @@ public class BaseEnemy : MonoBehaviour
                 HandleEvent.Instance.AddItem(item);
             }
         }
-        
+
         // instance coin
         for (int i = 0; i < _coinDrop; i++)
         {
             GameObject coin = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[0], transform.position, Quaternion.identity);
             HandleEvent.Instance.AddItem(coin);
         }
-        
+
     }
 
     /// <summary>
@@ -167,7 +164,7 @@ public class BaseEnemy : MonoBehaviour
     #endregion
 
     #region Private Method
-    
+
     void OnDead()
     {
         InstanceDropItem();
@@ -176,15 +173,16 @@ public class BaseEnemy : MonoBehaviour
         Lean.LeanPool.Despawn(this);
     }
 
-    void Attack()
+    public void Attack(GameObject bullet)
     {
-        
+        var go = Lean.LeanPool.Spawn(bullet);
+        go.transform.position = transform.position;
     }
-    
+
     #endregion
 
-//    void OnTriggerEnter2D(Collider2D other)
-//    {
-//        print(other.gameObject.name);
-//    }
+    //    void OnTriggerEnter2D(Collider2D other)
+    //    {
+    //        print(other.gameObject.name);
+    //    }
 }

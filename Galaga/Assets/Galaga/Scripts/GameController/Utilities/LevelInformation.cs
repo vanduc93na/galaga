@@ -43,7 +43,6 @@ public class WaveInformation
     /// vị trí x con đầu tiên
     /// </summary>
     public float Dx = 0;
-
     /// <summary>
     /// vị trí y con đầu tiên
     /// </summary>
@@ -191,7 +190,7 @@ public enum TypeMove
     // di chuyển theo cột
     MoveInRows,
     // di chuyển theo hàng
-    MoveInLine,
+    MoveInCol,
     // không theo path
     // optional - dùng thuật toán di chuyển đến vị trí có sẵn
     None

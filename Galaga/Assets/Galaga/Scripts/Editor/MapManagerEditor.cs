@@ -15,7 +15,7 @@ public class MapManagerEditor : EditorWindow
     static void Init()
     {
         GetWindow<MapManagerEditor>().minSize = new Vector2(500, 500);
-//        GetWindow<MapManagerEditor>(typeof(LevelInformation));
+        //        GetWindow<MapManagerEditor>(typeof(LevelInformation));
     }
 
     private List<int> _idPath;
@@ -50,6 +50,8 @@ public class MapManagerEditor : EditorWindow
     private Dictionary<int, int> _pathRoadToScreen = new Dictionary<int, int>();
     private int _deltaEnemyMatrix = -1;
     private StartPosition _startPos;
+    private int[] listPathOfRows = new int[100];
+    private int[] listPathOfCols = new int[100];
 
     void OnGUI()
     {
@@ -212,15 +214,17 @@ public class MapManagerEditor : EditorWindow
         EditorGUITool.Label("Size Dy", 120, 80, false, "độ lớn y cả đội hình");
         wave.SizeDy = EditorGUILayout.FloatField("", wave.SizeDy, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
-
+        if (wave.TypeMove == TypeMove.MoveInCol || wave.TypeMove == TypeMove.MoveInRows)
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUITool.Label("Delay Move", 120, 80, false, "thời gian delay giữa các đợt - từng path");
+            wave.DelayMove = EditorGUILayout.FloatField("", wave.DelayMove, GUILayout.Width(50));
+            EditorGUILayout.EndHorizontal();
+        }
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(20);
-        EditorGUITool.Label("Delay Move", 120, 80, false, "thời gian delay giữa các đợt - từng path");
-        wave.DelayMove = EditorGUILayout.FloatField("", wave.DelayMove, GUILayout.Width(50));
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Space(20);
-        EditorGUITool.Label("Custom Speed", 120, 80,false, " Tùy chọn tốc độ bay \n Tốc độ thật của enemy sẽ được cộng từ tốc độ cơ bản của path và tốc độ này \n Giá trị này có thể âm");
+        EditorGUITool.Label("Custom Speed", 120, 80, false, " Tùy chọn tốc độ bay \n Tốc độ thật của enemy sẽ được cộng từ tốc độ cơ bản của path và tốc độ này \n Giá trị này có thể âm");
         wave.CustomSpeed = EditorGUILayout.FloatField("", wave.CustomSpeed, GUILayout.Width(50));
         EditorGUILayout.EndHorizontal();
 
@@ -232,7 +236,7 @@ public class MapManagerEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(20);
                 EditorGUITool.Label("Spawn Pos", 120, 80, false, "Điểm bắt đầu sinh enemy");
-                _startPos = (StartPosition) EditorGUILayout.EnumPopup(_startPos, GUILayout.Width(100));
+                _startPos = (StartPosition)EditorGUILayout.EnumPopup(_startPos, GUILayout.Width(100));
                 for (int i = 0; i < wave.Enemies.Count; i++)
                 {
                     wave.Enemies[i].StartPosition = _startPos;
@@ -241,7 +245,7 @@ public class MapManagerEditor : EditorWindow
                 EditorGUILayout.EndVertical();
                 MoveOneByOne(wave);
                 break;
-            case TypeMove.MoveInLine:
+            case TypeMove.MoveInCol:
                 MoveInLine(wave);
                 break;
             case TypeMove.MoveInRows:
@@ -291,15 +295,49 @@ public class MapManagerEditor : EditorWindow
                     EditorGUILayout.EndVertical();
                     break;
                 case TypeMove.MoveInRows:
+                    EditorGUILayout.BeginVertical();
+                    for (int i = 0; i < _row; i++)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Id Path For Row: " + i, EditorStyleExtension.NormalTextStyle, GUILayout.Width(50));
+                        GUILayout.Space(100);
+                        listPathOfRows[i] = EditorGUILayout.IntField("", listPathOfRows[i], GUILayout.Width(50));
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    for (int col = 0; col < _col; col++)
+                    {
+                        for (int row = 0; row < _row; row++)
+                        {
+                            wave.Enemies[row * _col + col].IdPath = listPathOfRows[row];
+                        }
+                    }
+                    EditorGUILayout.EndVertical();
                     break;
-                case TypeMove.MoveInLine:
+                case TypeMove.MoveInCol:
+                    EditorGUILayout.BeginVertical();
+                    for (int i = 0; i < _col; i++)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Id Path For Line: " + i, EditorStyleExtension.NormalTextStyle, GUILayout.Width(50));
+                        GUILayout.Space(100);
+                        listPathOfCols[i] = EditorGUILayout.IntField("", listPathOfCols[i], GUILayout.Width(50));
+                        EditorGUILayout.EndHorizontal();
+                    }
+                    for (int row = 0; row < _row; row++)
+                    {
+                        for (int col = 0; col < _col; col++)
+                        {
+                            wave.Enemies[row * _col + col].IdPath = listPathOfCols[col];
+                        }
+                    }
+                    EditorGUILayout.EndVertical();
                     break;
                 case TypeMove.Random:
                     break;
                 case TypeMove.None:
                     break;
             }
-            
+
             EditorGUILayout.EndVertical();
         });
         EditorGUILayout.EndVertical();
@@ -473,22 +511,22 @@ public class MapManagerEditor : EditorWindow
                     EditorGUILayout.LabelField("id", EditorStyleExtension.NormalTextStyle, GUILayout.Width(20));
                     wave.WaveBossInformation.EnemySpawns[i].IdEnemy = EditorGUILayout.IntField("",
                         wave.WaveBossInformation.EnemySpawns[i].IdEnemy, GUILayout.Width(50));
-                    
+
                     EditorGUILayout.LabelField("health", EditorStyleExtension.NormalTextStyle, GUILayout.Width(40));
                     wave.WaveBossInformation.EnemySpawns[i].Health = EditorGUILayout.IntField("",
                         wave.WaveBossInformation.EnemySpawns[i].Health, GUILayout.Width(50));
-                    
+
                     EditorGUILayout.EndHorizontal();
                 }
                 EditorGUILayout.EndVertical();
             });
             EditorGUILayout.EndVertical();
-            
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(20);
             EditorGUITool.Label("Type Spawn", 120, 80, false, "kiểu sinh từ boss");
             wave.WaveBossInformation.TypeSpawn =
-                (TypeSpawnBlock) EditorGUILayout.EnumPopup(wave.WaveBossInformation.TypeSpawn, GUILayout.Width(100));
+                (TypeSpawnBlock)EditorGUILayout.EnumPopup(wave.WaveBossInformation.TypeSpawn, GUILayout.Width(100));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
@@ -505,7 +543,7 @@ public class MapManagerEditor : EditorWindow
                 EditorGUILayout.FloatField("", wave.WaveBossInformation.DelaySpawnenemy, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
         }
-        
+
         EditorGUILayout.EndVertical();
     }
 
@@ -620,25 +658,25 @@ public class MapManagerEditor : EditorWindow
             case TypeMove.OneByOne:
                 _pathRoadToScreen = new Dictionary<int, int>();
                 // kiểm tra có tồn tại idPath chưa
-//                if (wave.Enemies.Count > 0 && wave.Enemies[0].IdPath == -1)
-//                {
-                    for (int i = 0; i < wave.Enemies.Count; i++)
+                //                if (wave.Enemies.Count > 0 && wave.Enemies[0].IdPath == -1)
+                //                {
+                for (int i = 0; i < wave.Enemies.Count; i++)
+                {
+                    if (!_pathRoadToScreen.ContainsKey(wave.Enemies[i].IdEnemy))
                     {
-                        if (!_pathRoadToScreen.ContainsKey(wave.Enemies[i].IdEnemy))
-                        {
-                            _pathRoadToScreen.Add(wave.Enemies[i].IdEnemy,
-                                wave.Enemies[i].IdPath);
-                        }
+                        _pathRoadToScreen.Add(wave.Enemies[i].IdEnemy,
+                            wave.Enemies[i].IdPath);
                     }
-//                }
+                }
+                //                }
                 // nếu chưa
-//                else
-//                {
-//                    _pathRoadToScreen = new Dictionary<int, int>();
-//                    for (int )
-//                }
+                //                else
+                //                {
+                //                    _pathRoadToScreen = new Dictionary<int, int>();
+                //                    for (int )
+                //                }
                 break;
-            case TypeMove.MoveInLine:
+            case TypeMove.MoveInCol:
                 break;
             case TypeMove.MoveInRows:
                 break;

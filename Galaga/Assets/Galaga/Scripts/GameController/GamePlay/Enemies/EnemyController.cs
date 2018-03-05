@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Plugins;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 /// <summary>
@@ -116,23 +117,50 @@ public class EnemyController : Singleton<EnemyController>
                                 break;
                         }
                     }
-
                     index++;
                 }
             }
         }
-
-
     }
 
-    IEnumerator SpawnEnemyTypeMoveInRow(WaveInformation wave)
+    IEnumerator SpawnEnemyTypeMoveInRow(WaveInformation wave, List<GameObject> enemies)
     {
+        for (int i = 0; i < wave.Row; i++)
+        {
+            for (int j = 0; j < wave.Col; j++)
+            {
+                yield return new WaitForSeconds(wave.DelaySpawn);
+                int index = i * wave.Col + j;
+                MoveInformation moveInfor = new MoveInformation();
+                moveInfor.Waypoint = _listMoveConfig[wave.Enemies[index].IdPath].Waypoint;
+                moveInfor.Mode = _listMoveConfig[wave.Enemies[index].IdPath].Mode;
+                moveInfor.Type = _listMoveConfig[wave.Enemies[index].IdPath].Type;
+                moveInfor.Duration = _listMoveConfig[wave.Enemies[index].IdPath].Duration + wave.CustomSpeed;
+                StartCoroutine(DelayMove(0, moveInfor, HandleEvent.Instance.GetBaseEnemyScript(enemies[index])));
+            }
+            yield return new WaitForSeconds(wave.DelayMove);
+        }
         yield return new WaitForSeconds(1f);
     }
 
-    IEnumerator SpawnEnemyTypeMoveInLine(WaveInformation wave)
+    IEnumerator SpawnEnemyTypeMoveInCol(WaveInformation wave, List<GameObject> enemies)
     {
-        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < wave.Col; i++)
+        {
+            for (int j = 0; j < wave.Row; j++)
+            {
+                yield return new WaitForSeconds(wave.DelaySpawn);
+                int index = j * wave.Col + i;
+                MoveInformation moveInfor = new MoveInformation();
+                moveInfor.Waypoint = _listMoveConfig[wave.Enemies[index].IdPath].Waypoint;
+                moveInfor.Mode = _listMoveConfig[wave.Enemies[index].IdPath].Mode;
+                moveInfor.Type = _listMoveConfig[wave.Enemies[index].IdPath].Type;
+                moveInfor.Duration = _listMoveConfig[wave.Enemies[index].IdPath].Duration + wave.CustomSpeed;
+                StartCoroutine(DelayMove(0, moveInfor, HandleEvent.Instance.GetBaseEnemyScript(enemies[index])));
+            }
+            yield return new WaitForSeconds(wave.DelayMove);
+        }
+        
     }
 
     IEnumerator SpawnEnemyTypeMoveRandom(WaveInformation wave)
@@ -312,7 +340,7 @@ public class EnemyController : Singleton<EnemyController>
                 enemySpawn.GetComponent<BaseEnemy>().SetTargetPosition(GetTargetPosition(i, j, wave));
                 if (index + 1 == wave.Enemies.Count)
                 {
-                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index], true);
+                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index], true, false);
                 }
                 else
                 {
@@ -328,11 +356,11 @@ public class EnemyController : Singleton<EnemyController>
             case TypeMove.OneByOne:
                 StartCoroutine(SpawnEnemyTypeMoveOneByOne(wave, enemies));
                 break;
-            case TypeMove.MoveInLine:
-                StartCoroutine(SpawnEnemyTypeMoveInLine(wave));
+            case TypeMove.MoveInCol:
+                StartCoroutine(SpawnEnemyTypeMoveInCol(wave, enemies));
                 break;
             case TypeMove.MoveInRows:
-                StartCoroutine(SpawnEnemyTypeMoveInRow(wave));
+                StartCoroutine(SpawnEnemyTypeMoveInRow(wave, enemies));
                 break;
             case TypeMove.Random:
                 StartCoroutine(SpawnEnemyTypeMoveRandom(wave));

@@ -24,7 +24,7 @@ public class GameTag
     /// </summary>
     public const string ENEMY = "enemy";
 
-    public const string ENEMY_BULLET = "enemy_bullet";
+    public const string ENEMY_BULLET = "bullet_enemy";
     public const string BOSS = "boss";
 
     /// <summary>
