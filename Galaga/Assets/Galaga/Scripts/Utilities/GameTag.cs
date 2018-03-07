@@ -41,6 +41,11 @@ public class GameTag
     public const string ITEM_BULLET_2 = "item_bullet_2";
     public const string ITEM_BULLET_3 = "item_bullet_3";
     public const string ITEM_COIN = "coin";
+    public const string ITEM_SUPPER_TOMAHAWK = "tomahawk";
+    public const string ITEM_SUPPER_GANADE = "genade";
+    public const string ITEM_BLACK_HOLe = "black_hole";
+    public const string ITEM_Arrow = "arrow";
+    public const string ITEM_LAZER = "lazer";
 
     public const string ENEMY_IDLE = "Idle";
     public const string ENEMY_ATTACK = "Attack";

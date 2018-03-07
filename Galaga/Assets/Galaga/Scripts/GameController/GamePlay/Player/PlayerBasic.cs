@@ -196,4 +196,23 @@ public class PlayerBasic : PlayerController
     {
         _bullet = _bullets[2];
     }
+
+    #region SUPER_ITEM
+
+    void FireTomahawk()
+    {
+        
+    }
+
+    void FireGenade()
+    {
+        
+    }
+
+    void FireLazer()
+    {
+        
+    }
+
+    #endregion
 }

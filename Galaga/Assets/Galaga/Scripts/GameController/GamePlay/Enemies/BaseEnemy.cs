@@ -7,6 +7,9 @@ using UnityEngine.Networking;
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField] private int _health = 0;
+
+    private bool isAlive;
+
     // danh sách items drop
     private List<int> _itemsDrop;
     private bool _isLastEnemyOnWave = false;
@@ -19,6 +22,7 @@ public class BaseEnemy : MonoBehaviour
 
     void Awake()
     {
+        isAlive = true;
         _rootPos = transform.position;
     }
 
@@ -47,6 +51,7 @@ public class BaseEnemy : MonoBehaviour
 
     public void Init(EnemyInformation infor, bool isLast = false, bool isFromBoss = false)
     {
+        isAlive = true;
         _isFromBoss = isFromBoss;
         _health = infor.Health;
         _isLastEnemyOnWave = isLast;
@@ -167,6 +172,7 @@ public class BaseEnemy : MonoBehaviour
 
     void OnDead()
     {
+        isAlive = false;
         InstanceDropItem();
         DOTween.Kill(transform);
         transform.position = _rootPos;
@@ -181,8 +187,8 @@ public class BaseEnemy : MonoBehaviour
 
     #endregion
 
-    //    void OnTriggerEnter2D(Collider2D other)
-    //    {
-    //        print(other.gameObject.name);
-    //    }
+    public bool IsAlive()
+    {
+        return isAlive;
+    }
 }

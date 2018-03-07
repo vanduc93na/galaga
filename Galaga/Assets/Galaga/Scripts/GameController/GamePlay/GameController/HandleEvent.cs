@@ -224,6 +224,42 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
     }
 
+    public void TriggerTomahawkVsEnemies(GameObject tomahawk, GameObject enemy)
+    {
+        if (_enemiesOnWave.ContainsKey(enemy))
+        {
+            Lean.LeanPool.Despawn(tomahawk);
+            int dame = tomahawk.GetComponent<Tomahawk>().GetDame();
+            _enemiesOnWave[enemy].OnHit(dame);
+        }
+    }
+
+    public void TriggerGenadevsEnemies(GameObject genade)
+    {
+
+        List<GameObject> enemiesKeyGO = _enemiesOnWave.Keys.ToList();
+        int dame = genade.GetComponent<Genade>().GetDame();
+        for (int i = 0; i < enemiesKeyGO.Count; i++)
+        {
+            float distance = Vector3.Distance(genade.transform.position, _enemiesOnWave[enemiesKeyGO[i]].transform.position);
+            if (distance <= 2)
+            {
+                int dameTaken = (int) (dame * (1 - (float)distance / 2));
+                _enemiesOnWave[enemiesKeyGO[i]].OnHit(dameTaken);
+            }
+        }
+
+        Lean.LeanPool.Despawn(genade);
+    }
+
+    public void TriggerArrowVsEnemies(GameObject arrow, GameObject enemy)
+    {
+        if (_enemiesOnWave.ContainsKey(enemy))
+        {
+            int dame = arrow.GetComponent<Arrow>().GetDame();
+            _enemiesOnWave[enemy].OnHit(dame);
+        }
+    }
     /// <summary>
     /// xư lý va chạm của item với player
     /// </summary>
@@ -315,6 +351,15 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
         Debug.Log("_enemies dict is not constain Key: " + obj);
         return null;
+    }
+
+    /// <summary>
+    /// lấy tất cả danh sách script của enemies còn sống
+    /// </summary>
+    /// <returns></returns>
+    public List<BaseEnemy> GetAllEnemiesAlive()
+    {
+        return _enemiesOnWave.Values.ToList();
     }
 
     #endregion

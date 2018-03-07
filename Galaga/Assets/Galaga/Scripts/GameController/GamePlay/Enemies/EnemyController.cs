@@ -173,7 +173,10 @@ public class EnemyController : Singleton<EnemyController>
     IEnumerator DelayMove(float seconds, MoveInformation moveInfor, BaseEnemy baseEnemy)
     {
         yield return new WaitForSeconds(seconds);
-        baseEnemy.MovePathToSortMatrix(moveInfor);
+        if (baseEnemy != null)
+        {
+            baseEnemy.MovePathToSortMatrix(moveInfor);
+        }
     }
 
     IEnumerator DelaySpawn(float seconds)
