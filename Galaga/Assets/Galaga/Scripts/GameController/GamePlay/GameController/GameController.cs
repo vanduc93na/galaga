@@ -75,6 +75,7 @@ public class GameController : Singleton<GameController>
             print("last level");
             return;
         }
+        HandleEvent.Instance.Reset();
         _currentLevelIndex++;
         Play();
     }

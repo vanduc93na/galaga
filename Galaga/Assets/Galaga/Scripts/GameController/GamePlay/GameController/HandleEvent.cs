@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// xử lý các sự kiện và quản lý các hành động enemy
@@ -31,10 +33,26 @@ public partial class HandleEvent : Singleton<HandleEvent>
     [SerializeField] private GameObject _bulletEnemy;
 
     /// <summary>
+    /// tâm hố đen
+    /// </summary>
+    [SerializeField] private GameObject _blackHoleCentre;
+
+    /// <summary>
+    /// thời gian tấn công của hố đen
+    /// </summary>
+    [SerializeField] private float _timeAttackBlackHole;
+
+    /// <summary>
     /// quản lý tất cả các enemy sau khi sinh ra, nếu enemy nào chết thì sẽ bị remove khỏi danh sách
     /// khi hoàn thành level thì danh sách này sẽ được reset về rỗng
     /// </summary>
     private Dictionary<GameObject, BaseEnemy> _enemiesOnWave;
+
+    private Dictionary<GameObject, Tomahawk> _tomahawks;
+
+    private Dictionary<GameObject, Arrow> _arrows;
+
+    private Dictionary<GameObject, Genade> _genades;
 
     /// <summary>
     /// quản lý tất cả các đạn sau khi sinh ra, nếu viên đạn nào va chạm thì sẽ bị remove khỏi danh sách
@@ -90,6 +108,9 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
         _enemiesOnWave = new Dictionary<GameObject, BaseEnemy>();
         _bulletsSpawn = new Dictionary<GameObject, BasicBullet>();
+        _tomahawks = new Dictionary<GameObject, Tomahawk>();
+        _genades = new Dictionary<GameObject, Genade>();
+        _arrows = new Dictionary<GameObject, Arrow>();
         _listPathMoveOnWave = new List<MoveInformation>();
         for (int i = 0; i < _pathMoveOnWave.transform.childCount; i++)
         {
@@ -164,9 +185,10 @@ public partial class HandleEvent : Singleton<HandleEvent>
 
     }
 
-    IEnumerator DelayTime(float seconds)
+    IEnumerator DelayTime(float seconds, Action callBack)
     {
         yield return new WaitForSeconds(seconds);
+        callBack();
     }
 
     /// <summary>
@@ -204,7 +226,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 {
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
                 }
-                
+
             }
             if (targetTriggerObject.tag == GameTag.BOSS)
             {
@@ -214,7 +236,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
                     _bosses[targetTriggerObject].OnHit(dame);
                 }
             }
-            
+
             if (targetTriggerObject.tag == GameTag.BORDER || targetTriggerObject.tag == GameTag.ENEMY || targetTriggerObject.tag == GameTag.BOSS)
             {
                 Lean.LeanPool.Despawn(trigger);
@@ -224,40 +246,110 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
     }
 
-    public void TriggerTomahawkVsEnemies(GameObject tomahawk, GameObject enemy)
+    public void TriggerTomahawkVsEnemies(GameObject tomahawk, GameObject targetObject)
     {
-        if (_enemiesOnWave.ContainsKey(enemy))
+        if (_tomahawks.ContainsKey(tomahawk))
         {
-            Lean.LeanPool.Despawn(tomahawk);
-            int dame = tomahawk.GetComponent<Tomahawk>().GetDame();
-            _enemiesOnWave[enemy].OnHit(dame);
-        }
-    }
-
-    public void TriggerGenadevsEnemies(GameObject genade)
-    {
-
-        List<GameObject> enemiesKeyGO = _enemiesOnWave.Keys.ToList();
-        int dame = genade.GetComponent<Genade>().GetDame();
-        for (int i = 0; i < enemiesKeyGO.Count; i++)
-        {
-            float distance = Vector3.Distance(genade.transform.position, _enemiesOnWave[enemiesKeyGO[i]].transform.position);
-            if (distance <= 2)
+            if (targetObject.tag == GameTag.ENEMY)
             {
-                int dameTaken = (int) (dame * (1 - (float)distance / 2));
-                _enemiesOnWave[enemiesKeyGO[i]].OnHit(dameTaken);
+                if (_enemiesOnWave.ContainsKey(targetObject))
+                {
+                    int dame = tomahawk.GetComponent<Tomahawk>().GetDame();
+                    _enemiesOnWave[targetObject].OnHit(dame);
+                }
+            }
+
+            if (targetObject.tag == GameTag.BORDER || targetObject.tag == GameTag.ENEMY)
+            {
+                _tomahawks.Remove(tomahawk);
+                Lean.LeanPool.Despawn(tomahawk);
             }
         }
-
-        Lean.LeanPool.Despawn(genade);
     }
 
-    public void TriggerArrowVsEnemies(GameObject arrow, GameObject enemy)
+    public void TriggerGenadevsEnemies(GameObject genade, GameObject targetObject)
     {
-        if (_enemiesOnWave.ContainsKey(enemy))
+        if (targetObject.tag == GameTag.ENEMY)
         {
-            int dame = arrow.GetComponent<Arrow>().GetDame();
-            _enemiesOnWave[enemy].OnHit(dame);
+            List<GameObject> enemiesKeyGO = _enemiesOnWave.Keys.ToList();
+            int dame = genade.GetComponent<Genade>().GetDame();
+            for (int i = 0; i < enemiesKeyGO.Count; i++)
+            {
+                float distance = Vector3.Distance(genade.transform.position, _enemiesOnWave[enemiesKeyGO[i]].transform.position);
+                if (distance <= 2)
+                {
+                    int dameTaken = (int)(dame * (1 - (float)distance / 2));
+                    _enemiesOnWave[enemiesKeyGO[i]].OnHit(dameTaken);
+                }
+            }
+            if (_genades.ContainsKey(genade))
+            {
+                Lean.LeanPool.Despawn(genade);
+                _genades.Remove(genade);
+            }
+        }
+        else if (targetObject.tag == GameTag.BORDER)
+        {
+            if (_genades.ContainsKey(genade))
+            {
+                Lean.LeanPool.Despawn(genade);
+                _genades.Remove(genade);
+            }
+        }
+    }
+
+    public void TriggerArrowVsEnemies(GameObject arrow, GameObject targetObject)
+    {
+        if (_arrows.ContainsKey(arrow))
+        {
+            if (targetObject.tag == GameTag.ENEMY)
+            {
+                if (_enemiesOnWave.ContainsKey(targetObject))
+                {
+                    int dame = arrow.GetComponent<Arrow>().GetDame();
+                    _enemiesOnWave[targetObject].OnHit(dame);
+                }
+            }
+            if (targetObject.tag == GameTag.BORDER)
+            {
+                Lean.LeanPool.Despawn(targetObject);
+                _arrows.Remove(arrow);
+            }
+        }
+    }
+
+    public void BlackHoleAttack(float seconds, int dame)
+    {
+        StartCoroutine(DelayTime(seconds, () =>
+        {
+            List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
+
+            for (int i = 0; i < enemiesGO.Count; i++)
+            {
+                _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
+            }
+        }));
+        StartCoroutine(DelayTime(1f, () =>
+        {
+            List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
+
+            for (int i = 0; i < enemiesGO.Count; i++)
+            {
+                _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+            }
+        }));
+    }
+
+    public void TriggerLazerVsOther(GameObject other, int dame)
+    {
+        if (other.tag == GameTag.ENEMY)
+        {
+            _enemiesOnWave[other].OnHit(dame);
+        }
+
+        if (other.tag == GameTag.BOSS)
+        {
+            _bosses[other].OnHit(dame);
         }
     }
     /// <summary>
@@ -336,11 +428,42 @@ public partial class HandleEvent : Singleton<HandleEvent>
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="tomahawk"></param>
+    public void AddTomahawk(GameObject tomahawk)
+    {
+        _tomahawks.Add(tomahawk, tomahawk.GetComponent<Tomahawk>());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="genade"></param>
+    public void AddGenade(GameObject genade)
+    {
+        _genades.Add(genade, genade.GetComponent<Genade>());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="arrow"></param>
+    public void AddArrow(GameObject arrow)
+    {
+        _arrows.Add(arrow, arrow.GetComponent<Arrow>());
+    }
+
+    /// <summary>
     /// hàm reset được gọi sau khi hoàn thành wave
     /// </summary>
     public void Reset()
     {
         _enemiesOnWave.Clear();
+        _tomahawks.Clear();
+        _genades.Clear();
+        _arrows.Clear();
+        _bulletsSpawn.Clear();
     }
 
     public BaseEnemy GetBaseEnemyScript(GameObject obj)

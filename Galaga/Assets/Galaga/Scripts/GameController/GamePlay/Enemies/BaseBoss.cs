@@ -198,7 +198,6 @@ public class BaseBoss : MonoBehaviour
         moveFromRight.Mode = _moveInfor.Mode;
         moveFromRight.Type = _moveInfor.Type;
         List<GameObject> enemiesObj = new List<GameObject>();
-        HandleEvent.Instance.Reset();
         
         switch (_waveBossInfor.TypeSpawn)
         {

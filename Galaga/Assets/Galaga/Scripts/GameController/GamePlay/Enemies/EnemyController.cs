@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Plugins;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 
 /// <summary>
@@ -295,7 +294,6 @@ public class EnemyController : Singleton<EnemyController>
     /// <param name="wave"></param>
     public void SpawnEnemy(WaveInformation wave)
     {
-        HandleEvent.Instance.Reset();
         // danh sách tổng item trên wave
         // nếu item được cộng vào enemy thì danh sách này sẽ bị xóa item đó
         List<int> itemOnWave = new List<int>();

@@ -20,10 +20,35 @@ public class BaseEnemy : MonoBehaviour
     private bool _isFromBoss = false;
     private GameObject _boss;
 
+    private bool _isBlackHoleAttack;
+    private Vector2 _centreBlackHole;
+    private float _rotateSpeed = 1f;
+    private float _radius;
+    private float _angle;
+
     void Awake()
     {
+
+        _isBlackHoleAttack = false;
         isAlive = true;
         _rootPos = transform.position;
+    }
+
+    void Update()
+    {
+        if (_isBlackHoleAttack && _radius > 0)
+        {
+            _angle += _rotateSpeed * Time.deltaTime;
+            var offet = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle), 0) * _radius;
+            transform.position = new Vector3(_centreBlackHole.x, _centreBlackHole.y, 0) + new Vector3(offet.x, offet.y, 0);
+            _radius -= Time.deltaTime;
+        }
+    }
+
+    void OnEnable()
+    {
+        _isBlackHoleAttack = false;
+        isAlive = true;
     }
 
     #region Public Method
@@ -74,7 +99,7 @@ public class BaseEnemy : MonoBehaviour
             _itemsDrop.Add(items[i]);
         }
     }
-    /// <summary>
+    /// <summary> 
     /// di chuyển từ lúc sinh đến lúc sắp xếp xong ma trận trên màn hình
     /// </summary>
     /// <param name="waypoints"></param>
@@ -99,6 +124,15 @@ public class BaseEnemy : MonoBehaviour
             }
 
         });
+    }
+
+    public void BlackHoleAttack(GameObject blackHoleCentre)
+    {
+        _centreBlackHole = blackHoleCentre.transform.position;
+        DOTween.Kill(transform);
+        _isBlackHoleAttack = true;
+        _radius = Vector2.Distance(transform.position, blackHoleCentre.transform.position);
+        _angle = Mathf.Atan2(transform.position.y, transform.position.x) * Mathf.Rad2Deg;
     }
 
     /// <summary>

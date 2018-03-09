@@ -21,14 +21,7 @@ public class Arrow : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == GameTag.BORDER)
-        {
-            Lean.LeanPool.Despawn(this.gameObject);
-        }
-        else if (other.tag == GameTag.ENEMY)
-        {
-            HandleEvent.Instance.TriggerArrowVsEnemies(this.gameObject, other.gameObject);
-        }
+        HandleEvent.Instance.TriggerArrowVsEnemies(this.gameObject, other.gameObject);
     }
 
     public int GetDame()

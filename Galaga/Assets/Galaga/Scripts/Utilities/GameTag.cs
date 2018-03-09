@@ -6,6 +6,10 @@ public class GameTag
 {
     public const string PLAYER = "Player";
     public const string GUN = "gun";
+    public const string GUN_DRONE = "gun_drone";
+    public const string GUN_GENADE = "gun_genade";
+    public const string GUN_ARROW = "gun_arrow";
+    public const string GUN_LAZER = "gun_lazer";
     /// <summary>
     /// tag của viên đạn
     /// </summary>
@@ -42,11 +46,11 @@ public class GameTag
     public const string ITEM_BULLET_3 = "item_bullet_3";
     public const string ITEM_COIN = "coin";
     public const string ITEM_SUPPER_TOMAHAWK = "tomahawk";
-    public const string ITEM_SUPPER_GANADE = "genade";
-    public const string ITEM_BLACK_HOLe = "black_hole";
-    public const string ITEM_Arrow = "arrow";
+    public const string ITEM_SUPPER_GENADE = "genade";
+    public const string ITEM_BLACK_HOLE = "black_hole";
+    public const string ITEM_ARROW = "arrow";
     public const string ITEM_LAZER = "lazer";
-
+    
     public const string ENEMY_IDLE = "Idle";
     public const string ENEMY_ATTACK = "Attack";
     public const string ENEMY_DIE = "Die";

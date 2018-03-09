@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GamePlayConfig : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GamePlayConfig : MonoBehaviour
     [SerializeField] float minDx;
     [Tooltip("vị trí y nhỏ nhất phi thuyền có thể di chuyển đến")]
     [SerializeField] float minDy;
+    [Tooltip("Smooth Speed của phi thuyền")] [SerializeField] private float smoothSpeed;
     [Tooltip("khoảng cách hiệu ứng di chuyển camera khi phi thuyền lượn sang trái - phải")]
     [SerializeField] private float deltaTransform;
     /// <summary>
@@ -76,5 +78,10 @@ public class GamePlayConfig : MonoBehaviour
     public float GetTimeDelayBetweenWaves()
     {
         return timeDelayBetweenWave;
+    }
+
+    public float GetSmoothSpeed()
+    {
+        return smoothSpeed;
     }
 }

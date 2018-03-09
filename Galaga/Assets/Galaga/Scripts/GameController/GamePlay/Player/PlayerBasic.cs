@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,16 @@ public class PlayerBasic : PlayerController
     private GameObject _bulletsMgr;
 
     [SerializeField] private int _currentNumberBulletOnScreen;
-    
+
+    [SerializeField] private float _timeAttackTomahawk;
+
+    [SerializeField] private float _timeAttackGenade;
+
+    [SerializeField] private float _timeAttackLazer;
+
+    [SerializeField] private float _timeAttackBlackHole;
+
+    [SerializeField] private int _dameOfBlackHole;
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
@@ -21,6 +31,8 @@ public class PlayerBasic : PlayerController
     private GameObject _bullet;
     private float fireRate;
     private GameObject gunObject;
+
+
 
     void Awake()
     {
@@ -52,6 +64,18 @@ public class PlayerBasic : PlayerController
                 break;
             case GameTag.ITEM_BULLET_3:
                 ChangeBullet3();
+                break;
+            case GameTag.ITEM_BLACK_HOLE:
+                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
+                break;
+            case GameTag.ITEM_SUPPER_GENADE:
+                FireGenade();
+                break;
+            case GameTag.ITEM_SUPPER_TOMAHAWK:
+                FireTomahawk();
+                break;
+            case GameTag.ITEM_LAZER:
+                FireLazer();
                 break;
         }
     }
@@ -91,6 +115,7 @@ public class PlayerBasic : PlayerController
             case GameTag.BULLET_4:
                 FireBulletFour();
                 break;
+            
             default:
                 break;
         }
@@ -201,12 +226,48 @@ public class PlayerBasic : PlayerController
 
     void FireTomahawk()
     {
-        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE)
+            {
+                transform.GetChild(i).gameObject.SetActive(true);
+                break;
+            }
+        }
+        StartCoroutine(DeLayTime(_timeAttackTomahawk, () =>
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE)
+                {
+                    transform.GetChild(i).gameObject.SetActive(false);
+                    break;
+                }
+            }
+        }));
     }
 
     void FireGenade()
     {
-        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.tag == GameTag.GUN_GENADE)
+            {
+                transform.GetChild(i).gameObject.SetActive(true);
+                break;
+            }
+        }
+        StartCoroutine(DeLayTime(_timeAttackGenade, () =>
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).gameObject.tag == GameTag.GUN_GENADE)
+                {
+                    transform.GetChild(i).gameObject.SetActive(false);
+                    break;
+                }
+            }
+        }));
     }
 
     void FireLazer()
@@ -215,4 +276,10 @@ public class PlayerBasic : PlayerController
     }
 
     #endregion
+
+    IEnumerator DeLayTime(float seconds, Action callBack)
+    {
+        yield return new WaitForSeconds(seconds);
+        callBack();
+    }
 }

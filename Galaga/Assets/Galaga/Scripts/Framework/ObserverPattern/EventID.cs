@@ -10,5 +10,6 @@
     EatItem,
     HitPlayer,
     GameOver,
-    GameWin
+    GameWin,
+    EatBlackHoleItem
 }

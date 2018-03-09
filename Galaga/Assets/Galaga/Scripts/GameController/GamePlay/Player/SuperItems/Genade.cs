@@ -6,7 +6,7 @@ public class Genade : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private int dame;
-    
+
     void Update()
     {
         transform.position += Vector3.up * Time.deltaTime * speed;
@@ -14,14 +14,9 @@ public class Genade : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == GameTag.BORDER)
-        {
-            Lean.LeanPool.Despawn(this.gameObject);
-        }
-        else if (other.tag == GameTag.ENEMY)
-        {
-            HandleEvent.Instance.TriggerGenadevsEnemies(this.gameObject);
-        }
+
+        HandleEvent.Instance.TriggerGenadevsEnemies(this.gameObject, other.gameObject);
+
     }
 
     public int GetDame()

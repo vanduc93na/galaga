@@ -47,7 +47,8 @@ public class PlayerController : MonoBehaviour
             // so sánh với các vị trí config
             newPos = new Vector3(newPos.x < config.MinDx() ? config.MinDx() : newPos.x > config.MaxDx() ? config.MaxDx() : newPos.x,
                 newPos.y < config.MinDy() ? config.MinDy() : newPos.y > config.MaxDy() ? config.MaxDy() : newPos.y);
-            transform.position = newPos;
+            Vector3 smoothSpeed = Vector3.Lerp(transform.position, newPos, config.GetSmoothSpeed());
+            transform.position = smoothSpeed;
             // tạo hiệu ứng rung lắc
             //            CameraMoveEffect();
         };
