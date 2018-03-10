@@ -1,0 +1,26 @@
+{"skeleton":{"images":"Img/"},
+"bones":[{"name":"root"}],
+"slots":[
+	{"name":"L_wing_1","bone":"root","attachment":"L_wing_1"},
+	{"name":"L_Wing_0","bone":"root","attachment":"L_Wing_0"},
+	{"name":"L_gun","bone":"root","attachment":"L_gun"},
+	{"name":"R_wing_1","bone":"root","attachment":"R_wing_1"},
+	{"name":"R_Wing_0","bone":"root","attachment":"R_Wing_0"},
+	{"name":"R_gun","bone":"root","attachment":"R_gun"},
+	{"name":"body_gun","bone":"root","attachment":"body_gun"},
+	{"name":"body","bone":"root","attachment":"body"}
+],
+"skins":{
+	"default":{
+		"body":{"body":{"x":63,"y":48,"width":30,"height":76}},
+		"body_gun":{"body_gun":{"x":63,"y":12,"width":18,"height":16}},
+		"R_gun":{"R_gun":{"x":82,"y":50,"width":24,"height":56}},
+		"R_Wing_0":{"R_Wing_0":{"x":101,"y":38,"width":50,"height":40}},
+		"R_wing_1":{"R_wing_1":{"x":86,"y":12,"width":32,"height":24}},
+		"L_gun":{"L_gun":{"x":44,"y":50,"width":24,"height":56}},
+		"L_Wing_0":{"L_Wing_0":{"x":25,"y":38,"width":50,"height":40}},
+		"L_wing_1":{"L_wing_1":{"x":40,"y":12,"width":32,"height":24}}
+	}
+},
+"animations":{"animation":{}}
+}

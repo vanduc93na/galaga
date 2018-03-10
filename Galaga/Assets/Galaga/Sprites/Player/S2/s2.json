@@ -1,0 +1,24 @@
+{"skeleton":{"images":"img/"},
+"bones":[{"name":"root"}],
+"slots":[
+	{"name":"L_gun","bone":"root","attachment":"L_gun"},
+	{"name":"W_gun","bone":"root","attachment":"W_gun"},
+	{"name":"L_galting","bone":"root","attachment":"L_galting"},
+	{"name":"W_galting","bone":"root","attachment":"W_galting"},
+	{"name":"Body","bone":"root","attachment":"Body"},
+	{"name":"L_wing","bone":"root","attachment":"L_wing"},
+	{"name":"W_wing","bone":"root","attachment":"W_wing"}
+],
+"skins":{
+	"default":{
+		"W_wing":{"W_wing":{"x":105,"y":24,"width":50,"height":48}},
+		"L_wing":{"L_wing":{"x":25,"y":24,"width":50,"height":48}},
+		"Body":{"Body":{"x":65,"y":50,"width":46,"height":84}},
+		"W_galting":{"W_galting":{"x":103,"y":42,"width":26,"height":52}},
+		"L_galting":{"L_galting":{"x":27,"y":42,"width":26,"height":52}},
+		"W_gun":{"W_gun":{"x":102,"y":44,"width":12,"height":36}},
+		"L_gun":{"L_gun":{"x":28,"y":44,"width":12,"height":36}}
+	}
+},
+"animations":{"animation":{}}
+}

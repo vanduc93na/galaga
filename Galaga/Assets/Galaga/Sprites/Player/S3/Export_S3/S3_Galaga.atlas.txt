@@ -1,0 +1,62 @@
+
+S3_Galaga.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+L_Wing_0
+  rotate: false
+  xy: 34, 86
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+L_gun
+  rotate: false
+  xy: 34, 28
+  size: 24, 56
+  orig: 24, 56
+  offset: 0, 0
+  index: -1
+L_wing_1
+  rotate: true
+  xy: 60, 52
+  size: 32, 24
+  orig: 32, 24
+  offset: 0, 0
+  index: -1
+R_Wing_0
+  rotate: true
+  xy: 86, 76
+  size: 50, 40
+  orig: 50, 40
+  offset: 0, 0
+  index: -1
+R_gun
+  rotate: true
+  xy: 2, 2
+  size: 24, 56
+  orig: 24, 56
+  offset: 0, 0
+  index: -1
+R_wing_1
+  rotate: true
+  xy: 60, 18
+  size: 32, 24
+  orig: 32, 24
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2, 50
+  size: 30, 76
+  orig: 30, 76
+  offset: 0, 0
+  index: -1
+body_gun
+  rotate: false
+  xy: 2, 32
+  size: 18, 16
+  orig: 18, 16
+  offset: 0, 0
+  index: -1

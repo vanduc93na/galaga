@@ -1,0 +1,55 @@
+
+S2_Galaga.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Body
+  rotate: false
+  xy: 2, 94
+  size: 46, 84
+  orig: 46, 84
+  offset: 0, 0
+  index: -1
+L_galting
+  rotate: false
+  xy: 2, 40
+  size: 26, 52
+  orig: 26, 52
+  offset: 0, 0
+  index: -1
+L_gun
+  rotate: false
+  xy: 154, 142
+  size: 12, 36
+  orig: 12, 36
+  offset: 0, 0
+  index: -1
+L_wing
+  rotate: false
+  xy: 50, 130
+  size: 50, 48
+  orig: 50, 48
+  offset: 0, 0
+  index: -1
+W_galting
+  rotate: true
+  xy: 50, 102
+  size: 26, 52
+  orig: 26, 52
+  offset: 0, 0
+  index: -1
+W_gun
+  rotate: false
+  xy: 2, 2
+  size: 12, 36
+  orig: 12, 36
+  offset: 0, 0
+  index: -1
+W_wing
+  rotate: false
+  xy: 102, 130
+  size: 50, 48
+  orig: 50, 48
+  offset: 0, 0
+  index: -1
