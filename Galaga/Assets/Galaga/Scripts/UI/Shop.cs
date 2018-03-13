@@ -13,6 +13,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     [SerializeField] private int _globalDMGPrime;
     [SerializeField] private Text _messageMekit;
     [SerializeField] private Text _messageDMG;
+    [SerializeField] private float _damageRate;
 
     void OnEnable()
     {
@@ -38,12 +39,12 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     public void ClickBuyMekit()
     {
-        
+        InventoryHelper.Instance.LoadInventory();
     }
 
     public void ClickBuyDMG()
     {
-        
+        InventoryHelper.Instance.AddDamageRate(_damageRate);
     }
 
     public void ClickBuyRemoveAds()

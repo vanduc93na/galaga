@@ -9,6 +9,13 @@ public class BasicBullet : MonoBehaviour
     [Tooltip("Fire Rate")] [SerializeField] private float fireRate;
     [Tooltip("Dame")] [SerializeField] private int dame;
     [Tooltip("Speed")] [SerializeField] private float speed;
+    private float damageRate;
+
+    void OnEnable()
+    {
+        InventoryHelper.Instance.LoadInventory();
+        damageRate = InventoryHelper.Instance.UserInventory.damageRate;
+    }
 
     private float scaleDelta = 0.05f;
 
@@ -47,14 +54,12 @@ public class BasicBullet : MonoBehaviour
 
     public int Dame()
     {
-        return dame;
+        float damageTaken = damageRate * dame;
+        return (int) damageTaken;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        //Nó bi do cái này này
-        // Đây layder dèault va chậm tất cả
-        // nên khi viên đạn này gặp cáilaseser kia ở dèault là nó hủy cái laser kia
         HandleEvent.Instance.TriggerBulletVsOther(gameObject, other.gameObject);
     }
 }

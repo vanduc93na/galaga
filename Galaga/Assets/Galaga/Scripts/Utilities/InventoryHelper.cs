@@ -63,5 +63,27 @@ public class InventoryHelper
         return true;
     }
 
+    public void SetIDShipSelected(int id)
+    {
+        LoadInventory();
+        UserInventory.shipSelected = id;
+        SaveInventory();
+    }
 
+    public void AddIdShipPaid(int id)
+    {
+        LoadInventory();
+        UserInventory.openShip += "," + id.ToString();
+        SaveInventory();
+    }
+
+    public void AddDamageRate(float rate)
+    {
+        LoadInventory();
+        if (UserInventory.damageRate + rate <= 2f)
+        {
+            UserInventory.damageRate += rate;
+        }
+        SaveInventory();
+    }
 }
