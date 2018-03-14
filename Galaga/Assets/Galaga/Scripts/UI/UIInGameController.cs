@@ -17,7 +17,6 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void Awake()
     {
-        PlayerPrefs.SetInt(PlayerPrefString.SELECTED_LEVEL, 1);
         this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject) param));
     }
     

@@ -59,6 +59,7 @@ namespace DG.DOTweenEditor
 
 #if DOTWEEN_TK2D
         static readonly Dictionary<DOTweenAnimationType, Type[]> _Tk2dAnimationTypeToComponent = new Dictionary<DOTweenAnimationType, Type[]>() {
+            { DOTweenAnimationType.Scale, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
             { DOTweenAnimationType.Color, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
             { DOTweenAnimationType.Fade, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
             { DOTweenAnimationType.Text, new[] { typeof(tk2dTextMesh) } }
@@ -105,6 +106,7 @@ namespace DG.DOTweenEditor
             onUpdateProperty = base.serializedObject.FindProperty("onUpdate");
             onStepCompleteProperty = base.serializedObject.FindProperty("onStepComplete");
             onCompleteProperty = base.serializedObject.FindProperty("onComplete");
+            onRewindProperty = base.serializedObject.FindProperty("onRewind");
             onTweenCreatedProperty = base.serializedObject.FindProperty("onTweenCreated");
 
             // Convert _AnimationType to _animationTypeNoSlashes

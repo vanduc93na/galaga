@@ -76,7 +76,7 @@ namespace DG.Tweening
 
         void Start()
         {
-            if (_tweenCreated) return;
+            if (_tweenCreated || !isActive || !isValid) return;
 
             CreateTween();
             _tweenCreated = true;
@@ -164,7 +164,19 @@ namespace DG.Tweening
                 tween = transform.DOLocalRotate(endValueV3, duration, optionalRotationMode);
                 break;
             case DOTweenAnimationType.Scale:
-                tween = transform.DOScale(optionalBool0 ? new Vector3(endValueFloat, endValueFloat, endValueFloat) : endValueV3, duration);
+                switch (targetType) {
+#if DOTWEEN_TK2D
+                case TargetType.tk2dTextMesh:
+                    tween = ((tk2dTextMesh)target).DOScale(optionalBool0 ? new Vector3(endValueFloat, endValueFloat, endValueFloat) : endValueV3, duration);
+                    break;
+                case TargetType.tk2dBaseSprite:
+                    tween = ((tk2dBaseSprite)target).DOScale(optionalBool0 ? new Vector3(endValueFloat, endValueFloat, endValueFloat) : endValueV3, duration);
+                    break;
+#endif
+                default:
+                    tween = transform.DOScale(optionalBool0 ? new Vector3(endValueFloat, endValueFloat, endValueFloat) : endValueV3, duration);
+                    break;
+                }
                 break;
             case DOTweenAnimationType.UIWidthHeight:
                 tween = ((RectTransform)target).DOSizeDelta(optionalBool0 ? new Vector2(endValueFloat, endValueFloat) : endValueV2, duration);
@@ -346,6 +358,9 @@ namespace DG.Tweening
             if (hasOnComplete) {
                 if (onComplete != null) tween.OnComplete(onComplete.Invoke);
             } else onComplete = null;
+            if (hasOnRewind) {
+                if (onRewind != null) tween.OnRewind(onRewind.Invoke);
+            } else onRewind = null;
 
             if (autoPlay) tween.Play();
             else tween.Pause();
@@ -433,6 +448,29 @@ namespace DG.Tweening
             DOTween.Play(id);
         }
 
+        public void DOPauseAllById(string id)
+        {
+            DOTween.Pause(id);
+        }
+
+        public void DOPlayBackwardsById(string id)
+        {
+            DOTween.PlayBackwards(this.gameObject, id);
+        }
+        public void DOPlayBackwardsAllById(string id)
+        {
+            DOTween.PlayBackwards(id);
+        }
+
+        public void DOPlayForwardById(string id)
+        {
+            DOTween.PlayForward(this.gameObject, id);
+        }
+        public void DOPlayForwardAllById(string id)
+        {
+            DOTween.PlayForward(id);
+        }
+
         public void DOPlayNext()
         {
             DOTweenAnimation[] anims = this.GetComponents<DOTweenAnimation>();
@@ -464,9 +502,17 @@ namespace DG.Tweening
             DOTween.Restart(id);
         }
 
+        /// <summary>
+        /// Returns the tweens created by this DOTweenAnimation, in the same order as they appear in the Inspector (top to bottom)
+        /// </summary>
         public List<Tween> GetTweens()
         {
-            return DOTween.TweensByTarget(this.gameObject);
+//            return DOTween.TweensByTarget(this.gameObject);
+
+            List<Tween> result = new List<Tween>();
+            DOTweenAnimation[] anims = this.GetComponents<DOTweenAnimation>();
+            foreach (DOTweenAnimation anim in anims) result.Add(anim.tween);
+            return result;
         }
 
         #endregion
