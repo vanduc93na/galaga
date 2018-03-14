@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LoadingBar : MonoBehaviour
 {
     [SerializeField] private Slider _barSlider;
+    [SerializeField] private int level;
     
     // Use this for initialization
     IEnumerator Start()
@@ -20,7 +21,7 @@ public class LoadingBar : MonoBehaviour
             _barSlider.value = (float)value / 100;
             
         }
-        GameController.Instance.StartGame(PlayerPrefs.GetInt(PlayerPrefString.SELECTED_LEVEL));
+        GameController.Instance.StartGame(level);
         gameObject.SetActive(false);
     }
     
