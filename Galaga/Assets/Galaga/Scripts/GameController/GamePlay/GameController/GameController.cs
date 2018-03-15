@@ -50,6 +50,13 @@ public class GameController : Singleton<GameController>
         Play();
     }
 
+    public void Restart()
+    {
+        gameStage = GameStage.Play;
+        _indexWave = 0;
+        StartGame(_currentLevelIndex);
+    }
+
     public void Play()
     {
         switch (_currentWave.TypeWave)

@@ -11,4 +11,5 @@ public class UserInventory
     public string openShip = "0";
     public int shipSelected = 0;
     public float damageRate = 1f;
+    public int selectedLevel = 0;
 }

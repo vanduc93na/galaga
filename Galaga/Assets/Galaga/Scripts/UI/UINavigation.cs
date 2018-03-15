@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UINavigation : MonoBehaviour
 {
+    [SerializeField] private GameObject _home;
     [SerializeField] private GameObject _settings;
     [SerializeField] private GameObject _shop;
     [SerializeField] private GameObject _garage;
@@ -20,20 +21,24 @@ public class UINavigation : MonoBehaviour
     public void GoToSetting()
     {
         _settings.SetActive(true);
+        _home.SetActive(false);
     }
 
     public void GoToShop()
     {
         _shop.SetActive(true);
+        _home.SetActive(false);
     }
 
     public void GoToGarage()
     {
         _garage.SetActive(true);
+        _home.SetActive(false);
     }
 
     public void GoToSelectLevel()
     {
         _selectLevel.SetActive(true);
+        _home.SetActive(false);
     }
 }

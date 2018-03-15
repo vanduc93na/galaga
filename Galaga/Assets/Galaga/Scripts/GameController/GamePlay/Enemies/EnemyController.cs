@@ -29,6 +29,8 @@ public class EnemyController : Singleton<EnemyController>
     /// </summary>
     private Dictionary<string, Vector3> _startPositionSpawnVector3;
 
+    private GameObject _emptyGO;
+
     void Awake()
     {
         RegisterEvent();
@@ -69,6 +71,7 @@ public class EnemyController : Singleton<EnemyController>
         _startPositionSpawnVector3.Add(GameTag.RIGHT, _startPositionSpawnGameObject.transform.GetChild(1).gameObject.transform.position);
         _startPositionSpawnVector3.Add(GameTag.TOP, _startPositionSpawnGameObject.transform.GetChild(2).gameObject.transform.position);
         _startPositionSpawnVector3.Add(GameTag.BOTTOM, _startPositionSpawnGameObject.transform.GetChild(3).gameObject.transform.position);
+        _emptyGO = new GameObject("empty enemy");
     }
 
     #region Methods For TypeMove
@@ -329,26 +332,34 @@ public class EnemyController : Singleton<EnemyController>
                         startPos = GameTag.BOTTOM;
                         break;
                 }
-                
-                GameObject enemySpawn = Lean.LeanPool.Spawn(_enemies[wave.Enemies[index].IdEnemy],
-                    _startPositionSpawnVector3[startPos],
-                    Quaternion.identity);
-                enemySpawn.transform.position = _startPositionSpawnVector3[startPos];
-                enemies.Add(enemySpawn);
-                enemySpawn.transform.SetParent(transform);
-                // add enemy to controller
-                HandleEvent.Instance.AddEnemy(enemySpawn);
-                enemySpawn.GetComponent<BaseEnemy>().SetTargetPosition(GetTargetPosition(i, j, wave));
-                if (index + 1 == wave.Enemies.Count)
+
+                if (wave.Enemies[index].IdEnemy < 0)
                 {
-                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index], true, false);
+                    var empty = Lean.LeanPool.Spawn(_emptyGO);
+                    enemies.Add(empty);
                 }
                 else
                 {
-                    enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index]);
+                    GameObject enemySpawn = Lean.LeanPool.Spawn(_enemies[wave.Enemies[index].IdEnemy],
+                        _startPositionSpawnVector3[startPos],
+                        Quaternion.identity);
+                    enemySpawn.transform.position = _startPositionSpawnVector3[startPos];
+                    enemies.Add(enemySpawn);
+                    enemySpawn.transform.SetParent(transform);
+                    // add enemy to controller
+                    HandleEvent.Instance.AddEnemy(enemySpawn);
+                    enemySpawn.GetComponent<BaseEnemy>().SetTargetPosition(GetTargetPosition(i, j, wave));
+                    if (index + 1 == wave.Enemies.Count)
+                    {
+                        enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index], true, false);
+                    }
+                    else
+                    {
+                        enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index]);
+                    }
+                    // gọi hàm drop item
+                    SetRandomDropItems(listRandom, index, enemySpawn, ref itemOnWave, totalCoin, listCoinDrop);
                 }
-                // gọi hàm drop item
-                SetRandomDropItems(listRandom, index, enemySpawn, ref itemOnWave, totalCoin, listCoinDrop);            
                 index++;
             }
         }

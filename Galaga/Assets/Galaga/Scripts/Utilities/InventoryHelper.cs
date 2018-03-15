@@ -24,17 +24,24 @@ public class InventoryHelper
 
     public void LoadInventory()
     {
-        string data = PlayerPrefs.GetString(StringKeys.FILE_NAME);
-        if (data == string.Empty)
+        if (!PlayerPrefs.HasKey(StringKeys.FILE_NAME))
+        {
             UserInventory = new UserInventory();
+            string data = JsonUtility.ToJson(UserInventory);
+            PlayerPrefs.SetString(StringKeys.FILE_NAME, data);
+        }
         else
+        {
+            string data = PlayerPrefs.GetString(StringKeys.FILE_NAME);
             UserInventory = JsonUtility.FromJson<UserInventory>(data);
+        }
+
     }
 
     public void SaveInventory()
     {
         string data = JsonUtility.ToJson(UserInventory);
-        PlayerPrefs.SetString(data, StringKeys.FILE_NAME);
+        PlayerPrefs.SetString(StringKeys.FILE_NAME, data);
     }
 
     public void AddCoin(int coin)
@@ -84,6 +91,13 @@ public class InventoryHelper
         {
             UserInventory.damageRate += rate;
         }
+        SaveInventory();
+    }
+
+    public void AddSelectedLevel(int level)
+    {
+        LoadInventory();
+        UserInventory.selectedLevel = level;
         SaveInventory();
     }
 }
