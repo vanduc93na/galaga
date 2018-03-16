@@ -42,6 +42,8 @@ public partial class HandleEvent : Singleton<HandleEvent>
     /// </summary>
     [SerializeField] private float _timeAttackBlackHole;
 
+    [SerializeField] private Transform _parentButtletOfEnemies;
+
     /// <summary>
     /// quản lý tất cả các enemy sau khi sinh ra, nếu enemy nào chết thì sẽ bị remove khỏi danh sách
     /// khi hoàn thành level thì danh sách này sẽ được reset về rỗng
@@ -134,6 +136,24 @@ public partial class HandleEvent : Singleton<HandleEvent>
         this.RegisterListener(EventID.EnemyDead, (param) => RemoveEnemy((GameObject)param));
         // event enemy cuối đến vị trí cuối cùng - dùng để thực hiện di chuyển enemy sau khi xếp map
         this.RegisterListener(EventID.LastEnemyMoveDone, (param) => MoveEnemyOnWave());
+
+        this.RegisterListener(EventID.Restart, (param) => RestartGame());
+    }
+
+    void RestartGame()
+    {
+        var keysEnemy = _enemiesOnWave.Keys.ToList();
+        for (int i = 0; i < keysEnemy.Count; i++)
+        {
+            Lean.LeanPool.Despawn(_enemiesOnWave[keysEnemy[i]]);
+        }
+        var keyBoss = _bosses.Keys.ToList();
+
+        for (int i = 0; i < keyBoss.Count; i++)
+        {
+            Lean.LeanPool.Despawn(_bosses[keyBoss[i]]);
+        }
+        Reset();
     }
 
     /// <summary>
@@ -172,13 +192,14 @@ public partial class HandleEvent : Singleton<HandleEvent>
         }
     }
 
+
     void EnemyAttack()
     {
         if (_enemiesOnWave.Count > 0)
         {
             int random = Random.Range(0, _enemiesOnWave.Count - 1);
             var listEnemy = _enemiesOnWave.Keys.ToList();
-            _enemiesOnWave[listEnemy[random]].Attack(_bulletEnemy);
+            _enemiesOnWave[listEnemy[random]].Attack(_bulletEnemy, _parentButtletOfEnemies);
         }
         float timerInvoke = Random.Range(0.5f, 1f);
         Invoke(ENEMY_ATTACK, timerInvoke);

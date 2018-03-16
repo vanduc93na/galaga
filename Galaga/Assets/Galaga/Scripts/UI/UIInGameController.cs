@@ -11,45 +11,41 @@ public class UIInGameController : Singleton<UIInGameController>
     [SerializeField] private GameObject loadingPanel;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject _gamePausePanel;
+    [SerializeField] private GameObject _gamePlayPanel;
 
-    [SerializeField] private Text _coinText;
+    private int _coinInLevel;
 	// Use this for initialization
 
     void Awake()
     {
-        this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject) param));
+        RegisterEvent();
     }
     
 	void Start ()
 	{
-	    _coinText.text = "0";
-        RegisterEvent();
+        Reset();
 	}
+
+    void Reset()
+    {
+        _coinInLevel = 0;
+        GamePlayUI.Instance.SetCoin(_coinInLevel);
+    }
 
     void OnEnable()
     {
         winPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
-    }
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
-    /// <summary>
-    /// gọi level đã chọn ở select level
-    /// </summary>
-    public void StartGame()
-    {
-//        this.PostEvent(EventID.PlayGame, 1);
-        loadingPanel.gameObject.SetActive(false);
+        
     }
 
     void EatCoin(GameObject obj)
     {
         if (obj.tag == GameTag.ITEM_COIN)
         {
-            _coinText.text = (int.Parse(_coinText.text) + 1).ToString();
+            _coinInLevel += 1;
+            GamePlayUI.Instance.SetCoin(_coinInLevel);
         }
     }
 
@@ -80,11 +76,6 @@ public class UIInGameController : Singleton<UIInGameController>
 
     #region GameOverPanel
 
-    public void ShowVideoAds()
-    {
-        
-    }
-
     #endregion
 
     #region
@@ -92,6 +83,10 @@ public class UIInGameController : Singleton<UIInGameController>
     void RegisterEvent()
     {
         this.RegisterListener(EventID.GameOver, param => ShowGameOver());
+        this.RegisterListener(EventID.GameWin, (param) => ShowGameWin());
+        this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject)param));
+        this.RegisterListener(EventID.Restart, (param) => Reset());
+        this.RegisterListener(EventID.NextLevel, (param) => Reset());
     }
 
     #endregion
@@ -110,6 +105,11 @@ public class UIInGameController : Singleton<UIInGameController>
     void ShowGameWin()
     {
         winPanel.gameObject.SetActive(true);
+    }
+
+    public int GetCoinInLevel()
+    {
+        return _coinInLevel;
     }
 }
  

@@ -21,19 +21,19 @@ public class UINavigation : MonoBehaviour
     public void GoToSetting()
     {
         _settings.SetActive(true);
-        _home.SetActive(false);
+//        _home.SetActive(false);
     }
 
     public void GoToShop()
     {
         _shop.SetActive(true);
-        _home.SetActive(false);
+//        _home.SetActive(false);
     }
 
     public void GoToGarage()
     {
         _garage.SetActive(true);
-        _home.SetActive(false);
+//        _home.SetActive(false);
     }
 
     public void GoToSelectLevel()

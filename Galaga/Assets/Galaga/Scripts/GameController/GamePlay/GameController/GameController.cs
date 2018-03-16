@@ -52,9 +52,10 @@ public class GameController : Singleton<GameController>
 
     public void Restart()
     {
+        this.PostEvent(EventID.Restart);
         gameStage = GameStage.Play;
         _indexWave = 0;
-        StartGame(_currentLevelIndex);
+        StartCoroutine(WaitForSecondsNextWave(1f));
     }
 
     public void Play()
@@ -83,6 +84,7 @@ public class GameController : Singleton<GameController>
             return;
         }
         HandleEvent.Instance.Reset();
+        this.PostEvent(EventID.NextLevel);
         _currentLevelIndex++;
         Play();
     }
@@ -92,7 +94,7 @@ public class GameController : Singleton<GameController>
         if (_indexWave >= _currentLevel.Waves.Count - 1)
         {
             print("complete level");
-            this.PostEvent(EventID.NextLevel);
+            this.PostEvent(EventID.GameWin);
             return;
         }
         _indexWave++;

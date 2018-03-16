@@ -14,7 +14,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Text _messageMekit;
     [SerializeField] private Text _messageDMG;
     [SerializeField] private float _damageRate;
-
+    
     void OnEnable()
     {
         _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height - 70);

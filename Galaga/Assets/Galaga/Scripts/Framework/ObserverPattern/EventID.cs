@@ -5,6 +5,7 @@
     EnemyDead,
     NextWave,
     NextLevel,
+    Restart,
     LastEnemyMoveDone,
     BossDead,
     EatItem,

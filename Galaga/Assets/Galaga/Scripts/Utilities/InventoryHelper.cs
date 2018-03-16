@@ -100,4 +100,17 @@ public class InventoryHelper
         UserInventory.selectedLevel = level;
         SaveInventory();
     }
+
+    public void SetLife(int life)
+    {
+        LoadInventory();
+        UserInventory.life = life;
+        SaveInventory();
+    }
+
+    public int GetLife()
+    {
+        LoadInventory();
+        return UserInventory.life;
+    }
 }

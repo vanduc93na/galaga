@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField] private int _health = 0;
+    [SerializeField] private ParticleSystem _effect;
 
     private bool isAlive;
 
@@ -28,7 +29,6 @@ public class BaseEnemy : MonoBehaviour
 
     void Awake()
     {
-
         _isBlackHoleAttack = false;
         isAlive = true;
         _rootPos = transform.position;
@@ -49,6 +49,13 @@ public class BaseEnemy : MonoBehaviour
     {
         _isBlackHoleAttack = false;
         isAlive = true;
+        
+    }
+
+    void OnDisable()
+    {
+        DOTween.Kill(transform);
+        transform.position = _rootPos;
     }
 
     #region Public Method
@@ -113,6 +120,7 @@ public class BaseEnemy : MonoBehaviour
         // thêm vị trí cuối cùng vào waypoint
         tmp.Add(_targetPosition);
         Vector3[] wp = tmp.ToArray();
+        transform.position = wp[0];
         _onMove = true;
         transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
         {
@@ -213,7 +221,7 @@ public class BaseEnemy : MonoBehaviour
         Lean.LeanPool.Despawn(this);
     }
 
-    public void Attack(GameObject bullet)
+    public void Attack(GameObject bullet, Transform parentTransform)
     {
         var go = Lean.LeanPool.Spawn(bullet);
         go.transform.position = transform.position;

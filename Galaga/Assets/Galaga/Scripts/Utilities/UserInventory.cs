@@ -12,4 +12,5 @@ public class UserInventory
     public int shipSelected = 0;
     public float damageRate = 1f;
     public int selectedLevel = 0;
+    public int life = 0;
 }

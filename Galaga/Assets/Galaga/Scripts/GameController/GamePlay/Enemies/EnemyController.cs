@@ -13,6 +13,7 @@ public class EnemyController : Singleton<EnemyController>
     [Tooltip("Enemies Manager")] [SerializeField] private GameObject _enemiesMgr;
     [Tooltip("Path Manager")] [SerializeField] private GameObject _pathsManager;
     [Tooltip("Spawn Position")] [SerializeField] private GameObject _startPositionSpawnGameObject;
+    [SerializeField] private Transform _parenTransform;
 
     /// <summary>
     /// danh sách chứa thông tin kiểu move theo path
@@ -336,6 +337,7 @@ public class EnemyController : Singleton<EnemyController>
                 if (wave.Enemies[index].IdEnemy < 0)
                 {
                     var empty = Lean.LeanPool.Spawn(_emptyGO);
+                    empty.transform.SetParent(_parenTransform);
                     enemies.Add(empty);
                 }
                 else

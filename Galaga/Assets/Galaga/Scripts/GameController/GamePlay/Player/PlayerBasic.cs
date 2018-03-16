@@ -82,7 +82,16 @@ public class PlayerBasic : PlayerController
 
     void PlayerDead()
     {
-        print("Player Dead - GameOver");
+        int life = InventoryHelper.Instance.GetLife();
+        if (life == 0)
+        {
+            this.PostEvent(EventID.GameOver);
+        }
+        else
+        {
+            InventoryHelper.Instance.SetLife(life - 1);
+            GamePlayUI.Instance.SetLife(life - 1);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -191,7 +200,7 @@ public class PlayerBasic : PlayerController
         }
         _currentNumberBulletOnScreen = 1;
         gunObject = transform.GetChild(0).gameObject;
-        _bullet = _bullets[0];
+        _bullet = _bullets[1];
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
         Invoke(FIRE_BULLET, fireRate);
     }
