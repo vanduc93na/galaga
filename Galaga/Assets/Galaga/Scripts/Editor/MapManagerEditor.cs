@@ -560,7 +560,7 @@ public class MapManagerEditor : EditorWindow
                 EnemyInformation enemy = new EnemyInformation();
                 enemy.IdEnemy = 1;
                 enemy.Health = 100;
-                enemy.IdPath = -1;
+                enemy.IdPath = 0;
                 wave.Enemies.Add(enemy);
             }
         }

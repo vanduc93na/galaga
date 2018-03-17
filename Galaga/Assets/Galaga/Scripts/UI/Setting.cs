@@ -22,7 +22,7 @@ public class Setting : MonoBehaviour, IPointerClickHandler
     void OnEnable()
     {
         _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height - 70);
-        _groupsItem.DOAnchorPosY(0, .7f);
+        _groupsItem.DOAnchorPosY(0, .7f).SetUpdate(true);
     }
 
     void Init()
@@ -89,7 +89,7 @@ public class Setting : MonoBehaviour, IPointerClickHandler
         _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, 0.7f).OnComplete(() =>
         {
             gameObject.SetActive(false);
-        });
+        }).SetUpdate(true);
     }
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)

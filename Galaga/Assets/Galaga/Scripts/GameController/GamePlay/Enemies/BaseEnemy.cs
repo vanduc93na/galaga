@@ -187,6 +187,7 @@ public class BaseEnemy : MonoBehaviour
             for (int i = 0; i < _itemsDrop.Count; i++)
             {
                 GameObject item = Lean.LeanPool.Spawn(HandleEvent.Instance.ItemsGameObject[_itemsDrop[i]], transform.position, Quaternion.identity);
+                item.transform.position = transform.position;
                 HandleEvent.Instance.AddItem(item);
             }
         }

@@ -30,7 +30,7 @@ public class UIInGameController : Singleton<UIInGameController>
     void Reset()
     {
         _coinInLevel = 0;
-        GamePlayUI.Instance.SetCoin(_coinInLevel);
+        _gamePlayPanel.GetComponent<GamePlayUI>().SetCoin(_coinInLevel);
     }
 
     void OnEnable()

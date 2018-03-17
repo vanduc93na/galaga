@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBasic : PlayerController
 {
@@ -20,19 +21,25 @@ public class PlayerBasic : PlayerController
     [SerializeField] private float _timeAttackBlackHole;
 
     [SerializeField] private int _dameOfBlackHole;
+
+    [SerializeField] private GameObject _sprite;
+
+    [SerializeField] private Text _lifeText;
+
+    [SerializeField] private GameObject _shield;
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
     /// key là id của viên đạn
     /// </summary>
     private Dictionary<int, GameObject> _bullets;
-    
+
     private const string FIRE_BULLET = "FireBullet";
     private GameObject _bullet;
     private float fireRate;
     private GameObject gunObject;
-
-
+    private float _life;
+    private bool _isProtected;
 
     void Awake()
     {
@@ -46,7 +53,7 @@ public class PlayerBasic : PlayerController
 
     void RegisterEvent()
     {
-        this.RegisterListener(EventID.EatItem, (param) => EatItem((GameObject) param));
+        this.RegisterListener(EventID.EatItem, (param) => EatItem((GameObject)param));
     }
 
     void EatItem(GameObject obj)
@@ -56,14 +63,14 @@ public class PlayerBasic : PlayerController
             case GameTag.ITEM_ADD_BULLET:
                 AddBullet();
                 break;
-            case GameTag.ITEM_BULLET_1:
-                ChangeBullet1();
+            case GameTag.ITEM_ADD_HEART:
+                AddHeart();
                 break;
-            case GameTag.ITEM_BULLET_2:
-                ChangeBullet2();
+            case GameTag.ITEM_PLAYER_PROTECTED:
+                StartCoroutine(PlayerProtected());
                 break;
             case GameTag.ITEM_BULLET_3:
-                ChangeBullet3();
+                
                 break;
             case GameTag.ITEM_BLACK_HOLE:
                 HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
@@ -82,16 +89,36 @@ public class PlayerBasic : PlayerController
 
     void PlayerDead()
     {
-        int life = InventoryHelper.Instance.GetLife();
-        if (life == 0)
+        if (_isProtected) return;
+        if (_life == 0)
         {
             this.PostEvent(EventID.GameOver);
         }
         else
         {
-            InventoryHelper.Instance.SetLife(life - 1);
-            GamePlayUI.Instance.SetLife(life - 1);
+            _life -= 1;
         }
+    }
+
+    IEnumerator PlayerProtected()
+    {
+        _isProtected = true;
+        _shield.SetActive(true);
+        InventoryHelper.Instance.LoadInventory();
+        switch (InventoryHelper.Instance.UserInventory.shipSelected)
+        {
+            case 1:
+                yield return new WaitForSeconds(10f);
+                break;
+            case 2:
+                yield return new WaitForSeconds(12f);
+                break;
+            case 3:
+                yield return new WaitForSeconds(15f);
+                break;
+        }
+        _isProtected = false;
+        _shield.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -124,7 +151,7 @@ public class PlayerBasic : PlayerController
             case GameTag.BULLET_4:
                 FireBulletFour();
                 break;
-            
+
             default:
                 break;
         }
@@ -192,6 +219,7 @@ public class PlayerBasic : PlayerController
 
     void Init()
     {
+        _isProtected = false;
         _bullets = new Dictionary<int, GameObject>();
         // init _bullets
         for (int i = 0; i < _bulletsMgr.transform.childCount; i++)
@@ -201,6 +229,27 @@ public class PlayerBasic : PlayerController
         _currentNumberBulletOnScreen = 1;
         gunObject = transform.GetChild(0).gameObject;
         _bullet = _bullets[1];
+        InventoryHelper.Instance.LoadInventory();
+        for (int i = 0; i < _sprite.transform.childCount; i++)
+        {
+            _sprite.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        switch (InventoryHelper.Instance.UserInventory.shipSelected)
+        {
+            case 1:
+                _life = 1;
+                _sprite.transform.GetChild(0).gameObject.SetActive(true);
+                break;
+            case 2:
+                _life = 2;
+                _sprite.transform.GetChild(1).gameObject.SetActive(true);
+                break;
+            case 3:
+                _life = 3;
+                _sprite.transform.GetChild(2).gameObject.SetActive(true);
+                break;
+        }
+        _life += InventoryHelper.Instance.UserInventory.life;
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
         Invoke(FIRE_BULLET, fireRate);
     }
@@ -216,20 +265,13 @@ public class PlayerBasic : PlayerController
         }
     }
 
-    void ChangeBullet1()
+    void AddHeart()
     {
-        _bullet = _bullets[0];
+        _life += 1;
+        _lifeText.text = _life.ToString();
     }
+    
 
-    void ChangeBullet2()
-    {
-        _bullet = _bullets[1];
-    }
-
-    void ChangeBullet3()
-    {
-        _bullet = _bullets[2];
-    }
 
     #region SUPER_ITEM
 
@@ -281,7 +323,7 @@ public class PlayerBasic : PlayerController
 
     void FireLazer()
     {
-        
+
     }
 
     #endregion

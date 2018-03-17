@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameTag
 {
     public const string PLAYER = "Player";
+    public const string SHIP_1 = "ship_1";
+    public const string SHIP_2 = "ship_2";
+    public const string SHIP_3 = "ship_3";
     public const string GUN = "gun";
     public const string GUN_DRONE = "gun_drone";
     public const string GUN_GENADE = "gun_genade";
@@ -42,8 +45,9 @@ public class GameTag
     public const string ITEM = "item";
     public const string ITEM_ADD_BULLET = "item_add";
     public const string ITEM_BULLET_1 = "item_bullet_1";
-    public const string ITEM_BULLET_2 = "item_bullet_2";
+    public const string ITEM_PLAYER_PROTECTED = "item_protected";
     public const string ITEM_BULLET_3 = "item_bullet_3";
+    public const string ITEM_ADD_HEART = "add_heart";
     public const string ITEM_COIN = "item_coin";
     public const string ITEM_SUPPER_TOMAHAWK = "tomahawk";
     public const string ITEM_SUPPER_GENADE = "genade";
