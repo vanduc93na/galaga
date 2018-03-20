@@ -35,4 +35,9 @@ public class GamePause : MonoBehaviour
         gameObject.SetActive(false);
         Time.timeScale = 1;
     }
+
+    void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
 }

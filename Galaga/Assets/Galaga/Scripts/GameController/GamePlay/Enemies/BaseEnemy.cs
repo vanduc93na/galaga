@@ -7,7 +7,6 @@ using UnityEngine.Networking;
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField] private int _health = 0;
-    [SerializeField] private ParticleSystem _effect;
 
     private bool isAlive;
 

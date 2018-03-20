@@ -237,15 +237,15 @@ public class PlayerBasic : PlayerController
         }
         switch (InventoryHelper.Instance.UserInventory.shipSelected)
         {
-            case 1:
+            case 0:
                 _life = 1;
                 _sprite.transform.GetChild(0).gameObject.SetActive(true);
                 break;
-            case 2:
+            case 1:
                 _life = 2;
                 _sprite.transform.GetChild(1).gameObject.SetActive(true);
                 break;
-            case 3:
+            case 2:
                 _life = 3;
                 _sprite.transform.GetChild(2).gameObject.SetActive(true);
                 break;

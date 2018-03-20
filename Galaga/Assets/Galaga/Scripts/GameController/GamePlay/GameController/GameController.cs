@@ -9,7 +9,7 @@ using UnityEngine;
 /// - điểu khiển các trạng thái game
 /// - điều khiển UI
 /// </summary>
-public class GameController : Singleton<GameController>
+public class GameController : MonoBehaviour
 {
     public GameStage gameStage;
 
@@ -19,11 +19,19 @@ public class GameController : Singleton<GameController>
     private LevelInformation[] _levelsInfor;
     private int _indexWave;
     private int _currentLevelIndex;
+
+    public static GameController Instance;
+    
     void Awake()
     {
         // đăng ký sự kiện bắt đầu game
         this.RegisterListener(EventID.NextWave, (param) => NextWave());
         Init();
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
     #region Private Method

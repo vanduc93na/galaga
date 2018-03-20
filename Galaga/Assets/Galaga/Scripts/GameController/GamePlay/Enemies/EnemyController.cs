@@ -8,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// thực hiện việc sinh và quản lý sinh
 /// </summary>
-public class EnemyController : Singleton<EnemyController>
+public class EnemyController : MonoBehaviour
 {
     [Tooltip("Enemies Manager")] [SerializeField] private GameObject _enemiesMgr;
     [Tooltip("Path Manager")] [SerializeField] private GameObject _pathsManager;
@@ -32,10 +32,16 @@ public class EnemyController : Singleton<EnemyController>
 
     private GameObject _emptyGO;
 
+    public static EnemyController Instance;
+
     void Awake()
     {
         RegisterEvent();
         Init();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
     #region Private Method

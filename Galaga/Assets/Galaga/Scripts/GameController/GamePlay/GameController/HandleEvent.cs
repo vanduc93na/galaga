@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 /// <summary>
 /// xử lý các sự kiện và quản lý các hành động enemy
 /// </summary>
-public partial class HandleEvent : Singleton<HandleEvent>
+public partial class HandleEvent : MonoBehaviour
 {
     /// <summary>
     /// prefab danh sách items drop
@@ -95,8 +95,8 @@ public partial class HandleEvent : Singleton<HandleEvent>
 
     #endregion
 
-
-
+    public static HandleEvent Instance;
+    
 
     void Awake()
     {
@@ -104,6 +104,10 @@ public partial class HandleEvent : Singleton<HandleEvent>
         RegisterEnemiesEvents();
         InitBoss();
         RegisterBossEvents();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
     void InitForEnemies()
@@ -197,8 +201,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
             CancelInvoke(MOVE_ON_WAVE_METHOD);
         }
     }
-
-
+    
     void EnemyAttack()
     {
         if (_enemiesOnWave.Count > 0)
@@ -207,7 +210,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
             var listEnemy = _enemiesOnWave.Keys.ToList();
             _enemiesOnWave[listEnemy[random]].Attack(_bulletEnemy, _parentButtletOfEnemies);
         }
-        float timerInvoke = Random.Range(0.5f, 1f);
+        float timerInvoke = Random.Range(1f, 5f);
         Invoke(ENEMY_ATTACK, timerInvoke);
 
     }

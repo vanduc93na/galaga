@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GaragePage : MonoBehaviour
 {
     [SerializeField] private Text _buttonText;
+    [SerializeField] private Text _coinText;
     private const string SELECT = "SELECT";
     private const string SELECTED = "SELECTED";
     private const string PRIME = " $";
@@ -17,7 +18,6 @@ public class GaragePage : MonoBehaviour
         set
         {
             _curShip = value;
-            InventoryHelper.Instance.SetIDShipSelected(value);
         }
         
     }
@@ -32,6 +32,7 @@ public class GaragePage : MonoBehaviour
         ScrollLoop.CurIndex = CurShip;
         print(CurShip);
         ScrollLoop.FocusWithID();
+        _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
     }
 
     void ActionReceiveIdShipSelect()
@@ -77,8 +78,14 @@ public class GaragePage : MonoBehaviour
             {
                 print("not enough coin");
             }
+            _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
         }
         ActionReceiveIdShipSelect();
+    }
+
+    public void BackAction()
+    {
+        gameObject.SetActive(false);
     }
 
     bool isShipPaid(int idShip)
