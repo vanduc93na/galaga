@@ -27,6 +27,7 @@ public class PlayerBasic : PlayerController
     [SerializeField] private Text _lifeText;
 
     [SerializeField] private GameObject _shield;
+    
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại

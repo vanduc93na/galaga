@@ -37,6 +37,12 @@ public partial class HandleEvent : Singleton<HandleEvent>
     /// </summary>
     [SerializeField] private GameObject _blackHoleCentre;
 
+    [SerializeField] private GameObject _enemyDeadEffect;
+
+    [SerializeField] private GameObject _enemyOnHitEffect;
+
+    [SerializeField] private GameObject _eatCoinEffect;
+
     /// <summary>
     /// thời gian tấn công của hố đen
     /// </summary>
@@ -221,12 +227,21 @@ public partial class HandleEvent : Singleton<HandleEvent>
         if (_enemiesOnWave.ContainsKey(enemy))
         {
             _enemiesOnWave.Remove(enemy);
+            StartCoroutine(EnemyEffect(_enemyDeadEffect, enemy.transform.position, 0.5f));
         }
 
         if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
         {
             this.PostEvent(EventID.NextWave);
         }
+    }
+
+    IEnumerator EnemyEffect(GameObject effect, Vector3 position, float time)
+    {
+        var effectSpawn = Lean.LeanPool.Spawn(effect);
+        effectSpawn.transform.position = position;
+        yield return new WaitForSeconds(time);
+        Lean.LeanPool.Despawn(effectSpawn);
     }
 
     #region Public Methods
@@ -246,6 +261,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 if (_enemiesOnWave.ContainsKey(targetTriggerObject))
                 {
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
+                    StartCoroutine(EnemyEffect(_enemyOnHitEffect, targetTriggerObject.transform.position, 0.2f));
                 }
 
             }
@@ -255,6 +271,7 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 {
                     int dame = _bulletsSpawn[trigger].Dame();
                     _bosses[targetTriggerObject].OnHit(dame);
+                    StartCoroutine(EnemyEffect(_enemyOnHitEffect, targetTriggerObject.transform.position, 0.2f));
                 }
             }
 
@@ -394,6 +411,11 @@ public partial class HandleEvent : Singleton<HandleEvent>
                 else
                 {
                     print("_listItemOnWave doen't contains key: " + item);
+                }
+
+                if (item.tag == GameTag.ITEM_COIN)
+                {
+                    StartCoroutine(EnemyEffect(_eatCoinEffect, other.transform.position, 0.5f));
                 }
             });
         }
