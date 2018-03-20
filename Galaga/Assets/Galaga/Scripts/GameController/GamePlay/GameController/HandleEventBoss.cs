@@ -8,6 +8,7 @@ using UnityEngine;
 public partial class HandleEvent
 {
     private Dictionary<GameObject, BaseBoss> _bosses;
+    [SerializeField] private GameObject _bossDeadEffect;
 
     #region Private Method
 
@@ -26,6 +27,7 @@ public partial class HandleEvent
         if (_bosses.ContainsKey(bossObj))
         {
             _bosses.Remove(bossObj);
+            StartCoroutine(EnemyEffect(_bossDeadEffect, bossObj.transform.position, 1f));
         }
         else
         {
