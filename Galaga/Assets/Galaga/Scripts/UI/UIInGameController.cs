@@ -13,6 +13,7 @@ public class UIInGameController : Singleton<UIInGameController>
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject _gamePausePanel;
     [SerializeField] private GameObject _gamePlayPanel;
+    [SerializeField] private GameObject _countDownPanel;
 
     private int _coinInLevel;
 	// Use this for initialization
@@ -37,7 +38,8 @@ public class UIInGameController : Singleton<UIInGameController>
     {
         winPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
-        
+        _countDownPanel.SetActive(false);
+        loadingPanel.SetActive(true);
     }
 
     void EatCoin(GameObject obj)
@@ -99,17 +101,25 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void ShowGameOver()
     {
-        gameOverPanel.gameObject.SetActive(true);
+        GameController.Instance.gameStage = GameStage.GameOver;
+        _countDownPanel.gameObject.SetActive(true);
     }
 
     void ShowGameWin()
     {
-        winPanel.gameObject.SetActive(true);
+        GameController.Instance.gameStage = GameStage.Win;
+        StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
     }
 
     public int GetCoinInLevel()
     {
         return _coinInLevel;
+    }
+
+    IEnumerator Show(float seconds, Action callBack)
+    {
+        yield return new WaitForSeconds(seconds);
+        callBack();
     }
 }
  

@@ -103,6 +103,7 @@ public class GameController : MonoBehaviour
         {
             print("complete level");
             this.PostEvent(EventID.GameWin);
+            InventoryHelper.Instance.SetPassLevel(_currentLevelIndex);
             return;
         }
         _indexWave++;

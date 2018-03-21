@@ -7,7 +7,8 @@ using UnityEngine.Networking;
 public class BaseEnemy : MonoBehaviour
 {
     [SerializeField] private int _health = 0;
-
+    [SerializeField] private GameObject _deadEffect;
+    [SerializeField] private GameObject _hitEffect;
     private bool isAlive;
 
     // danh sách items drop
@@ -48,13 +49,15 @@ public class BaseEnemy : MonoBehaviour
     {
         _isBlackHoleAttack = false;
         isAlive = true;
-        
+
     }
 
     void OnDisable()
     {
         DOTween.Kill(transform);
         transform.position = _rootPos;
+        _deadEffect.SetActive(false);
+        _hitEffect.SetActive(false);
     }
 
     #region Public Method
@@ -65,9 +68,11 @@ public class BaseEnemy : MonoBehaviour
         {
             this.PostEvent(EventID.EnemyDead, this.gameObject);
             OnDead();
+            StartCoroutine(HitEffect(0.3f));
         }
         else
         {
+            StartCoroutine(DeadEffect(0.05f));
             AnimationOnHit();
         }
     }
@@ -232,5 +237,19 @@ public class BaseEnemy : MonoBehaviour
     public bool IsAlive()
     {
         return isAlive;
+    }
+
+    IEnumerator HitEffect(float seconds)
+    {
+        _hitEffect.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        _hitEffect.SetActive(false);
+    }
+
+    IEnumerator DeadEffect(float seconds)
+    {
+        _deadEffect.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        _deadEffect.SetActive(false);
     }
 }

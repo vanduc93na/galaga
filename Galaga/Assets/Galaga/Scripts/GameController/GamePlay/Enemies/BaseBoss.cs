@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Spine.Unity;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BaseBoss : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class BaseBoss : MonoBehaviour
     [SerializeField] private Transform _healthTransform;
     [SerializeField]
     private SkeletonAnimation _skAnim;
+
+    [SerializeField] private GameObject _hitEffect;
+    [SerializeField] private GameObject _deadEffect;
     [Tooltip("path cho enemies di chuyển")] [SerializeField] private GameObject _pathObj;
     private MoveInformation _moveInfor;
     private Vector2 _nextPosition;
@@ -71,10 +76,12 @@ public class BaseBoss : MonoBehaviour
         _healthTransform.localScale = new Vector3(((float)_bossInfor.Health / _health), 1, 1);
         if (_bossInfor.Health <= 0)
         {
+            StartCoroutine(Effect(0.3f, _deadEffect));
             StartCoroutine(OnDieAnimation());
         }
         else
         {
+            StartCoroutine(Effect(0.1f, _hitEffect));
             OnHitAnimation();
         }
     }
@@ -249,6 +256,14 @@ public class BaseBoss : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    IEnumerator Effect(float seconds, GameObject effect)
+    {
+        effect.SetActive(true);
+        effect.transform.position = transform.position;
+        yield return new WaitForSeconds(seconds);
+        effect.SetActive(false);
     }
 
     #endregion

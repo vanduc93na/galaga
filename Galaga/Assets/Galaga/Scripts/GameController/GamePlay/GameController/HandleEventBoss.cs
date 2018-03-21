@@ -27,7 +27,6 @@ public partial class HandleEvent
         if (_bosses.ContainsKey(bossObj))
         {
             _bosses.Remove(bossObj);
-            StartCoroutine(EnemyEffect(_bossDeadEffect, bossObj.transform.position, 1f));
         }
         else
         {

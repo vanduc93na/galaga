@@ -14,6 +14,8 @@ public class SelectPage : MonoBehaviour
     [SerializeField] private GameObject _path;
     [SerializeField] private GameObject _lightParent;
     [SerializeField] private ScrollRect _scroll;
+    [SerializeField] private Sprite _passLevelSprite;
+    [SerializeField] private Sprite _unPassLevelSprite;
 
     private Button[] _levels;
     private List<Vector3> _pathVector3s;
@@ -35,6 +37,22 @@ public class SelectPage : MonoBehaviour
     {
         _lightList = new List<GameObject>();
         CreateLight();
+    }
+
+    void OnEnable()
+    {
+        InventoryHelper.Instance.LoadInventory();
+        for (int i = 0; i < _levels.Length; i++)
+        {
+            if (i <= InventoryHelper.Instance.UserInventory.passLevel - 1)
+            {
+                _levels[i].GetComponent<Image>().sprite = _passLevelSprite;
+            }
+            else
+            {
+                _levels[i].GetComponent<Image>().sprite = _unPassLevelSprite;
+            }
+        }
     }
 
     Vector3 GetAngle(Vector2 start, Vector2 end)

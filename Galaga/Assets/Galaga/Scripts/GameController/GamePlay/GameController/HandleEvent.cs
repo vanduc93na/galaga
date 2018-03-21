@@ -230,7 +230,6 @@ public partial class HandleEvent : MonoBehaviour
         if (_enemiesOnWave.ContainsKey(enemy))
         {
             _enemiesOnWave.Remove(enemy);
-            StartCoroutine(EnemyEffect(_enemyDeadEffect, enemy.transform.position, 0.5f));
         }
 
         if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
@@ -239,7 +238,7 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
-    IEnumerator EnemyEffect(GameObject effect, Vector3 position, float time)
+    IEnumerator Effect(GameObject effect, Vector3 position, float time)
     {
         var effectSpawn = Lean.LeanPool.Spawn(effect);
         effectSpawn.transform.position = position;
@@ -264,7 +263,6 @@ public partial class HandleEvent : MonoBehaviour
                 if (_enemiesOnWave.ContainsKey(targetTriggerObject))
                 {
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
-                    StartCoroutine(EnemyEffect(_enemyOnHitEffect, targetTriggerObject.transform.position, 0.2f));
                 }
 
             }
@@ -274,7 +272,6 @@ public partial class HandleEvent : MonoBehaviour
                 {
                     int dame = _bulletsSpawn[trigger].Dame();
                     _bosses[targetTriggerObject].OnHit(dame);
-                    StartCoroutine(EnemyEffect(_enemyOnHitEffect, targetTriggerObject.transform.position, 0.2f));
                 }
             }
 
@@ -418,7 +415,7 @@ public partial class HandleEvent : MonoBehaviour
 
                 if (item.tag == GameTag.ITEM_COIN)
                 {
-                    StartCoroutine(EnemyEffect(_eatCoinEffect, other.transform.position, 0.5f));
+                    StartCoroutine(Effect(_eatCoinEffect, other.transform.position, 0.5f));
                 }
             });
         }

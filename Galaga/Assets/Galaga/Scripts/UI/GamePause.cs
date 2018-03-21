@@ -32,6 +32,7 @@ public class GamePause : MonoBehaviour
 
     public void Resume()
     {
+        GameController.Instance.gameStage = GameStage.Play;
         gameObject.SetActive(false);
         Time.timeScale = 1;
     }

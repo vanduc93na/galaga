@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    private bool isMove;
+    public static PlayerController Instance;
+    public bool isMove = false;
     // game config
     [SerializeField]
     protected GamePlayConfig config;
@@ -15,14 +16,25 @@ public class PlayerController : MonoBehaviour
     // đối tượng chứa 2 object con left và right để tính khoảng cách so với
     // phi thuyền -> hiệu ứng di chuyển camera khi phi thuyền di chuyển trái, phải
     /// </summary>
-    private void Start()
+    private void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
     
     // Update is called once per frame
     private void Update()
     {
+        if (GameController.Instance.gameStage == GameStage.Play)
+        {
+            isMove = true;
+        }
+        else
+        {
+            isMove = false;
+        }
     }
     #region Movement
     void Movement()
