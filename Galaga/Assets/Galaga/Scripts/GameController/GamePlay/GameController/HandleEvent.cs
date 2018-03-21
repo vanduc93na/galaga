@@ -229,7 +229,12 @@ public partial class HandleEvent : MonoBehaviour
     {
         if (_enemiesOnWave.ContainsKey(enemy))
         {
+            if (_enemiesOnWave[enemy].IsAlive())
+            {
+                StartCoroutine(Effect(_enemyDeadEffect, _enemiesOnWave[enemy].transform.position, 0.1f));
+            }
             _enemiesOnWave.Remove(enemy);
+            
         }
 
         if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
@@ -262,7 +267,12 @@ public partial class HandleEvent : MonoBehaviour
                 int dame = _bulletsSpawn[trigger].Dame();
                 if (_enemiesOnWave.ContainsKey(targetTriggerObject))
                 {
+                    var temp = _enemiesOnWave[targetTriggerObject];
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
+                    if (temp.IsAlive())
+                    {
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                    }
                 }
 
             }
@@ -272,6 +282,10 @@ public partial class HandleEvent : MonoBehaviour
                 {
                     int dame = _bulletsSpawn[trigger].Dame();
                     _bosses[targetTriggerObject].OnHit(dame);
+                    if (_bosses[targetTriggerObject].IsAlive())
+                    {
+                        StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[targetTriggerObject].transform.position, 0.1f));
+                    }
                 }
             }
 
@@ -292,8 +306,13 @@ public partial class HandleEvent : MonoBehaviour
             {
                 if (_enemiesOnWave.ContainsKey(targetObject))
                 {
+                    var temp = _enemiesOnWave[targetObject];
                     int dame = tomahawk.GetComponent<Tomahawk>().GetDame();
                     _enemiesOnWave[targetObject].OnHit(dame);
+                    if (temp.IsAlive())
+                    {
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                    }
                 }
             }
 
@@ -316,8 +335,13 @@ public partial class HandleEvent : MonoBehaviour
                 float distance = Vector3.Distance(genade.transform.position, _enemiesOnWave[enemiesKeyGO[i]].transform.position);
                 if (distance <= 2)
                 {
+                    var temp = _enemiesOnWave[enemiesKeyGO[i]];
                     int dameTaken = (int)(dame * (1 - (float)distance / 2));
                     _enemiesOnWave[enemiesKeyGO[i]].OnHit(dameTaken);
+                    if (temp.IsAlive())
+                    {
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                    }
                 }
             }
             if (_genades.ContainsKey(genade))
@@ -344,8 +368,13 @@ public partial class HandleEvent : MonoBehaviour
             {
                 if (_enemiesOnWave.ContainsKey(targetObject))
                 {
+                    var temp = _enemiesOnWave[targetObject];
                     int dame = arrow.GetComponent<Arrow>().GetDame();
                     _enemiesOnWave[targetObject].OnHit(dame);
+                    if (temp.IsAlive())
+                    {
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                    }
                 }
             }
             if (targetObject.tag == GameTag.BORDER)
@@ -374,6 +403,10 @@ public partial class HandleEvent : MonoBehaviour
             for (int i = 0; i < enemiesGO.Count; i++)
             {
                 _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+//                if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+//                {
+//                    StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[enemiesGO[i]].transform.position, 0.1f));
+//                }
             }
         }));
     }
@@ -382,12 +415,22 @@ public partial class HandleEvent : MonoBehaviour
     {
         if (other.tag == GameTag.ENEMY)
         {
+            var temp = _enemiesOnWave[other];
             _enemiesOnWave[other].OnHit(dame);
+            if (temp.IsAlive())
+            {
+                StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+            }
         }
 
         if (other.tag == GameTag.BOSS)
         {
+            var temp = _bosses[other];
             _bosses[other].OnHit(dame);
+            if (temp.IsAlive())
+            {
+                StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+            }
         }
     }
     /// <summary>

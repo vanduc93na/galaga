@@ -68,11 +68,9 @@ public class BaseEnemy : MonoBehaviour
         {
             this.PostEvent(EventID.EnemyDead, this.gameObject);
             OnDead();
-            StartCoroutine(HitEffect(0.3f));
         }
         else
         {
-            StartCoroutine(DeadEffect(0.05f));
             AnimationOnHit();
         }
     }
@@ -238,18 +236,18 @@ public class BaseEnemy : MonoBehaviour
     {
         return isAlive;
     }
-
-    IEnumerator HitEffect(float seconds)
-    {
-        _hitEffect.SetActive(true);
-        yield return new WaitForSeconds(seconds);
-        _hitEffect.SetActive(false);
-    }
-
-    IEnumerator DeadEffect(float seconds)
-    {
-        _deadEffect.SetActive(true);
-        yield return new WaitForSeconds(seconds);
-        _deadEffect.SetActive(false);
-    }
+//
+//    IEnumerator HitEffect(float seconds)
+//    {
+//        _hitEffect.SetActive(true);
+//        yield return new WaitForSeconds(seconds);
+//        _hitEffect.SetActive(false);
+//    }
+//
+//    IEnumerator DeadEffect(float seconds)
+//    {
+//        _deadEffect.SetActive(true);
+//        yield return new WaitForSeconds(seconds);
+//        _deadEffect.SetActive(false);
+//    }
 }

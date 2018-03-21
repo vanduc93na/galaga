@@ -86,6 +86,11 @@ public class BaseBoss : MonoBehaviour
         }
     }
 
+    public bool IsAlive()
+    {
+        return (_bossInfor.Health > 0);
+    }
+
     /// <summary>
     /// di chuyển từ ngoài màn hình vào
     /// </summary>
