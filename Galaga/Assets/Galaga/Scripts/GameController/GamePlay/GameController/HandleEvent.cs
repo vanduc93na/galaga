@@ -232,7 +232,7 @@ public partial class HandleEvent : MonoBehaviour
         {
             if (_enemiesOnWave[enemy].IsAlive())
             {
-                StartCoroutine(Effect(_enemyDeadEffect, _enemiesOnWave[enemy].transform.position, 0.1f));
+                StartCoroutine(Effect(_enemyDeadEffect, _enemiesOnWave[enemy].transform.position, 0.3f));
             }
             _enemiesOnWave.Remove(enemy);
             
@@ -272,7 +272,7 @@ public partial class HandleEvent : MonoBehaviour
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
                     if (temp.IsAlive())
                     {
-                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+						StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
                     }
                 }
 
@@ -285,7 +285,7 @@ public partial class HandleEvent : MonoBehaviour
                     _bosses[targetTriggerObject].OnHit(dame);
                     if (_bosses[targetTriggerObject].IsAlive())
                     {
-                        StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[targetTriggerObject].transform.position, 0.1f));
+						StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[targetTriggerObject].transform.position, 00.3f));
                     }
                 }
             }
@@ -312,7 +312,7 @@ public partial class HandleEvent : MonoBehaviour
                     _enemiesOnWave[targetObject].OnHit(dame);
                     if (temp.IsAlive())
                     {
-                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
                     }
                 }
             }
@@ -341,7 +341,7 @@ public partial class HandleEvent : MonoBehaviour
                     _enemiesOnWave[enemiesKeyGO[i]].OnHit(dameTaken);
                     if (temp.IsAlive())
                     {
-                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
                     }
                 }
             }
@@ -374,7 +374,7 @@ public partial class HandleEvent : MonoBehaviour
                     _enemiesOnWave[targetObject].OnHit(dame);
                     if (temp.IsAlive())
                     {
-                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
                     }
                 }
             }
@@ -400,7 +400,7 @@ public partial class HandleEvent : MonoBehaviour
 
         for (int i = 0; i < enemiesGO.Count; i++)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.3f);
             _enemiesOnWave[enemiesGO[i]].OnHit(dame);
         }
         _blackHoleCentre.SetActive(false);
@@ -414,7 +414,7 @@ public partial class HandleEvent : MonoBehaviour
             _enemiesOnWave[other].OnHit(dame);
             if (temp.IsAlive())
             {
-                StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
             }
         }
 
@@ -424,7 +424,7 @@ public partial class HandleEvent : MonoBehaviour
             _bosses[other].OnHit(dame);
             if (temp.IsAlive())
             {
-                StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.1f));
+                StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
             }
         }
     }
