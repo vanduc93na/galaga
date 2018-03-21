@@ -25,11 +25,7 @@ public class SelectPage : MonoBehaviour
     {
         //        _scroll.enabled = false;
         _levels = _content.GetComponentsInChildren<Button>();
-        for (int i = 0; i < _levels.Length; i++)
-        {
-            Button btn = _levels[i];
-            _levels[i].onClick.AddListener(() => ButtonsSelect(btn));
-        }
+        
         _pathVector3s = _path.GetComponent<DOTweenPath>().wps;
     }
     
@@ -42,6 +38,15 @@ public class SelectPage : MonoBehaviour
     void OnEnable()
     {
         InventoryHelper.Instance.LoadInventory();
+        for (int i = 0; i < _levels.Length; i++)
+        {
+            Button btn = _levels[i];
+            if (i <= InventoryHelper.Instance.UserInventory.passLevel + 1)
+            {
+                _levels[i].onClick.AddListener(() => ButtonsSelect(btn));
+            }
+            
+        }
         for (int i = 0; i < _levels.Length; i++)
         {
             if (i <= InventoryHelper.Instance.UserInventory.passLevel - 1)

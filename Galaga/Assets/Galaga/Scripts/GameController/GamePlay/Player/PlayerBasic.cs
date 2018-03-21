@@ -74,7 +74,7 @@ public class PlayerBasic : PlayerController
                 
                 break;
             case GameTag.ITEM_BLACK_HOLE:
-                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
+                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
                 break;
             case GameTag.ITEM_SUPPER_GENADE:
                 FireGenade();

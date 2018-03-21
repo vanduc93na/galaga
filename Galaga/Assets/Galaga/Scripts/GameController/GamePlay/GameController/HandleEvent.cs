@@ -112,6 +112,7 @@ public partial class HandleEvent : MonoBehaviour
 
     void InitForEnemies()
     {
+        _blackHoleCentre.SetActive(false);
         _listItemsOnWave = new Dictionary<GameObject, BaseItem>();
         ItemsGameObject = new Dictionary<int, GameObject>();
         for (int i = 0; i < _itemsMgr.transform.childCount; i++)
@@ -385,30 +386,24 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
-    public void BlackHoleAttack(float seconds, int dame)
+    public IEnumerator BlackHoleAttack(float seconds, int dame)
     {
-        StartCoroutine(DelayTime(seconds, () =>
-        {
-            List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
+        _blackHoleCentre.SetActive(true);
+        List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
 
-            for (int i = 0; i < enemiesGO.Count; i++)
-            {
-                _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
-            }
-        }));
-        StartCoroutine(DelayTime(1f, () =>
+        for (int i = 0; i < enemiesGO.Count; i++)
         {
-            List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
+            _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
+        }
+        
+        yield return new WaitForSeconds(seconds);
 
-            for (int i = 0; i < enemiesGO.Count; i++)
-            {
-                _enemiesOnWave[enemiesGO[i]].OnHit(dame);
-//                if (_enemiesOnWave[enemiesGO[i]].IsAlive())
-//                {
-//                    StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[enemiesGO[i]].transform.position, 0.1f));
-//                }
-            }
-        }));
+        for (int i = 0; i < enemiesGO.Count; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+        }
+        _blackHoleCentre.SetActive(false);
     }
 
     public void TriggerLazerVsOther(GameObject other, int dame)
