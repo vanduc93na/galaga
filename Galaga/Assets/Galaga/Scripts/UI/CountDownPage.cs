@@ -32,12 +32,15 @@ public class CountDownPage : MonoBehaviour
 
     public void ShowAds()
     {
-        StopCoroutine(CountDown());
+        API.ShowVideo(() =>
+        {
+            StopCoroutine(CountDown());
 
-        // sau khi xem video xong
-        GameController.Instance.gameStage = GameStage.Play;
-        gameObject.SetActive(false);
-        Time.timeScale = 1;
+            // sau khi xem video xong
+            GameController.Instance.gameStage = GameStage.Play;
+            gameObject.SetActive(false);
+            Time.timeScale = 1;
+        });
     }
 
     public void GoToGameOver()

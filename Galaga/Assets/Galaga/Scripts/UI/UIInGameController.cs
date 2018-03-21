@@ -16,17 +16,17 @@ public class UIInGameController : Singleton<UIInGameController>
     [SerializeField] private GameObject _countDownPanel;
 
     private int _coinInLevel;
-	// Use this for initialization
+    // Use this for initialization
 
     void Awake()
     {
         RegisterEvent();
     }
-    
-	void Start ()
-	{
+
+    void Start()
+    {
         Reset();
-	}
+    }
 
     void Reset()
     {
@@ -101,14 +101,20 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void ShowGameOver()
     {
-        GameController.Instance.gameStage = GameStage.GameOver;
-        _countDownPanel.gameObject.SetActive(true);
+        API.ShowFull(() =>
+        {
+            GameController.Instance.gameStage = GameStage.GameOver;
+            _countDownPanel.gameObject.SetActive(true);
+        });
     }
 
     void ShowGameWin()
     {
-        GameController.Instance.gameStage = GameStage.Win;
-        StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
+        API.ShowFull(() =>
+           {
+               GameController.Instance.gameStage = GameStage.Win;
+               StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
+           });
     }
 
     public int GetCoinInLevel()
@@ -122,4 +128,3 @@ public class UIInGameController : Singleton<UIInGameController>
         callBack();
     }
 }
- 
