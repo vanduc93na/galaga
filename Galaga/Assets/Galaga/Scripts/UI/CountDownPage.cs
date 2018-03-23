@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ public class CountDownPage : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private Text _timerText;
     [SerializeField] private int _timerCountDown;
+    public Action OnReturnPlay;
 
     void OnEnable()
     {
@@ -38,6 +40,10 @@ public class CountDownPage : MonoBehaviour
 
             // sau khi xem video xong
             GameController.Instance.gameStage = GameStage.Play;
+            if (OnReturnPlay != null)
+            {
+                OnReturnPlay();
+            }
             gameObject.SetActive(false);
             Time.timeScale = 1;
         });

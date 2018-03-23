@@ -14,7 +14,17 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Text _messageMekit;
     [SerializeField] private Text _messageDMG;
     [SerializeField] private float _damageRate;
-    
+    [SerializeField] private GameObject _popupPage;
+    [SerializeField] private string _textMessagePopupConfirm;
+    [SerializeField] private string _textMessagePopupWarning;
+    private int _clickIndex = 0;
+
+    void Start()
+    {
+        _popupPage.GetComponent<PopupPage>().ActionClickConfirm += ConfirmBuy;
+        _clickIndex = 0;
+    }
+
     void OnEnable()
     {
         _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height - 70);
@@ -49,16 +59,38 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     public void ClickBuyRemoveAds()
     {
-        Purchaser.Instance.BuyNoAds();
+        _popupPage.SetActive(true);
+        _popupPage.GetComponent<PopupPage>().ShowConfirm(_textMessagePopupConfirm);
+        _clickIndex = 1;
     }
 
     public void ClickBuy20kGold()
     {
-        Purchaser.Instance.Buy20K();
+        _popupPage.SetActive(true);
+        _popupPage.GetComponent<PopupPage>().ShowConfirm(_textMessagePopupConfirm);
+        _clickIndex = 2;
     }
 
     public void ClickBuy50kGold()
     {
-        Purchaser.Instance.Buy50K();
+        _popupPage.SetActive(true);
+        _popupPage.GetComponent<PopupPage>().ShowConfirm(_textMessagePopupConfirm);
+        _clickIndex = 3;
+    }
+
+    private void ConfirmBuy()
+    {
+        switch (_clickIndex)
+        {
+            case 1:
+                Purchaser.Instance.BuyNoAds();
+                break;
+            case 2:
+                Purchaser.Instance.Buy20K();
+                break;
+            case 3:
+                Purchaser.Instance.Buy50K();
+                break;
+        }
     }
 }

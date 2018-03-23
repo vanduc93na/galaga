@@ -9,6 +9,7 @@ public class PlayerBasic : PlayerController
     [Tooltip("GameObject chứa các viên đạn")]
     [SerializeField]
     private GameObject _bulletsMgr;
+    
 
     [SerializeField] private int _currentNumberBulletOnScreen;
 
@@ -27,6 +28,12 @@ public class PlayerBasic : PlayerController
     [SerializeField] private Text _lifeText;
 
     [SerializeField] private GameObject _shield;
+
+    [SerializeField] private GameObject _ship;
+
+    [SerializeField] private GameObject _explosiveEff;
+
+    [SerializeField] private GameObject _countDownPage;
     
     // private variables
     /// <summary>
@@ -45,6 +52,7 @@ public class PlayerBasic : PlayerController
     void Awake()
     {
         RegisterEvent();
+        _countDownPage.GetComponent<CountDownPage>().OnReturnPlay += ReturnPlay;
     }
 
     void Start()
@@ -55,6 +63,18 @@ public class PlayerBasic : PlayerController
     void RegisterEvent()
     {
         this.RegisterListener(EventID.EatItem, (param) => EatItem((GameObject)param));
+    }
+
+    void ReturnPlay()
+    {
+        _isProtected = true;
+        _shield.SetActive(true);
+        _ship.SetActive(true);
+        StartCoroutine(DeLayTime(5f, () =>
+        {
+            _isProtected = false;
+            _shield.SetActive(false);
+        }));
     }
 
     void EatItem(GameObject obj)
@@ -93,7 +113,14 @@ public class PlayerBasic : PlayerController
         if (_isProtected) return;
         if (_life == 0)
         {
-            this.PostEvent(EventID.GameOver);
+            _explosiveEff.SetActive(true);
+            _ship.SetActive(false);
+            StartCoroutine(DeLayTime(1f, () =>
+            {
+                _explosiveEff.SetActive(false);
+                this.PostEvent(EventID.GameOver);
+            }));
+
         }
         else
         {

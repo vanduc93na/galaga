@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag != GameTag.ITEM)
         {
-            
+//            SoundController.PlaySoundEffect(SoundController.Instance.PlayerHitBullet);
         }
     }
 }

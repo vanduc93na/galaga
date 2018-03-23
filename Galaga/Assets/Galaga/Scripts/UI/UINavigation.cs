@@ -10,12 +10,14 @@ public class UINavigation : MonoBehaviour
     [SerializeField] private GameObject _shop;
     [SerializeField] private GameObject _garage;
     [SerializeField] private GameObject _selectLevel;
+    [SerializeField] private GameObject _popup;
     void Start()
     {
         _settings.SetActive(false);
         _shop.SetActive(false);
         _garage.SetActive(false);
         _selectLevel.SetActive(false);
+        _popup.SetActive(false);
     }
 
     public void GoToSetting()

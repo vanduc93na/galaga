@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 /// </summary>
 public partial class HandleEvent : MonoBehaviour
 {
+    public int EnemiesDestroy = 0;
     /// <summary>
     /// prefab danh sách items drop
     /// </summary>
@@ -96,7 +97,7 @@ public partial class HandleEvent : MonoBehaviour
     #endregion
 
     public static HandleEvent Instance;
-    
+
 
     void Awake()
     {
@@ -112,6 +113,7 @@ public partial class HandleEvent : MonoBehaviour
 
     void InitForEnemies()
     {
+        EnemiesDestroy = 0;
         _blackHoleCentre.SetActive(false);
         _listItemsOnWave = new Dictionary<GameObject, BaseItem>();
         ItemsGameObject = new Dictionary<int, GameObject>();
@@ -175,26 +177,36 @@ public partial class HandleEvent : MonoBehaviour
         if (_enemiesOnWave.Count > 0)
         {
             List<GameObject> listEnemies = _enemiesOnWave.Keys.ToList();
-            int numberOfEnemyMove = Random.Range(0, 5);
-            int randomPath = Random.Range(0, _listPathMoveOnWave.Count);
-            //            while (numberOfEnemyMove > 0)
-            //            {
-            //                int randomEnemy = Random.Range(1, listEnemies.Count - 1);
-            //                if (_enemiesOnWave[listEnemies[randomEnemy]].OnMoving())
-            //                {
-            //                    _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
-            //                    StartCoroutine(DelayTime(0.2f));
-            //                    numberOfEnemyMove--;
-            //                }
-            //                print(randomEnemy + " number: " + numberOfEnemyMove);
-            //            }
-            //            for (int i = 0; i < numberOfEnemyMove; i++)
-            //            {
-            //                int randomEnemy = Random.Range(1, listEnemies.Count);
-            //                _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
-            //                StartCoroutine(DelayTime(0.2f));
-            //            }
-            float timeInvoke = Random.Range(1f, 3f);
+//            int numberOfEnemyMove = Random.Range(0, 5);
+//            int randomPath = Random.Range(0, _listPathMoveOnWave.Count);
+//            while (numberOfEnemyMove > 0)
+//            {
+//                int randomEnemy = Random.Range(1, listEnemies.Count - 1);
+//                if (_enemiesOnWave[listEnemies[randomEnemy]].OnMoving())
+//                {
+//                    _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
+//                    StartCoroutine(DelayTime(0.2f, null));
+//                    numberOfEnemyMove--;
+//                }
+//                print(randomEnemy + " number: " + numberOfEnemyMove);
+//            }
+//            for (int i = 0; i < numberOfEnemyMove; i++)
+//            {
+//                int randomEnemy = Random.Range(1, listEnemies.Count);
+//                _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
+//                StartCoroutine(DelayTime(0.2f, null));
+//            }
+            int random = Random.Range(0, listEnemies.Count - 1);
+            if (!_enemiesOnWave[listEnemies[random]].OnMoving())
+            {
+                Vector3 rootPos = _enemiesOnWave[listEnemies[random]].transform.localPosition;
+                Vector3 playerPos = _player.transform.position;
+                _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(playerPos, 1f).OnComplete(() =>
+                {
+                    _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(rootPos, 1f);
+                });
+            }
+            float timeInvoke = Random.Range(3f, 5f);
             Invoke(MOVE_ON_WAVE_METHOD, timeInvoke);
         }
         else
@@ -202,7 +214,7 @@ public partial class HandleEvent : MonoBehaviour
             CancelInvoke(MOVE_ON_WAVE_METHOD);
         }
     }
-    
+
     void EnemyAttack()
     {
         if (_enemiesOnWave.Count > 0)
@@ -235,7 +247,8 @@ public partial class HandleEvent : MonoBehaviour
                 StartCoroutine(Effect(_enemyDeadEffect, _enemiesOnWave[enemy].transform.position, 0.1f));
             }
             _enemiesOnWave.Remove(enemy);
-            
+            EnemiesDestroy += 1;
+
         }
 
         if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
@@ -395,12 +408,10 @@ public partial class HandleEvent : MonoBehaviour
         {
             _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
         }
-        
-        yield return new WaitForSeconds(seconds);
 
         for (int i = 0; i < enemiesGO.Count; i++)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.3f);
             _enemiesOnWave[enemiesGO[i]].OnHit(dame);
         }
         _blackHoleCentre.SetActive(false);
@@ -453,6 +464,7 @@ public partial class HandleEvent : MonoBehaviour
 
                 if (item.tag == GameTag.ITEM_COIN)
                 {
+                    SoundController.PlaySoundEffect(SoundController.Instance.EatCoin);
                     StartCoroutine(Effect(_eatCoinEffect, other.transform.position, 0.5f));
                 }
             });
@@ -540,6 +552,7 @@ public partial class HandleEvent : MonoBehaviour
     /// </summary>
     public void Reset()
     {
+        EnemiesDestroy = 0;
         _enemiesOnWave.Clear();
         _tomahawks.Clear();
         _genades.Clear();
