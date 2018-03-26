@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="firebase_database_url" translatable="false">https://vngame-2018.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">561878018903</string>
+  <string name="google_storage_bucket" translatable="false">vngame-2018.appspot.com</string>
+  <string name="project_id" translatable="false">vngame-2018</string>
+  <string name="google_api_key" translatable="false">AIzaSyCuVXY0wj2eqMzlE_6TMxgCWIXRUBH190o</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCuVXY0wj2eqMzlE_6TMxgCWIXRUBH190o</string>
+  <string name="google_app_id" translatable="false">1:561878018903:android:e1b10533ad3af957</string>
+  <string name="default_web_client_id" translatable="false">561878018903-61id0ce8sr83k6esf0q1cqioh57o7emu.apps.googleusercontent.com</string>
+</resources>

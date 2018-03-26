@@ -16,6 +16,7 @@ public class SelectPage : MonoBehaviour
     [SerializeField] private ScrollRect _scroll;
     [SerializeField] private Sprite _passLevelSprite;
     [SerializeField] private Sprite _unPassLevelSprite;
+    [SerializeField] private float _deltaLight;
 
     private Button[] _levels;
     private List<Vector3> _pathVector3s;
@@ -23,12 +24,10 @@ public class SelectPage : MonoBehaviour
 
     void Awake()
     {
-        //        _scroll.enabled = false;
         _levels = _content.GetComponentsInChildren<Button>();
-        
         _pathVector3s = _path.GetComponent<DOTweenPath>().wps;
     }
-    
+
     void Start()
     {
         _lightList = new List<GameObject>();
@@ -45,7 +44,7 @@ public class SelectPage : MonoBehaviour
             {
                 _levels[i].onClick.AddListener(() => ButtonsSelect(btn));
             }
-            
+
         }
         for (int i = 0; i < _levels.Length; i++)
         {
@@ -81,16 +80,56 @@ public class SelectPage : MonoBehaviour
 
     void CreateLight()
     {
-        for (int i = 0; i < _pathVector3s.Count; i++)
+        //        for (int i = 0; i < _pathVector3s.Count; i++)
+        //        {
+        //            GameObject lightSpawn = Lean.LeanPool.Spawn(_light);
+        //            lightSpawn.transform.SetParent(_lightParent.transform);
+        //            lightSpawn.transform.position = _pathVector3s[i];
+        //            lightSpawn.transform.localScale = Vector3.one;
+        //            lightSpawn.transform.eulerAngles = GetAngle(lightSpawn.transform.position, _pathVector3s[i]);
+        //            _lightList.Add(lightSpawn);
+        //        }
+        //        DrawnLight();
+        var listWps = _path.GetComponent<DOTweenPath>().wps;
+        for (int i = 0; i < listWps.Count - 1; i++)
         {
-            GameObject lightSpawn = Lean.LeanPool.Spawn(_light);
-            lightSpawn.transform.SetParent(_lightParent.transform);
-            lightSpawn.transform.position = _pathVector3s[i];
-            lightSpawn.transform.localScale = Vector3.one;
-            lightSpawn.transform.eulerAngles = GetAngle(lightSpawn.transform.position, _pathVector3s[i]);
-            _lightList.Add(lightSpawn);
+            if (i % 4 == 0)
+            {
+                float posX = listWps[i].x;
+                while (posX + _deltaLight < listWps[i+1].x)
+                {
+                    posX += _deltaLight;
+                    var lighSpawn = Lean.LeanPool.Spawn(_light);
+                    lighSpawn.transform.SetParent(_lightParent.transform);
+                    lighSpawn.transform.position = new Vector3(posX, listWps[i].y);
+                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                }
+            }
+            if (i % 4 == 1 || i % 4 == 3)
+            {
+                float posY = listWps[i].y + _deltaLight;
+                while (posY < listWps[i + 1].y - 0.3f)
+                {
+                    var lighSpawn = Lean.LeanPool.Spawn(_light);
+                    lighSpawn.transform.SetParent(_lightParent.transform);
+                    lighSpawn.transform.position = new Vector3(listWps[i].x, posY);
+                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                    posY += _deltaLight;
+                }
+            }
+            if (i % 4 == 2)
+            {
+                float posX = listWps[i].x;
+                while (posX - _deltaLight > listWps[i + 1].x)
+                {
+                    posX -= _deltaLight;
+                    var lighSpawn = Lean.LeanPool.Spawn(_light);
+                    lighSpawn.transform.SetParent(_lightParent.transform);
+                    lighSpawn.transform.position = new Vector3(posX, listWps[i].y);
+                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                }
+            }
         }
-        DrawnLight();
     }
 
     void DrawnLight()

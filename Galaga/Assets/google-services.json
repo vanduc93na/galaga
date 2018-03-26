@@ -1,0 +1,104 @@
+{
+  "project_info": {
+    "project_number": "561878018903",
+    "firebase_url": "https://vngame-2018.firebaseio.com",
+    "project_id": "vngame-2018",
+    "storage_bucket": "vngame-2018.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561878018903:android:d4cf8e6eee1c67a3",
+        "android_client_info": {
+          "package_name": "com.gemmob.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561878018903-61id0ce8sr83k6esf0q1cqioh57o7emu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuVXY0wj2eqMzlE_6TMxgCWIXRUBH190o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561878018903:android:29ef5d621612231f",
+        "android_client_info": {
+          "package_name": "com.rabocotra.solidiershooter2018"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561878018903-61id0ce8sr83k6esf0q1cqioh57o7emu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuVXY0wj2eqMzlE_6TMxgCWIXRUBH190o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561878018903:android:e1b10533ad3af957",
+        "android_client_info": {
+          "package_name": "com.galaticattack.battlegalagashooter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561878018903-61id0ce8sr83k6esf0q1cqioh57o7emu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuVXY0wj2eqMzlE_6TMxgCWIXRUBH190o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

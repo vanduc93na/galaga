@@ -201,7 +201,7 @@ public partial class HandleEvent : MonoBehaviour
             {
                 Vector3 rootPos = _enemiesOnWave[listEnemies[random]].transform.localPosition;
                 Vector3 playerPos = _player.transform.position;
-                _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(playerPos, 1f).OnComplete(() =>
+                _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(playerPos, 2f).OnComplete(() =>
                 {
                     _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(rootPos, 1f);
                 });
