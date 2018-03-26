@@ -14,7 +14,7 @@ public class CountDownPage : MonoBehaviour
 
     void OnEnable()
     {
-        Time.timeScale = 0;
+//        Time.timeScale = 0;
         StartCoroutine(CountDown());
     }
 

@@ -29,11 +29,15 @@ public class PlayerBasic : PlayerController
 
     [SerializeField] private GameObject _shield;
 
+    [SerializeField] private GameObject _lazer;
+
     [SerializeField] private GameObject _ship;
 
     [SerializeField] private GameObject _explosiveEff;
 
     [SerializeField] private GameObject _countDownPage;
+
+    [SerializeField] private GameObject _gameOverPage;
     
     // private variables
     /// <summary>
@@ -53,6 +57,7 @@ public class PlayerBasic : PlayerController
     {
         RegisterEvent();
         _countDownPage.GetComponent<CountDownPage>().OnReturnPlay += ReturnPlay;
+        _gameOverPage.GetComponent<GameLose>().OnReplay += ReturnPlay;
     }
 
     void Start()
@@ -67,6 +72,8 @@ public class PlayerBasic : PlayerController
 
     void ReturnPlay()
     {
+        _explosiveEff.SetActive(false);
+        Invoke(FIRE_BULLET, fireRate);
         _isProtected = true;
         _shield.SetActive(true);
         _ship.SetActive(true);
@@ -113,11 +120,12 @@ public class PlayerBasic : PlayerController
         if (_isProtected) return;
         if (_life == 0)
         {
+            CancelInvoke(FIRE_BULLET);
+            isMove = false;
             _explosiveEff.SetActive(true);
-            _ship.SetActive(false);
-            StartCoroutine(DeLayTime(1f, () =>
+            StartCoroutine(DeLayTime(.23f, () =>
             {
-                _explosiveEff.SetActive(false);
+                _ship.SetActive(false);
                 this.PostEvent(EventID.GameOver);
             }));
 
@@ -351,7 +359,11 @@ public class PlayerBasic : PlayerController
 
     void FireLazer()
     {
-
+        _lazer.SetActive(true);
+        StartCoroutine(DeLayTime(5f, () =>
+        {
+            _lazer.SetActive(false);
+        }));
     }
 
     #endregion

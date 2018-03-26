@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameLose : MonoBehaviour
 {
+    public Action OnReplay;
 
     [SerializeField] private GameObject _shopPanel;
 
@@ -16,6 +18,10 @@ public class GameLose : MonoBehaviour
 
     public void Replay()
     {
+        if (OnReplay != null)
+        {
+            OnReplay();
+        }
         GameController.Instance.Restart();
         gameObject.SetActive(false);
         Time.timeScale = 1;

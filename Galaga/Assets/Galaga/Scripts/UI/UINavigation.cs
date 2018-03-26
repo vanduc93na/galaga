@@ -20,6 +20,13 @@ public class UINavigation : MonoBehaviour
         _popup.SetActive(false);
     }
 
+    [ContextMenu("SetCoin")]
+    public void SetCoin()
+    {
+        InventoryHelper.Instance.AddCoin(100000);
+        InventoryHelper.Instance.SetLife(10);
+    }
+
     public void GoToSetting()
     {
         _settings.SetActive(true);

@@ -44,6 +44,8 @@ public partial class HandleEvent : MonoBehaviour
 
     [SerializeField] private GameObject _eatCoinEffect;
 
+    [SerializeField] private GameObject _enemiesMgr;
+
     /// <summary>
     /// thời gian tấn công của hố đen
     /// </summary>
@@ -148,7 +150,11 @@ public partial class HandleEvent : MonoBehaviour
     {
         this.RegisterListener(EventID.EnemyDead, (param) => RemoveEnemy((GameObject)param));
         // event enemy cuối đến vị trí cuối cùng - dùng để thực hiện di chuyển enemy sau khi xếp map
-        this.RegisterListener(EventID.LastEnemyMoveDone, (param) => MoveEnemyOnWave());
+        this.RegisterListener(EventID.LastEnemyMoveDone, (param) =>
+        {
+            MoveAllEnemies();
+            MoveEnemyOnWave();
+        });
 
         this.RegisterListener(EventID.Restart, (param) => RestartGame());
     }
@@ -169,11 +175,19 @@ public partial class HandleEvent : MonoBehaviour
         Reset();
     }
 
+    void MoveAllEnemies()
+    {
+        float nextXPossition = Random.Range(-1, 1);
+        _enemiesMgr.transform.DOMoveX(nextXPossition, 1f);
+        Invoke("MoveAllEnemies", 1.5f);
+    }
+
     /// <summary>
     /// di chuyển quái random trong ma trận sau khi sắp xếp
     /// </summary>
     void MoveEnemyOnWave()
     {
+
         if (_enemiesOnWave.Count > 0)
         {
             List<GameObject> listEnemies = _enemiesOnWave.Keys.ToList();
