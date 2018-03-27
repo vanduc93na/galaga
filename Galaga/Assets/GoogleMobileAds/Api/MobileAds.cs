@@ -38,6 +38,11 @@ namespace GoogleMobileAds.Api
             client.SetApplicationVolume(volume);
         }
 
+        public static void SetiOSAppPauseOnBackground(bool pause)
+        {
+            client.SetiOSAppPauseOnBackground(pause);
+        }
+
         private static IMobileAdsClient GetMobileAdsClient()
         {
             Type googleMobileAdsClientFactory = Type.GetType(
