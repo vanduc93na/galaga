@@ -12,6 +12,14 @@ public class Tomahawk : MonoBehaviour
     private BaseEnemy _targetEnemyScript;
     private Vector3 _direction;
 
+    void Awake()
+    {
+        this.RegisterListener(EventID.Restart, (param) =>
+        {
+            Lean.LeanPool.Despawn(this.gameObject);
+        });
+    }
+
     // Use this for initialization
     void Start()
     {

@@ -27,6 +27,7 @@ public partial class HandleEvent
         if (_bosses.ContainsKey(bossObj))
         {
             _bosses.Remove(bossObj);
+            SoundController.PlaySoundEffect(SoundController.Instance.BossDead);
         }
         else
         {

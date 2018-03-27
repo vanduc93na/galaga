@@ -144,6 +144,7 @@ public partial class HandleEvent : MonoBehaviour
     {
         EnemyAttack();
         MoveEnemyOnWave();
+        SoundController.PlayBackgroundSound(SoundController.Instance.GameBackgroundSound);
     }
 
     void RegisterEnemiesEvents()
@@ -262,7 +263,7 @@ public partial class HandleEvent : MonoBehaviour
             }
             _enemiesOnWave.Remove(enemy);
             EnemiesDestroy += 1;
-
+            SoundController.PlaySoundEffect(SoundController.Instance.EnemyDead);
         }
 
         if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
@@ -416,6 +417,11 @@ public partial class HandleEvent : MonoBehaviour
     public IEnumerator BlackHoleAttack(float seconds, int dame)
     {
         _blackHoleCentre.SetActive(true);
+        StartCoroutine(DelayTime(seconds, () =>
+        {
+            _blackHoleCentre.SetActive(false);
+        }));
+        
         List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
 
         for (int i = 0; i < enemiesGO.Count; i++)
@@ -428,7 +434,6 @@ public partial class HandleEvent : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             _enemiesOnWave[enemiesGO[i]].OnHit(dame);
         }
-        _blackHoleCentre.SetActive(false);
     }
 
     public void TriggerLazerVsOther(GameObject other, int dame)
@@ -467,6 +472,15 @@ public partial class HandleEvent : MonoBehaviour
             {
                 if (_listItemsOnWave.ContainsKey(item))
                 {
+                    if (item.tag == GameTag.ITEM_COIN)
+                    {
+                        SoundController.PlaySoundEffect(SoundController.Instance.EatCoin);
+                        StartCoroutine(Effect(_eatCoinEffect, other.transform.position, 0.5f));
+                    }
+                    else
+                    {
+                        SoundController.PlaySoundEffect(SoundController.Instance.EatItem);
+                    }
                     this.PostEvent(EventID.EatItem, item);
                     Lean.LeanPool.Despawn(item);
                     RemoveItem(item);
@@ -475,12 +489,7 @@ public partial class HandleEvent : MonoBehaviour
                 {
                     print("_listItemOnWave doen't contains key: " + item);
                 }
-
-                if (item.tag == GameTag.ITEM_COIN)
-                {
-                    SoundController.PlaySoundEffect(SoundController.Instance.EatCoin);
-                    StartCoroutine(Effect(_eatCoinEffect, other.transform.position, 0.5f));
-                }
+                
             });
         }
         else if (other.tag == GameTag.BORDER)

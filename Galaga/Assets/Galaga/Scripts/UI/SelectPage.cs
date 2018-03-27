@@ -66,6 +66,7 @@ public class SelectPage : MonoBehaviour
 
     void ButtonsSelect(Button btn)
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         int level = btn.transform.GetSiblingIndex();
         print(level);
         InventoryHelper.Instance.AddSelectedLevel(level);

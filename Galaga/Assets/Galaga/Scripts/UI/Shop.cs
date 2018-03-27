@@ -33,6 +33,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     public void Close()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, .7f).OnComplete(() =>
         {
             gameObject.SetActive(false);
@@ -49,16 +50,19 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     public void ClickBuyMekit()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         InventoryHelper.Instance.LoadInventory();
     }
 
     public void ClickBuyDMG()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         InventoryHelper.Instance.AddDamageRate(_damageRate);
     }
 
     public void ClickBuyRemoveAds()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _popupPage.SetActive(true);
         _popupPage.GetComponent<PopupPage>().ShowConfirm(_textMessagePopupConfirm);
         _clickIndex = 1;
@@ -66,6 +70,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     public void ClickBuy20kGold()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _popupPage.SetActive(true);
         _popupPage.GetComponent<PopupPage>().ShowConfirm(_textMessagePopupConfirm);
         _clickIndex = 2;
@@ -73,6 +78,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     public void ClickBuy50kGold()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _popupPage.SetActive(true);
         _popupPage.GetComponent<PopupPage>().ShowConfirm(_textMessagePopupConfirm);
         _clickIndex = 3;
@@ -80,6 +86,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
 
     private void ConfirmBuy()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         switch (_clickIndex)
         {
             case 1:

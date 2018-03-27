@@ -34,6 +34,7 @@ public class CountDownPage : MonoBehaviour
 
     public void ShowAds()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         API.ShowVideo(() =>
         {
             StopCoroutine(CountDown());
@@ -51,12 +52,14 @@ public class CountDownPage : MonoBehaviour
 
     public void GoToGameOver()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _gameOverPanel.SetActive(true);
         gameObject.SetActive(false);
     }
 
     public void ResumeWithCoin()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         StopCoroutine(CountDown());
         InventoryHelper.Instance.LoadInventory();
         if (InventoryHelper.Instance.UserInventory.coin > 1000)

@@ -72,6 +72,7 @@ public class Setting : MonoBehaviour, IPointerClickHandler
         _musicOn = !_musicOn;
         if (_musicOn)
         {
+            SoundController.PlaySoundEffect(SoundController.Instance.Click);
             PlayerPrefs.SetInt(StringKeys.MUSIC, 1);
             GetComponent<AudioSource>().Play();
             _musicButtonText.text = "BG MUSIC: ON";
@@ -86,6 +87,7 @@ public class Setting : MonoBehaviour, IPointerClickHandler
 
     public void Close()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, 0.7f).OnComplete(() =>
         {
             gameObject.SetActive(false);

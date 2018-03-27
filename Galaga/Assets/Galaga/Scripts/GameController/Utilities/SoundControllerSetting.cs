@@ -13,6 +13,9 @@ public partial class SoundController
     public SoundInfor EnemyHitBullet;
     public SoundInfor PlayerHitBullet;
     public SoundInfor EatCoin;
+    public SoundInfor EatItem;
+    public SoundInfor EnemyDead;
+    public SoundInfor BossDead;
 
     public void SoundButtonClick()
     {

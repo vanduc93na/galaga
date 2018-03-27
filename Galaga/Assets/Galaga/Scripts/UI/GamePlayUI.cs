@@ -18,6 +18,7 @@ public class GamePlayUI: Singleton<GamePlayUI>
 
     public void Pause()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         GameController.Instance.gameStage = GameStage.Pause;
         Time.timeScale = 0;
         _pausePanel.SetActive(true);

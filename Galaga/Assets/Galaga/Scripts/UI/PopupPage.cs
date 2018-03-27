@@ -34,11 +34,13 @@ public class PopupPage : MonoBehaviour
 
     public void Cancel()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         gameObject.SetActive(false);
     }
 
     public void ClickOk()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         if (ActionClickConfirm != null)
         {
             ActionClickConfirm();

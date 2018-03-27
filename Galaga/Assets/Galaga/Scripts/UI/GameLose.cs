@@ -18,6 +18,7 @@ public class GameLose : MonoBehaviour
 
     public void Replay()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         if (OnReplay != null)
         {
             OnReplay();
@@ -29,17 +30,19 @@ public class GameLose : MonoBehaviour
 
     public void Shopping()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _shopPanel.SetActive(true);
     }
 
     public void Exit()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
     public void ShowAdsVideo()
     {
-
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
     }
 }

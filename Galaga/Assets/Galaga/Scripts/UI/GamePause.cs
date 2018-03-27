@@ -15,11 +15,13 @@ public class GamePause : MonoBehaviour
 
     public void GoHome()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         SceneManager.LoadScene(0);
     }
 
     public void ReStart()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         GameController.Instance.Restart();
         gameObject.SetActive(false);
         Time.timeScale = 1;
@@ -27,11 +29,13 @@ public class GamePause : MonoBehaviour
 
     public void Setting()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         _shopPanel.SetActive(true);
     }
 
     public void Resume()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         GameController.Instance.gameStage = GameStage.Play;
         gameObject.SetActive(false);
         Time.timeScale = 1;

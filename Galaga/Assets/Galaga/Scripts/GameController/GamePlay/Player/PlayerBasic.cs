@@ -58,6 +58,7 @@ public class PlayerBasic : PlayerController
         RegisterEvent();
         _countDownPage.GetComponent<CountDownPage>().OnReturnPlay += ReturnPlay;
         _gameOverPage.GetComponent<GameLose>().OnReplay += ReturnPlay;
+        this.RegisterListener(EventID.Restart, (param) => Init());
     }
 
     void Start()
@@ -228,6 +229,7 @@ public class PlayerBasic : PlayerController
             Vector3 newTransformBullet = bulletPool.transform.position;
             newTransformBullet.x = newTransformBullet.x + startPosX + (i - 1) * Utilities.DeltaBullet2();
             bulletPool.GetComponent<BasicBullet>().InitBullet2(newTransformBullet);
+            SoundController.PlaySoundEffect(SoundController.Instance.PlayerFireBullet);
         }
     }
 

@@ -5,35 +5,31 @@ using UnityEngine.EventSystems;
 
 public class GamePlayConfig : MonoBehaviour
 {
-    [Tooltip("thời gian chờ đợi giữa 2 wave")]
-    [SerializeField]
-    private float timeDelayBetweenWave = 0;
+    [Tooltip("thời gian chờ đợi giữa 2 wave")] [SerializeField] private float timeDelayBetweenWave = 0;
+
     /// <summary>
     /// config vị trí mà phi thuyển có thể di chuyển trên màn hình
     /// </summary>
-    [Tooltip("vị trí x lớn nhất phi thuyền có thể di chuyển đến")]
-    [SerializeField] float maxDx;
-    [Tooltip("vị trí y lớn nhất phi thuyền có thể di chuyển đến")]
-    [SerializeField] float maxDy;
-    [Tooltip("vị trí x nhỏ nhất phi thuyền có thể di chuyển đến")]
-    [SerializeField] float minDx;
-    [Tooltip("vị trí y nhỏ nhất phi thuyền có thể di chuyển đến")]
-    [SerializeField] float minDy;
+    [Tooltip("vị trí x lớn nhất phi thuyền có thể di chuyển đến")] [SerializeField] float maxDx;
+
+    [Tooltip("vị trí y lớn nhất phi thuyền có thể di chuyển đến")] [SerializeField] float maxDy;
+    [Tooltip("vị trí x nhỏ nhất phi thuyền có thể di chuyển đến")] [SerializeField] float minDx;
+    [Tooltip("vị trí y nhỏ nhất phi thuyền có thể di chuyển đến")] [SerializeField] float minDy;
     [Tooltip("Smooth Speed của phi thuyền")] [SerializeField] private float smoothSpeed;
-    [Tooltip("khoảng cách hiệu ứng di chuyển camera khi phi thuyền lượn sang trái - phải")]
-    [SerializeField] private float deltaTransform;
+    [Tooltip("tỉ lệ di chuyền control")] [SerializeField] private float smoothRate;
+    [SerializeField] private float lerpLimited;
+
+    [Tooltip("khoảng cách hiệu ứng di chuyển camera khi phi thuyền lượn sang trái - phải")] [SerializeField]
+    private float deltaTransform;
+
     /// <summary>
     /// config đạn
     /// </summary>
-    [Tooltip("Loại đạn cơ bản")]
-    [SerializeField] private int basicBulletIndex;
-    [Tooltip("Số lượng đạn nhỏ nhất")]
-    [SerializeField]
-    private int minBullet;
-    [Tooltip("Số lượng đạn lớn nhất có thể bắn ra")]
-    [SerializeField]
-    private int maxBullets;
-    
+    [Tooltip("Loại đạn cơ bản")] [SerializeField] private int basicBulletIndex;
+
+    [Tooltip("Số lượng đạn nhỏ nhất")] [SerializeField] private int minBullet;
+    [Tooltip("Số lượng đạn lớn nhất có thể bắn ra")] [SerializeField] private int maxBullets;
+
 
     public float MaxDx()
     {
@@ -84,4 +80,15 @@ public class GamePlayConfig : MonoBehaviour
     {
         return smoothSpeed;
     }
+
+    public float GetSmoothRate()
+    {
+        return smoothRate;
+    }
+
+    public float GetLerpLimit()
+    {
+        return lerpLimited;
+    }
+
 }

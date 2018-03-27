@@ -7,6 +7,14 @@ public class Genade : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private int dame;
 
+    void Awake()
+    {
+        this.RegisterListener(EventID.Restart, (param) =>
+        {
+            Lean.LeanPool.Despawn(this.gameObject);
+        });
+    }
+
     void Update()
     {
         transform.position += Vector3.up * Time.deltaTime * speed;

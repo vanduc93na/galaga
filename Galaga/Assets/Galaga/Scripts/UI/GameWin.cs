@@ -30,6 +30,7 @@ public class GameWin : MonoBehaviour
 
     public void Replay()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         GameController.Instance.Restart();
         gameObject.SetActive(false);
         Time.timeScale = 1;
@@ -37,6 +38,7 @@ public class GameWin : MonoBehaviour
 
     public void NextLevel()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         GameController.Instance.NextLevel();
         gameObject.SetActive(false);
         Time.timeScale = 1;
@@ -44,12 +46,14 @@ public class GameWin : MonoBehaviour
 
     public void Exit()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
     public void ShowAdsVideo()
     {
+        SoundController.PlaySoundEffect(SoundController.Instance.Click);
         API.ShowVideo((() =>
         {
             InventoryHelper.Instance.AddCoin(_reward);

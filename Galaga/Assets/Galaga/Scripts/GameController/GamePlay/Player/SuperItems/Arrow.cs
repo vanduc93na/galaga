@@ -7,6 +7,14 @@ public class Arrow : MonoBehaviour
     [SerializeField] private float speed;
 
     [SerializeField] private int dame;
+
+    void Awake()
+    {
+        this.RegisterListener(EventID.Restart, (param) =>
+        {
+            Lean.LeanPool.Despawn(this.gameObject);
+        });
+    }
     // Use this for initialization
     void Start()
     {
