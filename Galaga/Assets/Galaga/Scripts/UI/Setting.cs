@@ -21,8 +21,8 @@ public class Setting : MonoBehaviour, IPointerClickHandler
 
     void OnEnable()
     {
-        _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height - 70);
-        _groupsItem.DOAnchorPosY(0, .7f).SetUpdate(true);
+        _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height/2-80);
+        _groupsItem.DOAnchorPosY(280, .2f).SetUpdate(true);
     }
 
     void Init()
@@ -88,7 +88,7 @@ public class Setting : MonoBehaviour, IPointerClickHandler
     public void Close()
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
-        _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, 0.7f).OnComplete(() =>
+        _groupsItem.DOAnchorPosY(-_groupsItem.rect.height/2-80, 0.2f).OnComplete(() =>
         {
             gameObject.SetActive(false);
         }).SetUpdate(true);
