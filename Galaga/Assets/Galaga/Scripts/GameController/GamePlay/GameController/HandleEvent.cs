@@ -192,25 +192,25 @@ public partial class HandleEvent : MonoBehaviour
         if (_enemiesOnWave.Count > 0)
         {
             List<GameObject> listEnemies = _enemiesOnWave.Keys.ToList();
-//            int numberOfEnemyMove = Random.Range(0, 5);
-//            int randomPath = Random.Range(0, _listPathMoveOnWave.Count);
-//            while (numberOfEnemyMove > 0)
-//            {
-//                int randomEnemy = Random.Range(1, listEnemies.Count - 1);
-//                if (_enemiesOnWave[listEnemies[randomEnemy]].OnMoving())
-//                {
-//                    _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
-//                    StartCoroutine(DelayTime(0.2f, null));
-//                    numberOfEnemyMove--;
-//                }
-//                print(randomEnemy + " number: " + numberOfEnemyMove);
-//            }
-//            for (int i = 0; i < numberOfEnemyMove; i++)
-//            {
-//                int randomEnemy = Random.Range(1, listEnemies.Count);
-//                _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
-//                StartCoroutine(DelayTime(0.2f, null));
-//            }
+            //            int numberOfEnemyMove = Random.Range(0, 5);
+            //            int randomPath = Random.Range(0, _listPathMoveOnWave.Count);
+            //            while (numberOfEnemyMove > 0)
+            //            {
+            //                int randomEnemy = Random.Range(1, listEnemies.Count - 1);
+            //                if (_enemiesOnWave[listEnemies[randomEnemy]].OnMoving())
+            //                {
+            //                    _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
+            //                    StartCoroutine(DelayTime(0.2f, null));
+            //                    numberOfEnemyMove--;
+            //                }
+            //                print(randomEnemy + " number: " + numberOfEnemyMove);
+            //            }
+            //            for (int i = 0; i < numberOfEnemyMove; i++)
+            //            {
+            //                int randomEnemy = Random.Range(1, listEnemies.Count);
+            //                _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
+            //                StartCoroutine(DelayTime(0.2f, null));
+            //            }
             int random = Random.Range(0, listEnemies.Count - 1);
             if (!_enemiesOnWave[listEnemies[random]].OnMoving())
             {
@@ -300,7 +300,7 @@ public partial class HandleEvent : MonoBehaviour
                     _enemiesOnWave[targetTriggerObject].OnHit(dame);
                     if (temp.IsAlive())
                     {
-						StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
                     }
                 }
 
@@ -313,7 +313,7 @@ public partial class HandleEvent : MonoBehaviour
                     _bosses[targetTriggerObject].OnHit(dame);
                     if (_bosses[targetTriggerObject].IsAlive())
                     {
-						StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[targetTriggerObject].transform.position, 00.3f));
+                        StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[targetTriggerObject].transform.position, 00.3f));
                     }
                 }
             }
@@ -421,18 +421,32 @@ public partial class HandleEvent : MonoBehaviour
         {
             _blackHoleCentre.SetActive(false);
         }));
-        
+
         List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
 
         for (int i = 0; i < enemiesGO.Count; i++)
         {
-            _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
+            if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+            {
+                _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
+            }
+            else
+            {
+                continue;
+            }
         }
 
         for (int i = 0; i < enemiesGO.Count; i++)
         {
             yield return new WaitForSeconds(0.3f);
-            _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+            if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+            {
+                _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+            }
+            else
+            {
+                continue;
+            }
         }
     }
 
@@ -489,7 +503,7 @@ public partial class HandleEvent : MonoBehaviour
                 {
                     print("_listItemOnWave doen't contains key: " + item);
                 }
-                
+
             });
         }
         else if (other.tag == GameTag.BORDER)
