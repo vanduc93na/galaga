@@ -16,14 +16,14 @@ public class UINavigation : MonoBehaviour
 
     void Awake()
     {
-//        PlayerPrefs.DeleteAll();
+        InventoryHelper.Instance.AddCoin(10000);
         InventoryHelper.Instance.OnCoinChange += () =>
         {
             InventoryHelper.Instance.LoadInventory();
             if (_coinAtHomeNumber != null)
             {
                 _coinAtHomeNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
-                _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
+//                _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
             }
             
         };
@@ -43,14 +43,7 @@ public class UINavigation : MonoBehaviour
     {
         InventoryHelper.Instance.LoadInventory();
         _coinAtHomeNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
-        _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
-    }
-
-    [ContextMenu("SetCoin")]
-    public void SetCoin()
-    {
-        InventoryHelper.Instance.AddCoin(100000);
-        InventoryHelper.Instance.SetLife(10);
+//        _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
     }
 
     public void GoToSetting()

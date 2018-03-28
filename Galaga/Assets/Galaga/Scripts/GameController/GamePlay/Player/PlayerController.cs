@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
     void OnMove(Vector3 mousePos)
     {
         if (ControlType == ControlType.ControlMode)
-            _deltaPos = Vector2.up;
+            _deltaPos = new Vector2(0, .5f);
         _tempPos = mousePos + _deltaPos;
         _tempPos = new Vector3(_tempPos.x < config.MinDx() ? config.MinDx() : _tempPos.x > config.MaxDx() ? config.MaxDx() : _tempPos.x,
             _tempPos.y < config.MinDy() ? config.MinDy() : _tempPos.y > config.MaxDy() ? config.MaxDy() : _tempPos.y);

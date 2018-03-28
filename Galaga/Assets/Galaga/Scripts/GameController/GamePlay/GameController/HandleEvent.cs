@@ -158,6 +158,7 @@ public partial class HandleEvent : MonoBehaviour
         });
 
         this.RegisterListener(EventID.Restart, (param) => RestartGame());
+        this.RegisterListener(EventID.GameOver, (param) => RestartGame());
     }
 
     void RestartGame()

@@ -101,12 +101,14 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void ShowGameOver()
     {
-        _countDownPanel.SetActive(true);
-        API.ShowFull(() =>
+        StartCoroutine(Delay(1f, () =>
         {
-//            GameController.Instance.gameStage = GameStage.GameOver;
-//            _countDownPanel.gameObject.SetActive(true);
-        });
+            API.ShowFull(() =>
+            {
+                GameController.Instance.gameStage = GameStage.GameOver;
+                _countDownPanel.gameObject.SetActive(true);
+            });
+        }));
     }
 
     void ShowGameWin()

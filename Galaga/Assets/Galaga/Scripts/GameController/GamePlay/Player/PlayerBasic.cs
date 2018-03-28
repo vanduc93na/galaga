@@ -289,6 +289,7 @@ public class PlayerBasic : PlayerController
         }
         _life += InventoryHelper.Instance.UserInventory.life;
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
+        CancelInvoke(FIRE_BULLET);
         Invoke(FIRE_BULLET, fireRate);
     }
     #endregion

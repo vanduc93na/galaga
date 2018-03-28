@@ -16,7 +16,10 @@ public class Tomahawk : MonoBehaviour
     {
         this.RegisterListener(EventID.Restart, (param) =>
         {
-            Lean.LeanPool.Despawn(this.gameObject);
+            if (gameObject.activeSelf)
+            {
+                Lean.LeanPool.Despawn(this.gameObject);
+            }
         });
     }
 
@@ -29,9 +32,10 @@ public class Tomahawk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_targetEnemyScript == null || !_targetEnemyScript.IsAlive())
+        if (_targetEnemyScript == null || !_targetEnemyScript.IsAlive() || !_targetEnemyScript.IsActiveOnScene())
         {
             transform.position += Vector3.up * speed * Time.deltaTime;
+            transform.eulerAngles = Vector3.zero;
             FindTarget();
         }
         else
@@ -39,6 +43,8 @@ public class Tomahawk : MonoBehaviour
             _direction = _targetTransform.position - transform.position;
             _direction.Normalize();
             transform.position += _direction * speed * Time.deltaTime;
+            float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90;
+            transform.eulerAngles = new Vector3(0, 0, angle);
         }
     }
 

@@ -236,6 +236,12 @@ public class BaseEnemy : MonoBehaviour
     {
         return isAlive;
     }
+
+    public bool IsActiveOnScene()
+    {
+        var pos = transform.position;
+        return pos.x <= 3 && pos.x >= -2.5f && pos.y >= -4.5 && pos.y <= 5;
+    }
 //
 //    IEnumerator HitEffect(float seconds)
 //    {
