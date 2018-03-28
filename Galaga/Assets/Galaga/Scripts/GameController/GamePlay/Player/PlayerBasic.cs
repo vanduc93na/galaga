@@ -59,6 +59,7 @@ public class PlayerBasic : PlayerController
         _countDownPage.GetComponent<CountDownPage>().OnReturnPlay += ReturnPlay;
         _gameOverPage.GetComponent<GameLose>().OnReplay += ReturnPlay;
         this.RegisterListener(EventID.Restart, (param) => Init());
+        this.RegisterListener(EventID.NextLevel, (param) => Init());
     }
 
     void Start()
@@ -73,6 +74,7 @@ public class PlayerBasic : PlayerController
 
     void ReturnPlay()
     {
+        GameController.Instance.gameStage = GameStage.Play;
         _explosiveEff.SetActive(false);
         Invoke(FIRE_BULLET, fireRate);
         _isProtected = true;
@@ -257,6 +259,7 @@ public class PlayerBasic : PlayerController
 
     void Init()
     {
+        GameController.Instance.gameStage = GameStage.Play;
         _isProtected = false;
         _bullets = new Dictionary<int, GameObject>();
         // init _bullets
@@ -289,8 +292,10 @@ public class PlayerBasic : PlayerController
         }
         _life += InventoryHelper.Instance.UserInventory.life;
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
+        _lifeText.text = _life.ToString();
         CancelInvoke(FIRE_BULLET);
         Invoke(FIRE_BULLET, fireRate);
+        StartCoroutine(PlayerProtected());
     }
     #endregion
 

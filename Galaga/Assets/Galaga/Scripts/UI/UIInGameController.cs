@@ -25,10 +25,10 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void Start()
     {
-        Reset();
+        ResetUI();
     }
 
-    void Reset()
+    void ResetUI()
     {
         _coinInLevel = 0;
         _gamePlayPanel.GetComponent<GamePlayUI>().SetCoin(_coinInLevel);
@@ -47,7 +47,7 @@ public class UIInGameController : Singleton<UIInGameController>
         if (obj.tag == GameTag.ITEM_COIN)
         {
             _coinInLevel += 1;
-            GamePlayUI.Instance.SetCoin(_coinInLevel);
+            _gamePlayPanel.GetComponent<GamePlayUI>().SetCoin(_coinInLevel);
         }
     }
 
@@ -87,8 +87,8 @@ public class UIInGameController : Singleton<UIInGameController>
         this.RegisterListener(EventID.GameOver, param => ShowGameOver());
         this.RegisterListener(EventID.GameWin, (param) => ShowGameWin());
         this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject)param));
-        this.RegisterListener(EventID.Restart, (param) => Reset());
-        this.RegisterListener(EventID.NextLevel, (param) => Reset());
+        this.RegisterListener(EventID.Restart, (param) => ResetUI());
+        this.RegisterListener(EventID.NextLevel, (param) => ResetUI());
     }
 
     #endregion

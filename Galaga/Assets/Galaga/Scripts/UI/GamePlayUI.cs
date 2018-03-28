@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamePlayUI: Singleton<GamePlayUI>
+public class GamePlayUI: MonoBehaviour
 {
-
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private Text _coinTxt;
     [SerializeField] private Text _lifeTxt;

@@ -359,7 +359,10 @@ public class EnemyController : MonoBehaviour
                     enemySpawn.GetComponent<BaseEnemy>().SetTargetPosition(GetTargetPosition(i, j, wave));
                     if (index + 1 == wave.Enemies.Count)
                     {
-                        enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index], true, false);
+                        if (wave.ClearEnemiesToCompleteWave)
+                        {
+                            enemySpawn.GetComponent<BaseEnemy>().Init(wave.Enemies[index], true, false);
+                        }
                     }
                     else
                     {

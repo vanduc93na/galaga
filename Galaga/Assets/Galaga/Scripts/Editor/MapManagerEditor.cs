@@ -387,6 +387,7 @@ public class MapManagerEditor : EditorWindow
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
             EditorGUITool.Label("Size List", 120, 80, false);
+            _sizeListDropItem = wave.ListItemDop.Count;
             _sizeListDropItem = EditorGUILayout.IntField("", _sizeListDropItem, GUILayout.Width(50));
             if (_sizeListDropItem != wave.ListItemDop.Count)
             {

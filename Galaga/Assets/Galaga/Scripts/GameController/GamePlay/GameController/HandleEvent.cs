@@ -72,7 +72,7 @@ public partial class HandleEvent : MonoBehaviour
     private Dictionary<GameObject, BasicBullet> _bulletsSpawn;
 
 
-
+    private const string MOVE_ALL_ENEMIES = "MoveAllEnemies";
     private const string MOVE_ON_WAVE_METHOD = "MoveEnemyOnWave";
     private const string ENEMY_ATTACK = "EnemyAttack";
     /// <summary>
@@ -159,6 +159,11 @@ public partial class HandleEvent : MonoBehaviour
 
         this.RegisterListener(EventID.Restart, (param) => RestartGame());
         this.RegisterListener(EventID.GameOver, (param) => RestartGame());
+        this.RegisterListener(EventID.NextWave, (param) =>
+        {
+            CancelInvoke(MOVE_ALL_ENEMIES);
+            CancelInvoke(MOVE_ON_WAVE_METHOD);
+        });
     }
 
     void RestartGame()
@@ -181,7 +186,7 @@ public partial class HandleEvent : MonoBehaviour
     {
         float nextXPossition = Random.Range(-1, 1);
         _enemiesMgr.transform.DOMoveX(nextXPossition, 1f);
-        Invoke("MoveAllEnemies", 1.5f);
+        Invoke(MOVE_ALL_ENEMIES, 1.5f);
     }
 
     /// <summary>

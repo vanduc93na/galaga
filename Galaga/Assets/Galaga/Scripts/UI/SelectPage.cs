@@ -40,7 +40,7 @@ public class SelectPage : MonoBehaviour
         for (int i = 0; i < _levels.Length; i++)
         {
             Button btn = _levels[i];
-            if (i <= InventoryHelper.Instance.UserInventory.passLevel + 1)
+            if (i < InventoryHelper.Instance.UserInventory.passLevel + 1)
             {
                 _levels[i].onClick.AddListener(() => ButtonsSelect(btn));
             }
