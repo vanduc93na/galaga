@@ -17,6 +17,9 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject _popupPage;
     [SerializeField] private string _textMessagePopupConfirm;
     [SerializeField] private string _textMessagePopupWarning;
+
+	[SerializeField] private Image _imageBlackFilter;
+
     private int _clickIndex = 0;
 
     void Start()
@@ -28,13 +31,17 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     void OnEnable()
     {
         _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height - 70);
-        _groupsItem.DOAnchorPosY(0, .7f).SetUpdate(true);
+
+        _groupsItem.DOAnchorPosY(-30, .2f).SetUpdate(true);
+		_imageBlackFilter.DOFade(0f, 0f).SetUpdate(true);
+		_imageBlackFilter.DOFade(.5f, .2f).SetUpdate(true);
     }
 
     public void Close()
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
-        _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, .7f).OnComplete(() =>
+		_imageBlackFilter.DOFade(0f, .2f).SetUpdate(true);
+        _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, .2f).OnComplete(() =>
         {
             gameObject.SetActive(false);
         }).SetUpdate(true);
