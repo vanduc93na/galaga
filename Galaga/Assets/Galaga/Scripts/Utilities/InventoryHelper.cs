@@ -8,6 +8,7 @@ using UnityEngine;
 public class InventoryHelper
 {
     public UserInventory UserInventory;
+    public Action OnCoinChange;
     private static InventoryHelper instance;
     public static InventoryHelper Instance
     {
@@ -49,6 +50,10 @@ public class InventoryHelper
         LoadInventory();
         UserInventory.coin += coin;
         SaveInventory();
+        if (OnCoinChange != null)
+        {
+            OnCoinChange();
+        }
     }
 
     public void SetPassLevel(int level)
@@ -67,7 +72,11 @@ public class InventoryHelper
         }
         UserInventory.coin -= coin;
         SaveInventory();
-        return true;
+        if (OnCoinChange != null)
+        {
+            OnCoinChange();
+        }
+        return true;   
     }
 
     public void SetIDShipSelected(int id)

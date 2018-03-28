@@ -11,6 +11,23 @@ public class UINavigation : MonoBehaviour
     [SerializeField] private GameObject _garage;
     [SerializeField] private GameObject _selectLevel;
     [SerializeField] private GameObject _popup;
+    [SerializeField] private Text _coinAtHomeNumber;
+    [SerializeField] private Text _coinAtSelectNumber;
+
+    void Awake()
+    {
+//        PlayerPrefs.DeleteAll();
+        InventoryHelper.Instance.OnCoinChange += () =>
+        {
+            InventoryHelper.Instance.LoadInventory();
+            if (_coinAtHomeNumber != null)
+            {
+                _coinAtHomeNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
+                _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
+            }
+            
+        };
+    }
 
     void Start()
     {
@@ -20,6 +37,13 @@ public class UINavigation : MonoBehaviour
         _selectLevel.SetActive(false);
         _popup.SetActive(false);
         SoundController.PlayBackgroundSound(SoundController.Instance.MenuBackgroundSound);
+    }
+
+    void OnEnable()
+    {
+        InventoryHelper.Instance.LoadInventory();
+        _coinAtHomeNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
+        _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
     }
 
     [ContextMenu("SetCoin")]

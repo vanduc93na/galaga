@@ -12,5 +12,6 @@
     HitPlayer,
     GameOver,
     GameWin,
-    EatBlackHoleItem
+    EatBlackHoleItem,
+    CoinChange
 }
