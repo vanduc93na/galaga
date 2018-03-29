@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance;
     public bool isMove = false;
 
     public ControlType ControlType;
@@ -22,13 +21,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 _onMovePos;
     private float _lerpSpeed;
     private int _eventIndex = 0;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     void Start()
     {
@@ -58,6 +50,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
+            if (!isMove) return;
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {

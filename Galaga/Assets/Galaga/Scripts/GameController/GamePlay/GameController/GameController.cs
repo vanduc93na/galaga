@@ -92,7 +92,7 @@ public class GameController : MonoBehaviour
             print("last level");
             return;
         }
-        HandleEvent.Instance.Reset();
+        HandleEvent.Instance.ResetLevel();
         this.PostEvent(EventID.NextLevel);
         _currentLevelIndex++;
         Play();

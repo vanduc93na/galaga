@@ -72,6 +72,7 @@ public class CountDownPage : MonoBehaviour
         {
             InventoryHelper.Instance.RemoveCoin(1000);
             GameController.Instance.gameStage = GameStage.Play;
+            PlayerBasic.Instance.ReturnPlay();
             gameObject.SetActive(false);
             Time.timeScale = 1;
         }

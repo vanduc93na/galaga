@@ -159,6 +159,7 @@ public partial class HandleEvent : MonoBehaviour
 
         this.RegisterListener(EventID.Restart, (param) => RestartGame());
         this.RegisterListener(EventID.GameOver, (param) => RestartGame());
+        this.RegisterListener(EventID.GameWin, (param) => RestartGame());
         this.RegisterListener(EventID.NextWave, (param) =>
         {
             CancelInvoke(MOVE_ALL_ENEMIES);
@@ -179,7 +180,7 @@ public partial class HandleEvent : MonoBehaviour
         {
             Lean.LeanPool.Despawn(_bosses[keyBoss[i]]);
         }
-        Reset();
+        ResetLevel();
     }
 
     void MoveAllEnemies()
@@ -591,11 +592,19 @@ public partial class HandleEvent : MonoBehaviour
     }
 
     /// <summary>
-    /// hàm reset được gọi sau khi hoàn thành wave
+    /// hàm reset được gọi sau khi hoàn thành level hoặc restart game
     /// </summary>
-    public void Reset()
+    public void ResetLevel()
     {
         EnemiesDestroy = 0;
+        var listEnemies = _enemiesOnWave.Keys.ToList();
+        for (int i = 0; i < listEnemies.Count; i++)
+        {
+            if (_enemiesOnWave.ContainsKey(listEnemies[i]))
+            {
+                Lean.LeanPool.Despawn(listEnemies[i]);
+            }
+        }
         _enemiesOnWave.Clear();
         _tomahawks.Clear();
         _genades.Clear();

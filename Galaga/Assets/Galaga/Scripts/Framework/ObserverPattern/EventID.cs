@@ -1,6 +1,7 @@
 ﻿public enum EventID
 {
     None = 0,
+    PlayerDead,
     PlayGame,
     EnemyDead,
     NextWave,

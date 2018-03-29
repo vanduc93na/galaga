@@ -84,7 +84,7 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void RegisterEvent()
     {
-        this.RegisterListener(EventID.GameOver, param => ShowGameOver());
+        this.RegisterListener(EventID.PlayerDead, param => ShowGameOver());
         this.RegisterListener(EventID.GameWin, (param) => ShowGameWin());
         this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject)param));
         this.RegisterListener(EventID.Restart, (param) => ResetUI());

@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class PlayerBasic : PlayerController
 {
+
+    public static PlayerBasic Instance;
+
     [Tooltip("GameObject chứa các viên đạn")]
     [SerializeField]
     private GameObject _bulletsMgr;
@@ -53,11 +56,15 @@ public class PlayerBasic : PlayerController
     private float fireRate;
     private GameObject gunObject;
     private float _life;
-    private bool _isProtected;
+    [SerializeField] private bool _isProtected;
     private Vector3 _rootPos;
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         RegisterEvent();
         _countDownPage.GetComponent<CountDownPage>().OnReturnPlay += ReturnPlay;
         _gameOverPage.GetComponent<GameLose>().OnReplay += ReturnPlay;
@@ -77,19 +84,14 @@ public class PlayerBasic : PlayerController
         this.RegisterListener(EventID.EatItem, (param) => EatItem((GameObject)param));
     }
 
-    void ReturnPlay()
+    public void ReturnPlay()
     {
         GameController.Instance.gameStage = GameStage.Play;
         _explosiveEff.SetActive(false);
         Invoke(FIRE_BULLET, fireRate);
-        _isProtected = true;
         _shield.SetActive(true);
         _ship.SetActive(true);
-        StartCoroutine(DeLayTime(5f, () =>
-        {
-            _isProtected = false;
-            _shield.SetActive(false);
-        }));
+        StartCoroutine(PlayerProtected());
     }
 
     void EatItem(GameObject obj)
@@ -128,13 +130,15 @@ public class PlayerBasic : PlayerController
         if (_isProtected) return;
         if (_life == 0)
         {
+            _isProtected = true;
             CancelInvoke(FIRE_BULLET);
             isMove = false;
             _explosiveEff.SetActive(true);
             StartCoroutine(DeLayTime(.23f, () =>
             {
+                this.PostEvent(EventID.PlayerDead);
                 _ship.SetActive(false);
-                this.PostEvent(EventID.GameOver);
+                _isProtected = false;
             }));
 
         }
@@ -148,19 +152,22 @@ public class PlayerBasic : PlayerController
     {
         _isProtected = true;
         _shield.SetActive(true);
+        float seconds = 5f;
         InventoryHelper.Instance.LoadInventory();
-        switch (InventoryHelper.Instance.UserInventory.shipSelected)
+        if (InventoryHelper.Instance.UserInventory.shipSelected == 1)
         {
-            case 1:
-                yield return new WaitForSeconds(10f);
-                break;
-            case 2:
-                yield return new WaitForSeconds(12f);
-                break;
-            case 3:
-                yield return new WaitForSeconds(15f);
-                break;
+            seconds += 0;
         }
+        else if (InventoryHelper.Instance.UserInventory.shipSelected == 2)
+        {
+            seconds += 2;
+        }
+        else if (InventoryHelper.Instance.UserInventory.shipSelected == 3)
+        {
+            seconds += 5;
+        }
+
+        yield return new WaitForSeconds(seconds);
         _isProtected = false;
         _shield.SetActive(false);
     }
@@ -266,7 +273,6 @@ public class PlayerBasic : PlayerController
     {
         transform.position = _rootPos;
         GameController.Instance.gameStage = GameStage.Play;
-        _isProtected = false;
         _bullets = new Dictionary<int, GameObject>();
         // init _bullets
         for (int i = 0; i < _bulletsMgr.transform.childCount; i++)
@@ -296,6 +302,7 @@ public class PlayerBasic : PlayerController
                 _sprite.transform.GetChild(2).gameObject.SetActive(true);
                 break;
         }
+        _shield.SetActive(true);
         _life += InventoryHelper.Instance.UserInventory.life;
         fireRate = _bullet.GetComponent<BasicBullet>().FireRate();
         _lifeText.text = _life.ToString();
