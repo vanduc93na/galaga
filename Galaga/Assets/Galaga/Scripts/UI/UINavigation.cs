@@ -27,6 +27,7 @@ public class UINavigation : MonoBehaviour
             }
             
         };
+        _shop.GetComponent<Shop>().OnCoinChange += UpdateCoin;
     }
 
     void Start()
@@ -72,5 +73,11 @@ public class UINavigation : MonoBehaviour
         _selectLevel.SetActive(true);
         _home.SetActive(false);
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
+    }
+
+    void UpdateCoin()
+    {
+        InventoryHelper.Instance.LoadInventory();
+        _coinAtHomeNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
     }
 }

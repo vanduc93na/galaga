@@ -38,6 +38,8 @@ public class PlayerBasic : PlayerController
     [SerializeField] private GameObject _countDownPage;
 
     [SerializeField] private GameObject _gameOverPage;
+
+    [SerializeField] private GameObject _gameWinPage;
     
     // private variables
     /// <summary>
@@ -52,14 +54,17 @@ public class PlayerBasic : PlayerController
     private GameObject gunObject;
     private float _life;
     private bool _isProtected;
+    private Vector3 _rootPos;
 
     void Awake()
     {
         RegisterEvent();
         _countDownPage.GetComponent<CountDownPage>().OnReturnPlay += ReturnPlay;
         _gameOverPage.GetComponent<GameLose>().OnReplay += ReturnPlay;
+        _gameWinPage.GetComponent<GameWin>().OnReplay += ReturnPlay;
         this.RegisterListener(EventID.Restart, (param) => Init());
         this.RegisterListener(EventID.NextLevel, (param) => Init());
+        _rootPos = transform.position;
     }
 
     void Start()
@@ -259,6 +264,7 @@ public class PlayerBasic : PlayerController
 
     void Init()
     {
+        transform.position = _rootPos;
         GameController.Instance.gameStage = GameStage.Play;
         _isProtected = false;
         _bullets = new Dictionary<int, GameObject>();

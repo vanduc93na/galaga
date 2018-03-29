@@ -96,7 +96,7 @@ public class InventoryHelper
     public void AddDamageRate(float rate)
     {
         LoadInventory();
-        if (UserInventory.damageRate + rate <= 2f)
+        if (UserInventory.damageRate + rate < 2f)
         {
             UserInventory.damageRate += rate;
         }
@@ -113,7 +113,7 @@ public class InventoryHelper
     public void SetLife(int life)
     {
         LoadInventory();
-        UserInventory.life = life;
+        UserInventory.life += life;
         SaveInventory();
     }
 

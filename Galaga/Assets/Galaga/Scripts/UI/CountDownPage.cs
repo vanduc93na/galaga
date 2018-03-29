@@ -10,11 +10,17 @@ public class CountDownPage : MonoBehaviour
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private Text _timerText;
     [SerializeField] private int _timerCountDown;
+    [SerializeField] private Button _coinPrice;
     public Action OnReturnPlay;
 
     void OnEnable()
     {
-//        Time.timeScale = 0;
+        InventoryHelper.Instance.LoadInventory();
+        if (InventoryHelper.Instance.UserInventory.coin < 1000)
+        {
+            _coinPrice.interactable = false;
+        }
+
         StartCoroutine(CountDown());
     }
 
@@ -66,7 +72,6 @@ public class CountDownPage : MonoBehaviour
         {
             InventoryHelper.Instance.RemoveCoin(1000);
             GameController.Instance.gameStage = GameStage.Play;
-            _gameOverPanel.SetActive(true);
             gameObject.SetActive(false);
             Time.timeScale = 1;
         }

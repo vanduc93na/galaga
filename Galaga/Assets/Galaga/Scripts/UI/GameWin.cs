@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 
 public class GameWin : MonoBehaviour
 {
+    public Action OnReplay;
+
     [Tooltip("text coin từ màn game play")]
     [SerializeField] private Text _coin;
     [SerializeField] private Text _levelTxt;
@@ -31,6 +34,10 @@ public class GameWin : MonoBehaviour
     public void Replay()
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
+        if (OnReplay != null)
+        {
+            OnReplay();
+        }
         GameController.Instance.Restart();
         gameObject.SetActive(false);
         Time.timeScale = 1;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using CompleteProject;
 using DG.Tweening;
@@ -8,17 +9,22 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour, IPointerClickHandler
 {
+    public Action OnCoinChange;
+
     [SerializeField] private RectTransform _groupsItem;
     [SerializeField] private int _mekitPrime;
     [SerializeField] private int _globalDMGPrime;
-    [SerializeField] private Text _messageMekit;
-    [SerializeField] private Text _messageDMG;
+    [SerializeField] private Text _statusMekitPrime;
+    [SerializeField] private Text _statusDMGPrime;
+    [SerializeField] private Text _overCoinMekit;
+    [SerializeField] private Text _overCoinDMG;
     [SerializeField] private float _damageRate;
     [SerializeField] private GameObject _popupPage;
     [SerializeField] private string _textMessagePopupConfirm;
     [SerializeField] private string _textMessagePopupWarning;
 
-	[SerializeField] private Image _imageBlackFilter;
+    [SerializeField] private Image _imageBlackFilter;
+
 
     private int _clickIndex = 0;
 
@@ -33,14 +39,15 @@ public class Shop : MonoBehaviour, IPointerClickHandler
         _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height - 70);
 
         _groupsItem.DOAnchorPosY(-30, .2f).SetUpdate(true);
-		_imageBlackFilter.DOFade(0f, 0f).SetUpdate(true);
-		_imageBlackFilter.DOFade(.5f, .2f).SetUpdate(true);
+        _imageBlackFilter.DOFade(0f, 0f).SetUpdate(true);
+        _imageBlackFilter.DOFade(.5f, .2f).SetUpdate(true);
+        InitUI();
     }
 
     public void Close()
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
-		_imageBlackFilter.DOFade(0f, .2f).SetUpdate(true);
+        _imageBlackFilter.DOFade(0f, .2f).SetUpdate(true);
         _groupsItem.DOAnchorPosY(-_groupsItem.rect.height - 70, .2f).OnComplete(() =>
         {
             gameObject.SetActive(false);
@@ -59,12 +66,32 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
         InventoryHelper.Instance.LoadInventory();
+        if (InventoryHelper.Instance.UserInventory.coin > _mekitPrime)
+        {
+            InventoryHelper.Instance.RemoveCoin(_mekitPrime);
+            InventoryHelper.Instance.SetLife(1);
+            if (OnCoinChange != null)
+            {
+                OnCoinChange();
+            }
+            InitUI();
+        }
+        
     }
 
     public void ClickBuyDMG()
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
-        InventoryHelper.Instance.AddDamageRate(_damageRate);
+        if (InventoryHelper.Instance.UserInventory.coin > _globalDMGPrime)
+        {
+            InventoryHelper.Instance.AddDamageRate(_damageRate);
+            InventoryHelper.Instance.RemoveCoin(_globalDMGPrime);
+            if (OnCoinChange != null)
+            {
+                OnCoinChange();
+            }
+            InitUI();
+        }
     }
 
     public void ClickBuyRemoveAds()
@@ -105,6 +132,37 @@ public class Shop : MonoBehaviour, IPointerClickHandler
             case 3:
                 Purchaser.Instance.Buy50K();
                 break;
+        }
+        if (OnCoinChange != null)
+        {
+            OnCoinChange();
+        }
+        InitUI();
+    }
+
+    void InitUI()
+    {
+        InventoryHelper.Instance.LoadInventory();
+        _statusMekitPrime.text = "YOUR STATUS: " + InventoryHelper.Instance.UserInventory.life.ToString() + " LIFE";
+        _statusDMGPrime.text = "GIVE ALL SHIP \n" +
+                               ((InventoryHelper.Instance.UserInventory.damageRate - 1) * 100).ToString() +
+                               "% DMG IN COMBAT";
+        if (InventoryHelper.Instance.UserInventory.coin < _mekitPrime)
+        {
+            _overCoinMekit.text = "OUT OF STOCK";
+        }
+        else
+        {
+            _overCoinMekit.text = ""
+                ;
+        }
+        if (InventoryHelper.Instance.UserInventory.coin < _globalDMGPrime)
+        {
+            _overCoinDMG.text = "OUT OF STOCK";
+        }
+        else
+        {
+            _overCoinDMG.text = "";
         }
     }
 }
