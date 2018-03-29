@@ -92,6 +92,7 @@ public class PlayerBasic : PlayerController
         _shield.SetActive(true);
         _ship.SetActive(true);
         StartCoroutine(PlayerProtected());
+//        transform.position = _rootPos;
     }
 
     void EatItem(GameObject obj)
