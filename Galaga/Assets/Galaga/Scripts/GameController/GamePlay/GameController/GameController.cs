@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     private int _currentLevelIndex;
 
     public static GameController Instance;
-    
+
     void Awake()
     {
         // đăng ký sự kiện bắt đầu game
@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
         _indexWave = 0;
         _currentLevelIndex = 0;
     }
-    
+
 
     #endregion
 
@@ -100,14 +100,18 @@ public class GameController : MonoBehaviour
 
     void NextWave()
     {
-        if (_indexWave >= _currentLevel.Waves.Count - 1)
+        _indexWave++;
+        if (_indexWave > _currentLevel.Waves.Count - 1)
         {
+            _indexWave = 0;
             print("complete level");
-            this.PostEvent(EventID.GameWin);
-            InventoryHelper.Instance.SetPassLevel(_currentLevelIndex);
+            StartCoroutine(Delay(0.5f, () =>
+            {
+                this.PostEvent(EventID.GameWin);
+                InventoryHelper.Instance.SetPassLevel(_currentLevelIndex);
+            }));
             return;
         }
-        _indexWave++;
         StartCoroutine(WaitForSecondsNextWave(_gamePlayConfig.GetTimeDelayBetweenWaves()));
     }
 
@@ -121,6 +125,12 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         StartGame(_currentLevelIndex);
+    }
+
+    IEnumerator Delay(float seconds, Action callBack)
+    {
+        yield return new WaitForSeconds(seconds);
+        callBack();
     }
 }
 

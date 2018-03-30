@@ -51,6 +51,7 @@ public class GemmobTracking : MonoBehaviour{
         login.GamePackage = API.Instance.Infor.info.package;
         login.Time = DateTime.Now.ToString();
         login.IP = IPAddress;
+        login.DeviceModel = SystemInfo.deviceModel;
 
         string Json = JsonUtility.ToJson(login);
         reference.Child("Logins").Child(login.DeviceUID).Push().SetRawJsonValueAsync(Json);
@@ -60,6 +61,7 @@ public class GemmobTracking : MonoBehaviour{
     public void AddUser() {
         User user = new User();
         user.DeviceUID = SystemInfo.deviceUniqueIdentifier;
+        user.DeviceModel = SystemInfo.deviceModel;
         string Json = JsonUtility.ToJson(user);
         reference.Child("Users").Child(user.DeviceUID).SetRawJsonValueAsync(Json);
     }
@@ -72,8 +74,9 @@ public class GemmobTracking : MonoBehaviour{
         click.IP = IPAddress;
         DateTime now = DateTime.Now;
         click.Time = now.ToString();
+        click.DeviceModel = SystemInfo.deviceModel;
         string json = JsonUtility.ToJson(click);
-        reference.Child("ClickAds").Push().SetRawJsonValueAsync(json);
+        reference.Child("ClickAds").Child(click.DeviceUID).Push().SetRawJsonValueAsync(json);
     }
 
     public void showAds(string AdsType) {
@@ -84,8 +87,9 @@ public class GemmobTracking : MonoBehaviour{
         show.IP = IPAddress;
         DateTime now = DateTime.Now;
         show.Time = now.ToString();
+        show.DeviceModel = SystemInfo.deviceModel;
         string json = JsonUtility.ToJson(show);
-        reference.Child("ShowAds").Push().SetRawJsonValueAsync(json);
+        reference.Child("ShowAds").Child(show.DeviceUID).Push().SetRawJsonValueAsync(json);
     }
 
     public void purchase(float amount) {
@@ -95,8 +99,9 @@ public class GemmobTracking : MonoBehaviour{
         ia.GamePackage = API.Instance.Infor.info.package;
         DateTime now = DateTime.Now;
         ia.Time = now.ToString();
+        ia.DeviceModel = SystemInfo.deviceModel;
         string json = JsonUtility.ToJson(ia);
-        reference.Child("InApps").Push().SetRawJsonValueAsync(json);
+        reference.Child("InApps").Child(ia.DeviceUID).Push().SetRawJsonValueAsync(json);
     }
 }
 
@@ -109,6 +114,7 @@ public class User {
     public string GameCenter;
     public string Phone;
     public string Name;
+    public string DeviceModel;
 }
 [Serializable]
 public class Login {
@@ -126,6 +132,7 @@ public class ClickAds {
     public string IP;
     public string AdsType;
     public string GamePackage;
+    public string DeviceModel;
 }
 
 
@@ -137,6 +144,7 @@ public class InApp {
     public string IP;
     public string GamePackage;
     public float Amount;
+    public string DeviceModel;
 }
 
 [Serializable]
@@ -146,4 +154,5 @@ public class ShowAds {
     public string IP;
     public string AdsType;
     public string GamePackage;
+    public string DeviceModel;
 }

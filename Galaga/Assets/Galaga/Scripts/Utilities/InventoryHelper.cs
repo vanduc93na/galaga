@@ -110,7 +110,7 @@ public class InventoryHelper
         SaveInventory();
     }
 
-    public void SetLife(int life)
+    public void AddLife(int life)
     {
         LoadInventory();
         UserInventory.life += life;

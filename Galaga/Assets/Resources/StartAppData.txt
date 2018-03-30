@@ -1,2 +1,2 @@
 applicationId=200689009
-returnAds=true
+returnAds=truee

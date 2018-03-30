@@ -53,13 +53,14 @@ public partial class API : MonoBehaviour
 
     void Start()
     {
+
+        GemmobTracking.Instance.Init();
         if (!PlayerPrefs.HasKey(FirstOpen)) {
-            GemmobTracking.Instance.Init();
             GemmobTracking.Instance.AddUser();
+            PlayerPrefs.SetString(FirstOpen, "false");
         }
         else {
             GemmobTracking.Instance.Login();
-            PlayerPrefs.SetString(FirstOpen, "true");
         }
 
         //if (Application.platform == RuntimePlatform.IPhonePlayer)

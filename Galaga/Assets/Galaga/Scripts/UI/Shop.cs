@@ -69,7 +69,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
         if (InventoryHelper.Instance.UserInventory.coin > _mekitPrime)
         {
             InventoryHelper.Instance.RemoveCoin(_mekitPrime);
-            InventoryHelper.Instance.SetLife(1);
+            InventoryHelper.Instance.AddLife(1);
             if (OnCoinChange != null)
             {
                 OnCoinChange();

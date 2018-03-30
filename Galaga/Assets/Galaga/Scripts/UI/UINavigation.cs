@@ -39,6 +39,11 @@ public class UINavigation : MonoBehaviour
         _popup.SetActive(false);
         SoundController.PlayBackgroundSound(SoundController.Instance.MenuBackgroundSound);
     }
+//    [ContextMenu("delete")]
+//    void AAAA()
+//    {
+//        PlayerPrefs.DeleteAll();
+//    }
 
     void OnEnable()
     {

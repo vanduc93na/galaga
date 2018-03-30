@@ -146,6 +146,8 @@ public class PlayerBasic : PlayerController
         else
         {
             _life -= 1;
+            _lifeText.text = _life.ToString();
+            InventoryHelper.Instance.AddLife(-1);
         }
     }
 
@@ -327,6 +329,7 @@ public class PlayerBasic : PlayerController
     {
         _life += 1;
         _lifeText.text = _life.ToString();
+        InventoryHelper.Instance.AddLife(1);   
     }
     
 

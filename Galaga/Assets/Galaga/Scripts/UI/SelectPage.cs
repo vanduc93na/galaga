@@ -32,9 +32,10 @@ public class SelectPage : MonoBehaviour
     {
         _lightList = new List<GameObject>();
         CreateLight();
+        Init();
     }
 
-    void OnEnable()
+    void Init()
     {
         InventoryHelper.Instance.LoadInventory();
         for (int i = 0; i < _levels.Length; i++)
@@ -44,8 +45,8 @@ public class SelectPage : MonoBehaviour
             {
                 _levels[i].onClick.AddListener(() => ButtonsSelect(btn));
             }
-
         }
+        Debug.Log("Pass level: " + InventoryHelper.Instance.UserInventory.passLevel);
         for (int i = 0; i < _levels.Length; i++)
         {
             if (i <= InventoryHelper.Instance.UserInventory.passLevel - 1)
@@ -81,16 +82,6 @@ public class SelectPage : MonoBehaviour
 
     void CreateLight()
     {
-        //        for (int i = 0; i < _pathVector3s.Count; i++)
-        //        {
-        //            GameObject lightSpawn = Lean.LeanPool.Spawn(_light);
-        //            lightSpawn.transform.SetParent(_lightParent.transform);
-        //            lightSpawn.transform.position = _pathVector3s[i];
-        //            lightSpawn.transform.localScale = Vector3.one;
-        //            lightSpawn.transform.eulerAngles = GetAngle(lightSpawn.transform.position, _pathVector3s[i]);
-        //            _lightList.Add(lightSpawn);
-        //        }
-        //        DrawnLight();
         var listWps = _path.GetComponent<DOTweenPath>().wps;
         for (int i = 0; i < listWps.Count - 1; i++)
         {
