@@ -9,18 +9,26 @@ public class BulletEnemy : MonoBehaviour
     {
         this.RegisterListener(EventID.Restart, (param) => ResetLevel());
         this.RegisterListener(EventID.NextLevel, (param) => ResetLevel());
+        this.RegisterListener(EventID.GameOver, (param) => ResetLevel());
+        this.RegisterListener(EventID.GameWin, (param) => ResetLevel());
     }
 
     void ResetLevel()
     {
-        Lean.LeanPool.Despawn(this);
+        if (gameObject.activeSelf)
+        {
+            Lean.LeanPool.Despawn(this);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == GameTag.PLAYER || other.gameObject.tag == GameTag.BORDER)
         {
-            Lean.LeanPool.Despawn(this);
+            if (gameObject.activeSelf)
+            {
+                Lean.LeanPool.Despawn(this);
+            }
         }
     }
 }

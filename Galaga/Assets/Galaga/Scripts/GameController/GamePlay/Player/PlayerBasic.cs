@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+//using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class PlayerBasic : PlayerController
     [Tooltip("GameObject chứa các viên đạn")]
     [SerializeField]
     private GameObject _bulletsMgr;
-    
+
 
     [SerializeField] private int _currentNumberBulletOnScreen;
 
@@ -23,6 +24,7 @@ public class PlayerBasic : PlayerController
     [SerializeField] private float _timeAttackLazer;
 
     [SerializeField] private float _timeAttackBlackHole;
+    [SerializeField] private float _timeAttackArrow;
 
     [SerializeField] private int _dameOfBlackHole;
 
@@ -34,6 +36,8 @@ public class PlayerBasic : PlayerController
 
     [SerializeField] private GameObject _lazer;
 
+    [SerializeField] private GameObject _arrow;
+
     [SerializeField] private GameObject _ship;
 
     [SerializeField] private GameObject _explosiveEff;
@@ -43,7 +47,7 @@ public class PlayerBasic : PlayerController
     [SerializeField] private GameObject _gameOverPage;
 
     [SerializeField] private GameObject _gameWinPage;
-    
+
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
@@ -86,13 +90,57 @@ public class PlayerBasic : PlayerController
 
     public void ReturnPlay()
     {
+        isMove = true;
         GameController.Instance.gameStage = GameStage.Play;
+        transform.position = _rootPos;
         _explosiveEff.SetActive(false);
         Invoke(FIRE_BULLET, fireRate);
         _shield.SetActive(true);
         _ship.SetActive(true);
+        _arrow.SetActive(false);
+        _lazer.SetActive(false);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE
+                || transform.GetChild(i).gameObject.tag == GameTag.GUN_GENADE)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
         StartCoroutine(PlayerProtected());
-//        transform.position = _rootPos;
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    public void TestSuperItems(int test)
+    {
+        switch (test)
+        {
+            case 1:
+                FireTomahawk();
+                break;
+            case 2:
+                FireArrow();
+                break;
+            case 3:
+                FireGenade();
+                break;
+            case 4:
+                StartCoroutine(PlayerProtected());
+                break;
+            case 5:
+                AddHeart();
+                break;
+            case 6:
+//                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
+                break;
+            case 7:
+                FireLazer();
+                break;
+        }
     }
 
     void EatItem(GameObject obj)
@@ -108,8 +156,8 @@ public class PlayerBasic : PlayerController
             case GameTag.ITEM_PLAYER_PROTECTED:
                 StartCoroutine(PlayerProtected());
                 break;
-            case GameTag.ITEM_BULLET_3:
-                
+            case GameTag.ITEM_ARROW:
+
                 break;
             case GameTag.ITEM_BLACK_HOLE:
                 StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
@@ -131,6 +179,7 @@ public class PlayerBasic : PlayerController
         if (_isProtected) return;
         if (_life == 0)
         {
+            isMove = false;
             _isProtected = true;
             CancelInvoke(FIRE_BULLET);
             isMove = false;
@@ -329,9 +378,9 @@ public class PlayerBasic : PlayerController
     {
         _life += 1;
         _lifeText.text = _life.ToString();
-        InventoryHelper.Instance.AddLife(1);   
+        InventoryHelper.Instance.AddLife(1);
     }
-    
+
 
 
     #region SUPER_ITEM
@@ -379,6 +428,15 @@ public class PlayerBasic : PlayerController
                     break;
                 }
             }
+        }));
+    }
+
+    void FireArrow()
+    {
+        _arrow.SetActive(true);
+        StartCoroutine(DeLayTime(_timeAttackArrow, () =>
+        {
+            _arrow.SetActive(false);
         }));
     }
 

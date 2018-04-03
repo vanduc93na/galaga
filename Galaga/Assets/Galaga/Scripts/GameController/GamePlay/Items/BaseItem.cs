@@ -12,6 +12,17 @@ public class BaseItem : MonoBehaviour
     void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
+        this.RegisterListener(EventID.Restart, (param) => ResetItem());
+        this.RegisterListener(EventID.GameWin, (param) => ResetItem());
+        this.RegisterListener(EventID.GameOver, (param) => ResetItem());
+    }
+
+    void ResetItem()
+    {
+        if (gameObject.activeSelf)
+        {
+            Lean.LeanPool.Despawn(gameObject);
+        }
     }
 
     void OnEnable()

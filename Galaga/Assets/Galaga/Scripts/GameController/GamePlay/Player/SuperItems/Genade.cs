@@ -9,15 +9,22 @@ public class Genade : MonoBehaviour
 
     void Awake()
     {
-        this.RegisterListener(EventID.Restart, (param) =>
-        {
-            Lean.LeanPool.Despawn(this.gameObject);
-        });
+        this.RegisterListener(EventID.Restart, (param) => ResetItem());
+        this.RegisterListener(EventID.GameWin, (param) => ResetItem());
+        this.RegisterListener(EventID.GameOver, (param) => ResetItem());
     }
 
     void Update()
     {
         transform.position += Vector3.up * Time.deltaTime * speed;
+    }
+
+    void ResetItem()
+    {
+        if (gameObject.activeSelf)
+        {
+            Lean.LeanPool.Despawn(this.gameObject);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

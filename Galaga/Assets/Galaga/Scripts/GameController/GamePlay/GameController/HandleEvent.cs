@@ -415,7 +415,7 @@ public partial class HandleEvent : MonoBehaviour
             }
             if (targetObject.tag == GameTag.BORDER)
             {
-                Lean.LeanPool.Despawn(targetObject);
+                Lean.LeanPool.Despawn(arrow);
                 _arrows.Remove(arrow);
             }
         }
