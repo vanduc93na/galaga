@@ -48,6 +48,7 @@ public class PlayerBasic : PlayerController
 
     [SerializeField] private GameObject _gameWinPage;
 
+    [SerializeField] private Transform _parentBullet;
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
@@ -112,7 +113,7 @@ public class PlayerBasic : PlayerController
 
     void OnDisable()
     {
-        StopAllCoroutines();
+        
     }
 
     public void TestSuperItems(int test)
@@ -179,6 +180,7 @@ public class PlayerBasic : PlayerController
         if (_isProtected) return;
         if (_life == 0)
         {
+            StopAllCoroutines();
             isMove = false;
             _isProtected = true;
             CancelInvoke(FIRE_BULLET);
@@ -187,8 +189,7 @@ public class PlayerBasic : PlayerController
             StartCoroutine(DeLayTime(.23f, () =>
             {
                 this.PostEvent(EventID.PlayerDead);
-                _ship.SetActive(false);
-                _isProtected = false;
+                _ship.SetActive(false);                
             }));
 
         }
@@ -290,6 +291,7 @@ public class PlayerBasic : PlayerController
         for (int i = 1; i <= _currentNumberBulletOnScreen; i++)
         {
             GameObject bulletPool = Lean.LeanPool.Spawn(_bullet, gunObject.transform.position, Quaternion.identity);
+            bulletPool.transform.SetParent(_parentBullet);
             HandleEvent.Instance.AddBullet(bulletPool);
             bulletPool.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             Vector3 newTransformBullet = bulletPool.transform.position;

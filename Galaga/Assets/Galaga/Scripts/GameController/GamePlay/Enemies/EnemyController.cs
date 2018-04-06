@@ -154,6 +154,7 @@ public class EnemyController : MonoBehaviour
 
     IEnumerator SpawnEnemyTypeMoveInCol(WaveInformation wave, List<GameObject> enemies)
     {
+        Debug.Log(enemies);
         for (int i = 0; i < wave.Col; i++)
         {
             for (int j = 0; j < wave.Row; j++)

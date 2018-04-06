@@ -26,9 +26,11 @@ public class BaseEnemy : MonoBehaviour
     private float _rotateSpeed = 1f;
     private float _radius;
     private float _angle;
+    public int id;
 
     void Awake()
     {
+        id = 0;
         _isBlackHoleAttack = false;
         isAlive = true;
         _rootPos = transform.position;
@@ -49,7 +51,6 @@ public class BaseEnemy : MonoBehaviour
     {
         _isBlackHoleAttack = false;
         isAlive = true;
-
     }
 
     void OnDisable()
@@ -85,6 +86,7 @@ public class BaseEnemy : MonoBehaviour
 
     public void Init(EnemyInformation infor, bool isLast = false, bool isFromBoss = false)
     {
+        id = infor.IdEnemy;
         isAlive = true;
         _isFromBoss = isFromBoss;
         _health = infor.Health;
@@ -124,7 +126,7 @@ public class BaseEnemy : MonoBehaviour
         Vector3[] wp = tmp.ToArray();
         transform.position = wp[0];
         _onMove = true;
-        transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
+        transform.DOPath(wp, moveInfor.Duration, PathType.CatmullRom, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
         {
             transform.DOLocalRotate(Vector3.up, 0.2f);
             _onMove = false;
@@ -223,11 +225,35 @@ public class BaseEnemy : MonoBehaviour
         transform.position = _rootPos;
         Lean.LeanPool.Despawn(this);
     }
+//
+//    public void Attack(GameObject bullet, Transform parentTransform)
+//    {
+//        
+//    }
 
-    public void Attack(GameObject bullet, Transform parentTransform)
+    public void AttackSpawnEgg(GameObject bullet, Transform parentTransform)
     {
         var go = Lean.LeanPool.Spawn(bullet);
         go.transform.position = transform.position;
+    }
+
+    public void AttackShotBulletToShip(GameObject bullet, Transform parentTransform, Transform shipTrs)
+    {
+        //        float angle = Vector2.Angle(transform.position, shipTrs.position);
+        float distance = Vector2.Distance(transform.position, shipTrs.position);
+        if (distance < 2) return;
+        Vector3 direction = shipTrs.position - transform.position;
+        direction.Normalize();
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+        
+        transform.DOLocalRotate(new Vector3(0, 0, angle), 0.7f).OnComplete(() =>
+        {
+            var go = Lean.LeanPool.Spawn(bullet);
+            go.transform.position = transform.position;
+            go.transform.SetParent(parentTransform);
+            go.GetComponent<Rigidbody2D>().AddForce(direction * 200);
+            transform.DOLocalRotate(Vector3.zero, 0.3f);
+        });
     }
 
     #endregion
@@ -242,18 +268,18 @@ public class BaseEnemy : MonoBehaviour
         var pos = transform.position;
         return pos.x <= 3 && pos.x >= -2.5f && pos.y >= -4.5 && pos.y <= 5;
     }
-//
-//    IEnumerator HitEffect(float seconds)
-//    {
-//        _hitEffect.SetActive(true);
-//        yield return new WaitForSeconds(seconds);
-//        _hitEffect.SetActive(false);
-//    }
-//
-//    IEnumerator DeadEffect(float seconds)
-//    {
-//        _deadEffect.SetActive(true);
-//        yield return new WaitForSeconds(seconds);
-//        _deadEffect.SetActive(false);
-//    }
+    //
+    //    IEnumerator HitEffect(float seconds)
+    //    {
+    //        _hitEffect.SetActive(true);
+    //        yield return new WaitForSeconds(seconds);
+    //        _hitEffect.SetActive(false);
+    //    }
+    //
+    //    IEnumerator DeadEffect(float seconds)
+    //    {
+    //        _deadEffect.SetActive(true);
+    //        yield return new WaitForSeconds(seconds);
+    //        _deadEffect.SetActive(false);
+    //    }
 }

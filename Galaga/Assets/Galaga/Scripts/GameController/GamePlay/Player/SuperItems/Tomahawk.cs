@@ -14,13 +14,10 @@ public class Tomahawk : MonoBehaviour
 
     void Awake()
     {
-        this.RegisterListener(EventID.Restart, (param) =>
-        {
-            if (gameObject.activeSelf)
-            {
-                Lean.LeanPool.Despawn(this.gameObject);
-            }
-        });
+        this.RegisterListener(EventID.Restart, (param) => ResetItem());
+        this.RegisterListener(EventID.PlayerDead, (param) => ResetItem());
+        this.RegisterListener(EventID.GameWin, (param) => ResetItem());
+        this.RegisterListener(EventID.GameOver, (param) => ResetItem());
     }
 
     // Use this for initialization
@@ -29,9 +26,25 @@ public class Tomahawk : MonoBehaviour
 
     }
 
+    void ResetItem()
+    {
+        if (gameObject.activeSelf)
+        {
+            Lean.LeanPool.Despawn(this.gameObject);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (transform.position.y >= 5 || transform.position.y <= -5 || transform.position.x > 3 ||
+            transform.position.x <= -3)
+        {
+            if (gameObject.activeSelf)
+            {
+                Lean.LeanPool.Despawn(gameObject);
+            }
+        }
         if (_targetEnemyScript == null || !_targetEnemyScript.IsAlive() || !_targetEnemyScript.IsActiveOnScene())
         {
             transform.position += Vector3.up * speed * Time.deltaTime;

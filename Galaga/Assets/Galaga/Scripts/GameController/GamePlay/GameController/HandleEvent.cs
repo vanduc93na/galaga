@@ -199,37 +199,22 @@ public partial class HandleEvent : MonoBehaviour
         if (_enemiesOnWave.Count > 0)
         {
             List<GameObject> listEnemies = _enemiesOnWave.Keys.ToList();
-            //            int numberOfEnemyMove = Random.Range(0, 5);
-            //            int randomPath = Random.Range(0, _listPathMoveOnWave.Count);
-            //            while (numberOfEnemyMove > 0)
-            //            {
-            //                int randomEnemy = Random.Range(1, listEnemies.Count - 1);
-            //                if (_enemiesOnWave[listEnemies[randomEnemy]].OnMoving())
-            //                {
-            //                    _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
-            //                    StartCoroutine(DelayTime(0.2f, null));
-            //                    numberOfEnemyMove--;
-            //                }
-            //                print(randomEnemy + " number: " + numberOfEnemyMove);
-            //            }
-            //            for (int i = 0; i < numberOfEnemyMove; i++)
-            //            {
-            //                int randomEnemy = Random.Range(1, listEnemies.Count);
-            //                _enemiesOnWave[listEnemies[randomEnemy]].MovePathOnWave(_listPathMoveOnWave[randomPath]);
-            //                StartCoroutine(DelayTime(0.2f, null));
-            //            }
             int random = Random.Range(0, listEnemies.Count - 1);
-            if (!_enemiesOnWave[listEnemies[random]].OnMoving())
+            int id = _enemiesOnWave[listEnemies[random]].id;
+            if (id == 5 || id == 6 || id == 13 || id == 14)
             {
-                Vector3 rootPos = _enemiesOnWave[listEnemies[random]].transform.localPosition;
-                Vector3 playerPos = _player.transform.position;
-                _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(playerPos, 2f).OnComplete(() =>
+                if (!_enemiesOnWave[listEnemies[random]].OnMoving())
                 {
-                    _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(rootPos, 1f);
-                });
+                    Vector3 rootPos = _enemiesOnWave[listEnemies[random]].transform.localPosition;
+                    Vector3 playerPos = _player.transform.position;
+                    _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(playerPos, 2f).OnComplete(() =>
+                    {
+                        _enemiesOnWave[listEnemies[random]].transform.DOLocalMove(rootPos, 1f);
+                    });
+                }
+                float timeInvoke = Random.Range(3f, 5f);
+                Invoke(MOVE_ON_WAVE_METHOD, timeInvoke);
             }
-            float timeInvoke = Random.Range(3f, 5f);
-            Invoke(MOVE_ON_WAVE_METHOD, timeInvoke);
         }
         else
         {
@@ -243,7 +228,15 @@ public partial class HandleEvent : MonoBehaviour
         {
             int random = Random.Range(0, _enemiesOnWave.Count - 1);
             var listEnemy = _enemiesOnWave.Keys.ToList();
-            _enemiesOnWave[listEnemy[random]].Attack(_bulletEnemy, _parentButtletOfEnemies);
+            int id = _enemiesOnWave[listEnemy[random]].id;
+            if (id == 0 || id == 1 || id == 2 || id == 8 || id == 9 || id == 10)
+            {
+                _enemiesOnWave[listEnemy[random]].AttackSpawnEgg(_bulletEnemy, _parentButtletOfEnemies);
+            }
+            else if (id == 3 || id == 4 || id == 11 || id == 12)
+            {
+                _enemiesOnWave[listEnemy[random]].AttackShotBulletToShip(_bulletEnemy, _parentButtletOfEnemies, _player.transform);
+            }
         }
         float timerInvoke = Random.Range(1f, 5f);
         Invoke(ENEMY_ATTACK, timerInvoke);
