@@ -16,7 +16,6 @@ public class UINavigation : MonoBehaviour
 
     void Awake()
     {
-        InventoryHelper.Instance.AddCoin(10000);
         InventoryHelper.Instance.OnCoinChange += () =>
         {
             InventoryHelper.Instance.LoadInventory();

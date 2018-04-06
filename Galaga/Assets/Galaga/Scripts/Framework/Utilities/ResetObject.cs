@@ -10,6 +10,8 @@ public class ResetObject : MonoBehaviour
     {
         this.RegisterListener(EventID.Restart, (param) => ResetAllChildren());
         this.RegisterListener(EventID.NextLevel, (param) => ResetAllChildren());
+        this.RegisterListener(EventID.GameWin, (param) => ResetAllChildren());
+        this.RegisterListener(EventID.GameOver, (param) => ResetAllChildren());
     }
 
     void ResetAllChildren()

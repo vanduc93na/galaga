@@ -15,7 +15,7 @@ public class MoveInformation
     // time duration
     public float Duration = 0;
     // type move
-    public PathType Type = PathType.Linear;
+    public PathType Type = PathType.CatmullRom;
 
     public PathMode Mode = PathMode.Sidescroller2D;
 }
