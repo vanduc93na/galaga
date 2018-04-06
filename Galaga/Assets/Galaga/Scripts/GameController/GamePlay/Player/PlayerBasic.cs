@@ -136,7 +136,7 @@ public class PlayerBasic : PlayerController
                 AddHeart();
                 break;
             case 6:
-//                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
+                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
                 break;
             case 7:
                 FireLazer();
@@ -161,7 +161,7 @@ public class PlayerBasic : PlayerController
 
                 break;
             case GameTag.ITEM_BLACK_HOLE:
-                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
+                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
                 break;
             case GameTag.ITEM_SUPPER_GENADE:
                 FireGenade();

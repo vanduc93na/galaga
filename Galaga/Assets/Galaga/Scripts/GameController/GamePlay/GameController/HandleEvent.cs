@@ -353,7 +353,7 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
-    public void TriggerGenadevsEnemies(GameObject genade, GameObject targetObject)
+    public void TriggerGenadevsEnemies(GameObject genade, GameObject targetObject, GameObject expGenade)
     {
         if (targetObject.tag == GameTag.ENEMY)
         {
@@ -375,6 +375,12 @@ public partial class HandleEvent : MonoBehaviour
             }
             if (_genades.ContainsKey(genade))
             {
+                var expGO = Lean.LeanPool.Spawn(expGenade);
+                expGO.transform.position = genade.transform.position;
+                StartCoroutine(DelayTime(1f, () =>
+                {
+                    Lean.LeanPool.Despawn(expGO);
+                }));
                 Lean.LeanPool.Despawn(genade);
                 _genades.Remove(genade);
             }
@@ -414,13 +420,9 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
-    public IEnumerator BlackHoleAttack(float seconds, int dame)
+    public void BlackHoleAttack(float seconds, int dame)
     {
         _blackHoleCentre.SetActive(true);
-        StartCoroutine(DelayTime(seconds, () =>
-        {
-            _blackHoleCentre.SetActive(false);
-        }));
 
         List<GameObject> enemiesGO = _enemiesOnWave.Keys.ToList();
 
@@ -435,19 +437,31 @@ public partial class HandleEvent : MonoBehaviour
                 continue;
             }
         }
-
-        for (int i = 0; i < enemiesGO.Count; i++)
+        StartCoroutine(DelayTime(seconds, () =>
         {
-            yield return new WaitForSeconds(0.3f);
-            if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+            _blackHoleCentre.SetActive(false);
+            for (int i = 0; i < enemiesGO.Count; i++)
             {
-                _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+                if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+                {
+//                    _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+                }
             }
-            else
-            {
-                continue;
-            }
-        }
+        }));
+
+//
+//        for (int i = 0; i < enemiesGO.Count; i++)
+//        {
+//            yield return new WaitForSeconds(0.3f);
+//            if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+//            {
+//                _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+//            }
+//            else
+//            {
+//                continue;
+//            }
+//        }
     }
 
     public void TriggerLazerVsOther(GameObject other, int dame)

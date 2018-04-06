@@ -6,6 +6,7 @@ public class Genade : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private int dame;
+    [SerializeField] private GameObject explosionGenade;
 
     void Awake()
     {
@@ -29,9 +30,7 @@ public class Genade : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
-        HandleEvent.Instance.TriggerGenadevsEnemies(this.gameObject, other.gameObject);
-
+        HandleEvent.Instance.TriggerGenadevsEnemies(this.gameObject, other.gameObject, explosionGenade);
     }
 
     public int GetDame()
