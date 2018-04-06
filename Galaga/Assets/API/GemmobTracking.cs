@@ -42,6 +42,14 @@ public class GemmobTracking : MonoBehaviour{
         yield return client;
         if (client.error == null || (client.error != null && client.error == string.Empty)) {
             IPAddress = client.text;
+            Debug.Log("Ip: " + IPAddress);
+            if (!PlayerPrefs.HasKey(API.FirstOpen)) {
+                GemmobTracking.Instance.AddUser();
+                PlayerPrefs.SetString(API.FirstOpen, "true");
+            }
+            else {
+                GemmobTracking.Instance.Login();
+            }
         }
     }
     public void Login() {
@@ -49,9 +57,9 @@ public class GemmobTracking : MonoBehaviour{
         login.DeviceModel = SystemInfo.deviceModel;
         login.DeviceUID = SystemInfo.deviceUniqueIdentifier;
         login.GamePackage = API.Instance.Infor.info.package;
-        login.Time = DateTime.Now.ToString();
+        string pattern = "yyyy-MM-dd HH:mm:ss";
+        login.Time = DateTime.Now.ToString(pattern);
         login.IP = IPAddress;
-        login.DeviceModel = SystemInfo.deviceModel;
 
         string Json = JsonUtility.ToJson(login);
         reference.Child("Logins").Child(login.DeviceUID).Push().SetRawJsonValueAsync(Json);
@@ -61,7 +69,6 @@ public class GemmobTracking : MonoBehaviour{
     public void AddUser() {
         User user = new User();
         user.DeviceUID = SystemInfo.deviceUniqueIdentifier;
-        user.DeviceModel = SystemInfo.deviceModel;
         string Json = JsonUtility.ToJson(user);
         reference.Child("Users").Child(user.DeviceUID).SetRawJsonValueAsync(Json);
     }
@@ -72,9 +79,8 @@ public class GemmobTracking : MonoBehaviour{
         click.AdsType = AdsType;
         click.GamePackage = API.Instance.Infor.info.package;
         click.IP = IPAddress;
-        DateTime now = DateTime.Now;
-        click.Time = now.ToString();
-        click.DeviceModel = SystemInfo.deviceModel;
+        string pattern = "yyyy-MM-dd HH:mm:ss";
+        click.Time = DateTime.Now.ToString(pattern);
         string json = JsonUtility.ToJson(click);
         reference.Child("ClickAds").Child(click.DeviceUID).Push().SetRawJsonValueAsync(json);
     }
@@ -85,9 +91,8 @@ public class GemmobTracking : MonoBehaviour{
         show.AdsType = AdsType;
         show.GamePackage = API.Instance.Infor.info.package;
         show.IP = IPAddress;
-        DateTime now = DateTime.Now;
-        show.Time = now.ToString();
-        show.DeviceModel = SystemInfo.deviceModel;
+        string pattern = "yyyy-MM-dd HH:mm:ss";
+        show.Time = DateTime.Now.ToString(pattern);
         string json = JsonUtility.ToJson(show);
         reference.Child("ShowAds").Child(show.DeviceUID).Push().SetRawJsonValueAsync(json);
     }
@@ -97,9 +102,8 @@ public class GemmobTracking : MonoBehaviour{
         ia.DeviceUID = SystemInfo.deviceUniqueIdentifier;
         ia.Amount = amount;
         ia.GamePackage = API.Instance.Infor.info.package;
-        DateTime now = DateTime.Now;
-        ia.Time = now.ToString();
-        ia.DeviceModel = SystemInfo.deviceModel;
+        string pattern = "yyyy-MM-dd HH:mm:ss";
+        ia.Time = DateTime.Now.ToString(pattern);
         string json = JsonUtility.ToJson(ia);
         reference.Child("InApps").Child(ia.DeviceUID).Push().SetRawJsonValueAsync(json);
     }
@@ -114,7 +118,6 @@ public class User {
     public string GameCenter;
     public string Phone;
     public string Name;
-    public string DeviceModel;
 }
 [Serializable]
 public class Login {
@@ -132,7 +135,6 @@ public class ClickAds {
     public string IP;
     public string AdsType;
     public string GamePackage;
-    public string DeviceModel;
 }
 
 
@@ -144,7 +146,6 @@ public class InApp {
     public string IP;
     public string GamePackage;
     public float Amount;
-    public string DeviceModel;
 }
 
 [Serializable]
@@ -154,5 +155,4 @@ public class ShowAds {
     public string IP;
     public string AdsType;
     public string GamePackage;
-    public string DeviceModel;
 }

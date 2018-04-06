@@ -49,19 +49,13 @@ public partial class API : MonoBehaviour
         else
             // Hủy đối tượng nếu nó đã tồn tại trên scene
             Destroy(gameObject);
+
+        GemmobTracking.Instance.Init();
     }
 
     void Start()
     {
-
-        GemmobTracking.Instance.Init();
-        if (!PlayerPrefs.HasKey(FirstOpen)) {
-            GemmobTracking.Instance.AddUser();
-            PlayerPrefs.SetString(FirstOpen, "false");
-        }
-        else {
-            GemmobTracking.Instance.Login();
-        }
+        
 
         //if (Application.platform == RuntimePlatform.IPhonePlayer)
 
@@ -78,6 +72,15 @@ public partial class API : MonoBehaviour
 
             // .. ngày hiện tại không khác ngày đã lưu, lấy data từ local
             LoadLocalData();
+
+        //send Login to database 
+//        if (!PlayerPrefs.HasKey(FirstOpen)) {
+//            GemmobTracking.Instance.AddUser();
+//            PlayerPrefs.SetString(FirstOpen, "true");
+//        }
+//        else {
+//            GemmobTracking.Instance.Login();
+//        }
     }
 
     #region LoadData
@@ -323,7 +326,7 @@ public partial class API : MonoBehaviour
     }
 
     // Show full 30%
-    public static void ShowFull30(Action callback)
+    public static void ShowFull30(Action callback = null)
     {
 #if UNITY_EDITOR
         if (callback != null)

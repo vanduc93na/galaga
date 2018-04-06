@@ -24,7 +24,6 @@ public class GameLose : MonoBehaviour
     void OnEnable()
     {
         this.PostEvent(EventID.GameOver);
-        Time.timeScale = 0;
         _shopPanel.SetActive(false);
         InventoryHelper.Instance.LoadInventory();
         _level = InventoryHelper.Instance.UserInventory.selectedLevel;

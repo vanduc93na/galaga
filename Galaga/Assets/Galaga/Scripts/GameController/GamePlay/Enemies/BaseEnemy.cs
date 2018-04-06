@@ -55,6 +55,7 @@ public class BaseEnemy : MonoBehaviour
 
     void OnDisable()
     {
+        _isLastEnemyOnWave = false;
         DOTween.Kill(transform);
         transform.position = _rootPos;
         _deadEffect.SetActive(false);
@@ -219,6 +220,7 @@ public class BaseEnemy : MonoBehaviour
 
     void OnDead()
     {
+        _isLastEnemyOnWave = false;
         isAlive = false;
         InstanceDropItem();
         DOTween.Kill(transform);

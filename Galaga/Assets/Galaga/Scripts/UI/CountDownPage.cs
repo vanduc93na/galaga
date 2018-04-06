@@ -15,6 +15,7 @@ public class CountDownPage : MonoBehaviour
 
     void OnEnable()
     {
+        StartCoroutine(CountDown());
         InventoryHelper.Instance.LoadInventory();
         if (InventoryHelper.Instance.UserInventory.coin < 1000)
         {

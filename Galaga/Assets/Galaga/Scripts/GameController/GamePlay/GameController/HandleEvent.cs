@@ -563,7 +563,10 @@ public partial class HandleEvent : MonoBehaviour
     /// <param name="tomahawk"></param>
     public void AddTomahawk(GameObject tomahawk)
     {
-        _tomahawks.Add(tomahawk, tomahawk.GetComponent<Tomahawk>());
+        if (!_tomahawks.ContainsKey(tomahawk))
+        {
+            _tomahawks.Add(tomahawk, tomahawk.GetComponent<Tomahawk>());
+        }
     }
 
     /// <summary>
