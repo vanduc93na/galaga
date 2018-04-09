@@ -46,6 +46,23 @@ public class Setting : MonoBehaviour, IPointerClickHandler
             _musicOn = true;
             PlayerPrefs.SetInt(StringKeys.MUSIC, 1);
         }
+        if (_soundOn)
+        {
+            _soundButtonText.text = "SOUND FX: ON";
+        }
+        else
+        {
+            _soundButtonText.text = "SOUND FX: OFF";
+        }
+
+        if (_musicOn)
+        {
+            _musicButtonText.text = "BG MUSIC: ON";
+        }
+        else
+        {
+            _musicButtonText.text = "BG MUSIC: OFF";
+        }
     }
 
     public void SoundControl()
@@ -74,13 +91,13 @@ public class Setting : MonoBehaviour, IPointerClickHandler
         {
             SoundController.PlaySoundEffect(SoundController.Instance.Click);
             PlayerPrefs.SetInt(StringKeys.MUSIC, 1);
-            GetComponent<AudioSource>().Play();
+            SoundController.StopBackgroundSound();
             _musicButtonText.text = "BG MUSIC: ON";
         }
         else
         {
             PlayerPrefs.SetInt(StringKeys.MUSIC, 0);
-            GetComponent<AudioSource>().Pause();
+            SoundController.PlayBackgroundSound();
             _musicButtonText.text = "BG MUSIC: OFF";
         }
     }

@@ -151,7 +151,7 @@ public class BaseEnemy : MonoBehaviour
 //        _radius = Vector2.Distance(transform.position, blackHoleCentre.transform.position);
 //        _angle = Mathf.Atan2(transform.position.y, transform.position.x);
 
-        transform.DOLocalMove(blackHoleCentre.transform.position, 1f).SetEase(Ease.InQuint);
+        transform.DOMove(blackHoleCentre.transform.position, 1f).SetEase(Ease.InQuint);
     }
 
     /// <summary>
