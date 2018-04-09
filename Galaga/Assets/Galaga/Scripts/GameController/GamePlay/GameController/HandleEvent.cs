@@ -144,7 +144,15 @@ public partial class HandleEvent : MonoBehaviour
     {
         EnemyAttack();
         MoveEnemyOnWave();
-        SoundController.PlayBackgroundSound(SoundController.Instance.GameBackgroundSound);
+        bool isPlayBackgoundMusic = PlayerPrefs.GetInt(StringKeys.MUSIC) == 1 ? true : false;
+        if (isPlayBackgoundMusic)
+        {
+            SoundController.PlayBackgroundSound(SoundController.Instance.GameBackgroundSound);
+        }
+        else
+        {
+            SoundController.StopBackgroundSound();
+        }
     }
 
     void RegisterEnemiesEvents()

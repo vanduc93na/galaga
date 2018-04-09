@@ -48,19 +48,25 @@ public class Setting : MonoBehaviour, IPointerClickHandler
         }
         if (_soundOn)
         {
+            AudioListener.pause = false;
+            AudioListener.volume = 1f;
             _soundButtonText.text = "SOUND FX: ON";
         }
         else
         {
+            AudioListener.pause = true;
+            AudioListener.volume = 0;
             _soundButtonText.text = "SOUND FX: OFF";
         }
 
         if (_musicOn)
         {
+            SoundController.PlayBackgroundSound();
             _musicButtonText.text = "BG MUSIC: ON";
         }
         else
         {
+            SoundController.StopBackgroundSound();
             _musicButtonText.text = "BG MUSIC: OFF";
         }
     }
@@ -91,13 +97,13 @@ public class Setting : MonoBehaviour, IPointerClickHandler
         {
             SoundController.PlaySoundEffect(SoundController.Instance.Click);
             PlayerPrefs.SetInt(StringKeys.MUSIC, 1);
-            SoundController.StopBackgroundSound();
+            SoundController.PlayBackgroundSound();
             _musicButtonText.text = "BG MUSIC: ON";
         }
         else
         {
             PlayerPrefs.SetInt(StringKeys.MUSIC, 0);
-            SoundController.PlayBackgroundSound();
+            SoundController.StopBackgroundSound();
             _musicButtonText.text = "BG MUSIC: OFF";
         }
     }
