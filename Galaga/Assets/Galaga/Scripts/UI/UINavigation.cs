@@ -14,6 +14,8 @@ public class UINavigation : MonoBehaviour
     [SerializeField] private Text _coinAtHomeNumber;
     [SerializeField] private Text _coinAtSelectNumber;
 
+    
+
     void Awake()
     {
         InventoryHelper.Instance.OnCoinChange += () =>
@@ -38,6 +40,7 @@ public class UINavigation : MonoBehaviour
         _popup.SetActive(false);
         SoundController.PlayBackgroundSound(SoundController.Instance.MenuBackgroundSound);
     }
+    
 //    [ContextMenu("delete")]
 //    void AAAA()
 //    {

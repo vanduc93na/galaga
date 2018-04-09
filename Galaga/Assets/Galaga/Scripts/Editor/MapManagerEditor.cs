@@ -633,6 +633,7 @@ public class MapManagerEditor : EditorWindow
     void LoadAsset()
     {
         _levels = Resources.LoadAll<LevelInformation>("Maps");
+        _levels = _levels.OrderBy(s => int.Parse(s.name.Replace("level ", ""))).ToArray();
     }
 
     void SaveDataAsset()

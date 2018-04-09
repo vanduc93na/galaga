@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -40,6 +41,7 @@ public class GameController : MonoBehaviour
     void Init()
     {
         _levelsInfor = Resources.LoadAll<LevelInformation>("Maps");
+        _levelsInfor = _levelsInfor.OrderBy(s => int.Parse(s.name.Replace("level ", ""))).ToArray();
         _indexWave = 0;
         _currentLevelIndex = 0;
     }

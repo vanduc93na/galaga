@@ -42,7 +42,7 @@ public class BaseEnemy : MonoBehaviour
         {
             _angle += _rotateSpeed * Time.deltaTime;
             var offet = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle), 0) * _radius;
-            transform.position = new Vector3(_centreBlackHole.x, _centreBlackHole.y, 0) + new Vector3(offet.x, offet.y, 0);
+            transform.position = new Vector3(offet.x, offet.y, 0);
             _radius -= Time.deltaTime;
         }
     }
