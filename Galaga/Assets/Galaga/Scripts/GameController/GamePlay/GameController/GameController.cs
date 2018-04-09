@@ -28,6 +28,9 @@ public class GameController : MonoBehaviour
     {
         // đăng ký sự kiện bắt đầu game
         this.RegisterListener(EventID.NextWave, (param) => NextWave());
+        this.RegisterListener(EventID.GameOver, (param) => StopAllCoroutines());
+        this.RegisterListener(EventID.PlayerDead, (param) => StopAllCoroutines());
+        this.RegisterListener(EventID.GameWin, (param) => StopAllCoroutines());
         Init();
 
         if (Instance == null)
@@ -107,7 +110,7 @@ public class GameController : MonoBehaviour
         {
             _indexWave = 0;
             print("complete level");
-            StartCoroutine(Delay(0.5f, () =>
+            StartCoroutine(Delay(2f, () =>
             {
                 this.PostEvent(EventID.GameWin);
                 InventoryHelper.Instance.SetPassLevel(_currentLevelIndex);

@@ -295,6 +295,13 @@ public class MapManagerEditor : EditorWindow
                     EditorGUILayout.EndVertical();
                     break;
                 case TypeMove.MoveInRows:
+                    int index = _row;
+                    for (int i = 0; i < _row; i++)
+                    {
+                        index = _col * i;
+                        listPathOfRows[i] = wave.Enemies[index].IdPath;
+                    }
+
                     EditorGUILayout.BeginVertical();
                     for (int i = 0; i < _row; i++)
                     {
@@ -314,6 +321,10 @@ public class MapManagerEditor : EditorWindow
                     EditorGUILayout.EndVertical();
                     break;
                 case TypeMove.MoveInCol:
+                    for (int i = 0; i < _col; i++)
+                    {
+                        listPathOfCols[i] = wave.Enemies[i].IdPath;
+                    }
                     EditorGUILayout.BeginVertical();
                     for (int i = 0; i < _col; i++)
                     {

@@ -22,8 +22,8 @@ public class BaseEnemy : MonoBehaviour
     private GameObject _boss;
 
     private bool _isBlackHoleAttack;
-    private Vector2 _centreBlackHole;
-    private float _rotateSpeed = 1f;
+    private Vector3 _centreBlackHole;
+    private float _rotateSpeed = 5f;
     private float _radius;
     private float _angle;
     public int id;
@@ -38,17 +38,21 @@ public class BaseEnemy : MonoBehaviour
 
     void Update()
     {
+
         if (_isBlackHoleAttack && _radius > 0)
         {
             _angle += _rotateSpeed * Time.deltaTime;
             var offet = new Vector3(Mathf.Sin(_angle), Mathf.Cos(_angle), 0) * _radius;
-            transform.position = new Vector3(offet.x, offet.y, 0);
+            Vector3 smoothPos = new Vector3(Mathf.Lerp(transform.position.x, offet.x, 0.01f),
+                Mathf.Lerp(transform.position.y, offet.y, 0.01f), 0);
+            transform.position = _centreBlackHole + new Vector3(offet.x, offet.y, 0);
             _radius -= Time.deltaTime;
         }
     }
 
     void OnEnable()
     {
+        _radius = 0;
         _isBlackHoleAttack = false;
         isAlive = true;
     }
@@ -127,7 +131,7 @@ public class BaseEnemy : MonoBehaviour
         Vector3[] wp = tmp.ToArray();
         transform.position = wp[0];
         _onMove = true;
-        transform.DOPath(wp, moveInfor.Duration, PathType.CatmullRom, PathMode.Sidescroller2D).SetLookAt(lookAhead: 0).OnComplete(() =>
+        transform.DOPath(wp, moveInfor.Duration, PathType.CatmullRom, PathMode.Sidescroller2D).SetEase(Ease.Linear).SetLookAt(lookAhead: 0).OnComplete(() =>
         {
             transform.DOLocalRotate(Vector3.up, 0.2f);
             _onMove = false;
@@ -141,11 +145,13 @@ public class BaseEnemy : MonoBehaviour
 
     public void BlackHoleAttack(GameObject blackHoleCentre)
     {
-        _centreBlackHole = blackHoleCentre.transform.position;
-        DOTween.Kill(transform);
-        _isBlackHoleAttack = true;
-        _radius = Vector2.Distance(transform.position, blackHoleCentre.transform.position);
-        _angle = Mathf.Atan2(transform.position.y, transform.position.x) * Mathf.Rad2Deg;
+//        _centreBlackHole = blackHoleCentre.transform.position;
+//        DOTween.Kill(transform);
+//        _isBlackHoleAttack = true;
+//        _radius = Vector2.Distance(transform.position, blackHoleCentre.transform.position);
+//        _angle = Mathf.Atan2(transform.position.y, transform.position.x);
+
+        transform.DOLocalMove(blackHoleCentre.transform.position, 1f).SetEase(Ease.InQuint);
     }
 
     /// <summary>

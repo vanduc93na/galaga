@@ -420,7 +420,7 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
-    public void BlackHoleAttack(float seconds, int dame)
+    public IEnumerator BlackHoleAttack(float seconds, int dame)
     {
         _blackHoleCentre.SetActive(true);
 
@@ -437,31 +437,18 @@ public partial class HandleEvent : MonoBehaviour
                 continue;
             }
         }
-        StartCoroutine(DelayTime(seconds, () =>
+        yield return new WaitForSeconds(seconds);
+        for (int i = 0; i < enemiesGO.Count; i++)
         {
-            _blackHoleCentre.SetActive(false);
-            for (int i = 0; i < enemiesGO.Count; i++)
+            if (_enemiesOnWave.ContainsKey(enemiesGO[i]))
             {
                 if (_enemiesOnWave[enemiesGO[i]].IsAlive())
                 {
-//                    _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+                    _enemiesOnWave[enemiesGO[i]].OnHit(dame);
                 }
             }
-        }));
-
-//
-//        for (int i = 0; i < enemiesGO.Count; i++)
-//        {
-//            yield return new WaitForSeconds(0.3f);
-//            if (_enemiesOnWave[enemiesGO[i]].IsAlive())
-//            {
-//                _enemiesOnWave[enemiesGO[i]].OnHit(dame);
-//            }
-//            else
-//            {
-//                continue;
-//            }
-//        }
+        }
+        _blackHoleCentre.SetActive(false);
     }
 
     public void TriggerLazerVsOther(GameObject other, int dame)

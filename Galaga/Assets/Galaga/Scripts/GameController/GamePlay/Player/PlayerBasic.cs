@@ -91,6 +91,7 @@ public class PlayerBasic : PlayerController
 
     public void ReturnPlay()
     {
+        StartCoroutine(Respawn());
         isMove = true;
         GameController.Instance.gameStage = GameStage.Play;
         transform.position = _rootPos;
@@ -108,7 +109,7 @@ public class PlayerBasic : PlayerController
                 transform.GetChild(i).gameObject.SetActive(false);
             }
         }
-        StartCoroutine(PlayerProtected());
+        StartCoroutine(PlayerProtected(5));
     }
 
     void OnDisable()
@@ -130,13 +131,13 @@ public class PlayerBasic : PlayerController
                 FireGenade();
                 break;
             case 4:
-                StartCoroutine(PlayerProtected());
+                StartCoroutine(PlayerProtected(5));
                 break;
             case 5:
                 AddHeart();
                 break;
             case 6:
-                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
+                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
                 break;
             case 7:
                 FireLazer();
@@ -155,13 +156,13 @@ public class PlayerBasic : PlayerController
                 AddHeart();
                 break;
             case GameTag.ITEM_PLAYER_PROTECTED:
-                StartCoroutine(PlayerProtected());
+                StartCoroutine(PlayerProtected(5));
                 break;
             case GameTag.ITEM_ARROW:
 
                 break;
             case GameTag.ITEM_BLACK_HOLE:
-                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
+                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
                 break;
             case GameTag.ITEM_SUPPER_GENADE:
                 FireGenade();
@@ -198,14 +199,27 @@ public class PlayerBasic : PlayerController
             _life -= 1;
             _lifeText.text = _life.ToString();
             InventoryHelper.Instance.AddLife(-1);
+            StartCoroutine(PlayerProtected(2));
+            StartCoroutine(Respawn());
         }
     }
 
-    IEnumerator PlayerProtected()
+    IEnumerator Respawn()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            _sprite.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            _sprite.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    IEnumerator PlayerProtected(float second)
     {
         _isProtected = true;
         _shield.SetActive(true);
-        float seconds = 5f;
+        float seconds = second;
         InventoryHelper.Instance.LoadInventory();
         if (InventoryHelper.Instance.UserInventory.shipSelected == 1)
         {
@@ -213,11 +227,11 @@ public class PlayerBasic : PlayerController
         }
         else if (InventoryHelper.Instance.UserInventory.shipSelected == 2)
         {
-            seconds += 2;
+            seconds += 1;
         }
         else if (InventoryHelper.Instance.UserInventory.shipSelected == 3)
         {
-            seconds += 5;
+            seconds += 3;
         }
 
         yield return new WaitForSeconds(seconds);
@@ -362,7 +376,7 @@ public class PlayerBasic : PlayerController
         _lifeText.text = _life.ToString();
         CancelInvoke(FIRE_BULLET);
         Invoke(FIRE_BULLET, fireRate);
-        StartCoroutine(PlayerProtected());
+        StartCoroutine(PlayerProtected(5));
     }
     #endregion
 
