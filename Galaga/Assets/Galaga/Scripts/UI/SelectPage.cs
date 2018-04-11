@@ -49,7 +49,7 @@ public class SelectPage : MonoBehaviour
         Debug.Log("Pass level: " + InventoryHelper.Instance.UserInventory.passLevel);
         for (int i = 0; i < _levels.Length; i++)
         {
-            if (i <= InventoryHelper.Instance.UserInventory.passLevel - 1)
+            if (i <= InventoryHelper.Instance.UserInventory.passLevel)
             {
                 _levels[i].GetComponent<Image>().sprite = _passLevelSprite;
             }

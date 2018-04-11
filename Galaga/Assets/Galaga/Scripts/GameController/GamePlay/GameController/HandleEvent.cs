@@ -345,9 +345,23 @@ public partial class HandleEvent : MonoBehaviour
                 {
                     var temp = _enemiesOnWave[targetObject];
                     int dame = tomahawk.GetComponent<Tomahawk>().GetDame();
-                    _enemiesOnWave[targetObject].OnHit(dame);
                     if (temp.IsAlive())
                     {
+                        _enemiesOnWave[targetObject].OnHit(dame);
+                        StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
+                    }
+                }
+            }
+
+            if (targetObject.tag == GameTag.BOSS)
+            {
+                if (_bosses.ContainsKey(targetObject))
+                {
+                    var temp = _bosses[targetObject];
+                    int dame = tomahawk.GetComponent<Tomahawk>().GetDame();
+                    if (_bosses[targetObject].IsAlive())
+                    {
+                        temp.OnHit(dame);
                         StartCoroutine(Effect(_enemyOnHitEffect, temp.transform.position, 0.3f));
                     }
                 }
@@ -355,8 +369,7 @@ public partial class HandleEvent : MonoBehaviour
 
             if (targetObject.tag == GameTag.BORDER || targetObject.tag == GameTag.ENEMY)
             {
-                _tomahawks.Remove(tomahawk);
-                Lean.LeanPool.Despawn(tomahawk);
+                RemoveTomahawk(tomahawk);
             }
         }
     }
@@ -578,6 +591,15 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
+    public void RemoveTomahawk(GameObject tomahawk)
+    {
+        if (_tomahawks.ContainsKey(tomahawk))
+        {
+            _tomahawks.Remove(tomahawk);
+            Lean.LeanPool.Despawn(tomahawk);
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -585,6 +607,15 @@ public partial class HandleEvent : MonoBehaviour
     public void AddGenade(GameObject genade)
     {
         _genades.Add(genade, genade.GetComponent<Genade>());
+    }
+
+    public void RemoveGenade(GameObject genade)
+    {
+        if (_genades.ContainsKey(genade))
+        {
+            _genades.Remove(genade);
+            Lean.LeanPool.Despawn(genade);
+        }
     }
 
     /// <summary>
@@ -601,7 +632,6 @@ public partial class HandleEvent : MonoBehaviour
     /// </summary>
     public void ResetLevel()
     {
-        EnemiesDestroy = 0;
         var listEnemies = _enemiesOnWave.Keys.ToList();
         for (int i = 0; i < listEnemies.Count; i++)
         {

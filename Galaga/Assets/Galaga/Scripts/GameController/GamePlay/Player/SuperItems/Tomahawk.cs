@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class Tomahawk : MonoBehaviour
 {
 
-    [SerializeField] private float speed;
+    [SerializeField] private float maxSpeed;
     [SerializeField] private int dame;
 
     private Transform _targetTransform;
     private BaseEnemy _targetEnemyScript;
     private Vector3 _direction;
-
+    private float speed;
     void Awake()
     {
         this.RegisterListener(EventID.Restart, (param) => ResetItem());
@@ -26,6 +27,12 @@ public class Tomahawk : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        speed = 1.5f;
+        _direction = Vector3.up;
+    }
+
     void ResetItem()
     {
         if (gameObject.activeSelf)
@@ -37,35 +44,43 @@ public class Tomahawk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        if (speed >= 1.5f && speed < 1.8f)
+        {
+            speed += Time.deltaTime;
+        }
+        else if (speed >= 1.8f && speed < 2.2f)
+        {
+            speed += Time.deltaTime * 15;
+        }
+        else
+        {
+            speed = maxSpeed;
+        }
+        transform.position += transform.up * speed * Time.deltaTime;
         if (transform.position.y >= 5 || transform.position.y <= -5 || transform.position.x > 3 ||
             transform.position.x <= -3)
         {
             if (gameObject.activeSelf)
             {
-                Lean.LeanPool.Despawn(gameObject);
+                HandleEvent.Instance.RemoveTomahawk(gameObject);
             }
         }
         if (_targetEnemyScript == null || !_targetEnemyScript.IsAlive() || !_targetEnemyScript.IsActiveOnScene())
         {
-            transform.position += Vector3.up * speed * Time.deltaTime;
-            transform.eulerAngles = Vector3.zero;
             FindTarget();
         }
         else
         {
             _direction = _targetTransform.position - transform.position;
             _direction.Normalize();
-            transform.position += _direction * speed * Time.deltaTime;
             float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg - 90;
-            transform.eulerAngles = new Vector3(0, 0, angle);
+//            float angle = Vector2.Angle(transform.position, _targetTransform.position) + 90;
+//            print(angle);
+            transform.eulerAngles = new Vector3(0, 0, Mathf.MoveTowardsAngle(transform.eulerAngles.z, angle, 10));
         }
     }
-
-    void OnEnable()
-    {
-
-    }
-
+    
     void FindTarget()
     {
         List<BaseEnemy> baseEnemies = HandleEvent.Instance.GetAllEnemiesAlive();

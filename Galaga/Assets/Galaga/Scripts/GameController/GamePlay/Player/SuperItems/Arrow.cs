@@ -12,7 +12,10 @@ public class Arrow : MonoBehaviour
     {
         this.RegisterListener(EventID.Restart, (param) =>
         {
-            Lean.LeanPool.Despawn(this.gameObject);
+            if (gameObject.activeSelf)
+            {
+                Lean.LeanPool.Despawn(this.gameObject);
+            }
         });
     }
     // Use this for initialization

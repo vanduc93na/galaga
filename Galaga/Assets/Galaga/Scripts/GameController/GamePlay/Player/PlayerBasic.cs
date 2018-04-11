@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using DG.Tweening;
 //using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,8 +40,6 @@ public class PlayerBasic : PlayerController
 
     [SerializeField] private GameObject _arrow;
 
-    [SerializeField] private GameObject _ship;
-
     [SerializeField] private GameObject _explosiveEff;
 
     [SerializeField] private GameObject _countDownPage;
@@ -49,6 +49,8 @@ public class PlayerBasic : PlayerController
     [SerializeField] private GameObject _gameWinPage;
 
     [SerializeField] private Transform _parentBullet;
+
+    [SerializeField] private Material[] _playerMaterial;
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
@@ -56,7 +58,12 @@ public class PlayerBasic : PlayerController
     /// </summary>
     private Dictionary<int, GameObject> _bullets;
 
+    private const string FIRE_TOMAHAWK = "FireTomahawk";
+    private const string FIRE_ARROW = "FireArrow";
     private const string FIRE_BULLET = "FireBullet";
+    private const string FIRE_GENADE = "FireGenade";
+    private const string FIRE_LAZER = "FireLazer";
+    
     private GameObject _bullet;
     private float fireRate;
     private GameObject gunObject;
@@ -91,16 +98,11 @@ public class PlayerBasic : PlayerController
 
     public void ReturnPlay()
     {
-        StartCoroutine(Respawn());
+        ResetSuperItem();
         isMove = true;
         GameController.Instance.gameStage = GameStage.Play;
         transform.position = _rootPos;
-        _explosiveEff.SetActive(false);
         Invoke(FIRE_BULLET, fireRate);
-        _shield.SetActive(true);
-        _ship.SetActive(true);
-        _arrow.SetActive(false);
-        _lazer.SetActive(false);
         for (int i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE
@@ -122,13 +124,16 @@ public class PlayerBasic : PlayerController
         switch (test)
         {
             case 1:
-                FireTomahawk();
+                StopCoroutine(FIRE_TOMAHAWK);
+                StartCoroutine(FireTomahawk());
                 break;
             case 2:
-                FireArrow();
+                StopCoroutine(FIRE_ARROW);
+                StartCoroutine(FireArrow());
                 break;
             case 3:
-                FireGenade();
+                StopCoroutine(FIRE_GENADE);
+                StartCoroutine(FireGenade());
                 break;
             case 4:
                 StartCoroutine(PlayerProtected(5));
@@ -140,7 +145,8 @@ public class PlayerBasic : PlayerController
                 StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
                 break;
             case 7:
-                FireLazer();
+                StopCoroutine(FIRE_LAZER);
+                StartCoroutine(FireLazer());
                 break;
         }
     }
@@ -156,10 +162,14 @@ public class PlayerBasic : PlayerController
                 AddHeart();
                 break;
             case GameTag.ITEM_PLAYER_PROTECTED:
+                if (_isProtected)
+                {
+                    StopCoroutine("PlayerProtected");
+                }
                 StartCoroutine(PlayerProtected(5));
                 break;
             case GameTag.ITEM_ARROW:
-
+                FireArrow();
                 break;
             case GameTag.ITEM_BLACK_HOLE:
                 StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
@@ -182,17 +192,16 @@ public class PlayerBasic : PlayerController
         if (_life == 0)
         {
             StopAllCoroutines();
-            isMove = false;
             _isProtected = true;
             CancelInvoke(FIRE_BULLET);
             isMove = false;
+            ResetSuperItem();
             _explosiveEff.SetActive(true);
             StartCoroutine(DeLayTime(.23f, () =>
             {
                 this.PostEvent(EventID.PlayerDead);
-                _ship.SetActive(false);                
+                _sprite.SetActive(false); 
             }));
-
         }
         else
         {
@@ -200,12 +209,13 @@ public class PlayerBasic : PlayerController
             _lifeText.text = _life.ToString();
             InventoryHelper.Instance.AddLife(-1);
             StartCoroutine(PlayerProtected(2));
-            StartCoroutine(Respawn());
         }
     }
 
-    IEnumerator Respawn()
+    IEnumerator RespawnEff()
     {
+//        InventoryHelper.Instance.LoadInventory();
+//        int idShip = InventoryHelper.Instance.UserInventory.shipSelected;
         for (int i = 0; i < 6; i++)
         {
             _sprite.SetActive(false);
@@ -213,23 +223,29 @@ public class PlayerBasic : PlayerController
             _sprite.SetActive(true);
             yield return new WaitForSeconds(0.1f);
         }
-    }
+//        print(idShip);
+//        _playerMaterial[idShip].DOColor(new Color(1f, 1f, 1f, 0.6f), 0.1f).SetLoops(7, LoopType.Yoyo).OnComplete(() =>
+//        {
+//            _playerMaterial[idShip].color = Color.white;
+//        });
+}
 
     IEnumerator PlayerProtected(float second)
     {
+        StartCoroutine(RespawnEff());
         _isProtected = true;
         _shield.SetActive(true);
         float seconds = second;
         InventoryHelper.Instance.LoadInventory();
-        if (InventoryHelper.Instance.UserInventory.shipSelected == 1)
+        if (InventoryHelper.Instance.UserInventory.shipSelected == 0)
         {
             seconds += 0;
         }
-        else if (InventoryHelper.Instance.UserInventory.shipSelected == 2)
+        else if (InventoryHelper.Instance.UserInventory.shipSelected == 1)
         {
             seconds += 1;
         }
-        else if (InventoryHelper.Instance.UserInventory.shipSelected == 3)
+        else if (InventoryHelper.Instance.UserInventory.shipSelected == 2)
         {
             seconds += 3;
         }
@@ -337,8 +353,26 @@ public class PlayerBasic : PlayerController
 
     #region UtilitiesGameTool Method
 
+    void ResetSuperItem()
+    {
+        _explosiveEff.SetActive(false);
+        _shield.SetActive(false);
+        _arrow.SetActive(false);
+        _lazer.SetActive(false);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+                break;
+            }
+        }
+    }
+
     void Init()
     {
+        StopAllCoroutines();
+        ResetSuperItem();
         transform.position = _rootPos;
         GameController.Instance.gameStage = GameStage.Play;
         _bullets = new Dictionary<int, GameObject>();
@@ -401,7 +435,7 @@ public class PlayerBasic : PlayerController
 
     #region SUPER_ITEM
 
-    void FireTomahawk()
+    IEnumerator FireTomahawk()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -411,20 +445,19 @@ public class PlayerBasic : PlayerController
                 break;
             }
         }
-        StartCoroutine(DeLayTime(_timeAttackTomahawk, () =>
+
+        yield return new WaitForSeconds(_timeAttackTomahawk);
+        for (int i = 0; i < transform.childCount; i++)
         {
-            for (int i = 0; i < transform.childCount; i++)
+            if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE)
             {
-                if (transform.GetChild(i).gameObject.tag == GameTag.GUN_DRONE)
-                {
-                    transform.GetChild(i).gameObject.SetActive(false);
-                    break;
-                }
+                transform.GetChild(i).gameObject.SetActive(false);
+                break;
             }
-        }));
+        }
     }
 
-    void FireGenade()
+    IEnumerator FireGenade()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -434,35 +467,31 @@ public class PlayerBasic : PlayerController
                 break;
             }
         }
-        StartCoroutine(DeLayTime(_timeAttackGenade, () =>
+
+        yield return new WaitForSeconds(_timeAttackGenade);
+
+        for (int i = 0; i < transform.childCount; i++)
         {
-            for (int i = 0; i < transform.childCount; i++)
+            if (transform.GetChild(i).gameObject.tag == GameTag.GUN_GENADE)
             {
-                if (transform.GetChild(i).gameObject.tag == GameTag.GUN_GENADE)
-                {
-                    transform.GetChild(i).gameObject.SetActive(false);
-                    break;
-                }
+                transform.GetChild(i).gameObject.SetActive(false);
+                break;
             }
-        }));
+        }
     }
 
-    void FireArrow()
+    IEnumerator FireArrow()
     {
         _arrow.SetActive(true);
-        StartCoroutine(DeLayTime(_timeAttackArrow, () =>
-        {
-            _arrow.SetActive(false);
-        }));
+        yield return new WaitForSeconds(_timeAttackArrow);
+        _arrow.SetActive(false);
     }
 
-    void FireLazer()
+    IEnumerator FireLazer()
     {
         _lazer.SetActive(true);
-        StartCoroutine(DeLayTime(5f, () =>
-        {
-            _lazer.SetActive(false);
-        }));
+        yield return new WaitForSeconds(5f);
+        _lazer.SetActive(false);
     }
 
     #endregion

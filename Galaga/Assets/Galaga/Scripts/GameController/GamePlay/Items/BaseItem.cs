@@ -12,9 +12,10 @@ public class BaseItem : MonoBehaviour
     void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
-        this.RegisterListener(EventID.Restart, (param) => ResetItem());
-        this.RegisterListener(EventID.GameWin, (param) => ResetItem());
-        this.RegisterListener(EventID.GameOver, (param) => ResetItem());
+//        this.RegisterListener(EventID.Restart, (param) => ResetItem());
+//        this.RegisterListener(EventID.GameWin, (param) => ResetItem());
+//        this.RegisterListener(EventID.GameOver, (param) => ResetItem());
+        
     }
 
     void ResetItem()
@@ -27,7 +28,7 @@ public class BaseItem : MonoBehaviour
 
     void OnEnable()
     {
-        rg.AddForce(new Vector2(Random.Range(-5f, 5f), 10));
+        rg.AddForce(new Vector2(Random.Range(-0.5f, 0.5f), 0));
     }
 
     void OnTriggerEnter2D(Collider2D other)

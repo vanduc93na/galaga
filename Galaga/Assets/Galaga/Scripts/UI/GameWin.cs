@@ -29,6 +29,15 @@ public class GameWin : MonoBehaviour
         _reward = _level + _score + _enemiesDestroy;
         InventoryHelper.Instance.AddCoin(_reward);
         Time.timeScale = 0;
+        ShowResult();
+    }
+
+    void ShowResult()
+    {
+        _levelTxt.text = _level.ToString();
+        _scoreTxt.text = _score.ToString();
+        _enemiesDestroyTxt.text = _enemiesDestroy.ToString();
+        _rewardTxt.text = _reward.ToString();
     }
 
     public void Replay()
@@ -64,6 +73,7 @@ public class GameWin : MonoBehaviour
         API.ShowVideo((() =>
         {
             InventoryHelper.Instance.AddCoin(_reward);
+            ShowResult();
         }));
     }
 }

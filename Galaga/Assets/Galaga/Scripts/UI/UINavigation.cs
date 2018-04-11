@@ -18,13 +18,13 @@ public class UINavigation : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 300;
         InventoryHelper.Instance.OnCoinChange += () =>
         {
             InventoryHelper.Instance.LoadInventory();
             if (_coinAtHomeNumber != null)
             {
                 _coinAtHomeNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
-//                _coinAtSelectNumber.text = InventoryHelper.Instance.UserInventory.coin.ToString();
             }
             
         };
