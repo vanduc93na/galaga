@@ -61,7 +61,6 @@ public class BaseEnemy : MonoBehaviour
     {
         _isLastEnemyOnWave = false;
         DOTween.Kill(transform);
-        transform.position = _rootPos;
         _deadEffect.SetActive(false);
         _hitEffect.SetActive(false);
     }
@@ -143,15 +142,10 @@ public class BaseEnemy : MonoBehaviour
         });
     }
 
-    public void BlackHoleAttack(GameObject blackHoleCentre)
+    public void BlackHoleAttack(GameObject blackHoleCentre, float timeAttack, int dame)
     {
-//        _centreBlackHole = blackHoleCentre.transform.position;
-//        DOTween.Kill(transform);
-//        _isBlackHoleAttack = true;
-//        _radius = Vector2.Distance(transform.position, blackHoleCentre.transform.position);
-//        _angle = Mathf.Atan2(transform.position.y, transform.position.x);
-
-        transform.DOMove(blackHoleCentre.transform.position, 1f).SetEase(Ease.InQuint);
+        StartCoroutine(OnHitByBlackHole(timeAttack, dame));
+        transform.DOMove(blackHoleCentre.transform.position, 2f).SetEase(Ease.InQuint).OnComplete(() => DOTween.Kill(transform));
     }
 
     /// <summary>
@@ -230,14 +224,14 @@ public class BaseEnemy : MonoBehaviour
         isAlive = false;
         InstanceDropItem();
         DOTween.Kill(transform);
-        transform.position = _rootPos;
-        Lean.LeanPool.Despawn(this);
+//        transform.position = _rootPos;
     }
-//
-//    public void Attack(GameObject bullet, Transform parentTransform)
-//    {
-//        
-//    }
+
+    IEnumerator OnHitByBlackHole(float seconds, int dame)
+    {
+        yield return new WaitForSeconds(seconds);
+        OnHit(dame);
+    }
 
     public void AttackSpawnEgg(GameObject bullet, Transform parentTransform)
     {
@@ -248,6 +242,10 @@ public class BaseEnemy : MonoBehaviour
     public void AttackShotBulletToShip(GameObject bullet, Transform parentTransform, Transform shipTrs)
     {
         //        float angle = Vector2.Angle(transform.position, shipTrs.position);
+        if (!IsActiveOnScene())
+        {
+            return;
+        }
         float distance = Vector2.Distance(transform.position, shipTrs.position);
         if (distance < 2) return;
         Vector3 direction = shipTrs.position - transform.position;
@@ -276,18 +274,4 @@ public class BaseEnemy : MonoBehaviour
         var pos = transform.position;
         return pos.x <= 3 && pos.x >= -2.5f && pos.y >= -4.5 && pos.y <= 5;
     }
-    //
-    //    IEnumerator HitEffect(float seconds)
-    //    {
-    //        _hitEffect.SetActive(true);
-    //        yield return new WaitForSeconds(seconds);
-    //        _hitEffect.SetActive(false);
-    //    }
-    //
-    //    IEnumerator DeadEffect(float seconds)
-    //    {
-    //        _deadEffect.SetActive(true);
-    //        yield return new WaitForSeconds(seconds);
-    //        _deadEffect.SetActive(false);
-    //    }
 }

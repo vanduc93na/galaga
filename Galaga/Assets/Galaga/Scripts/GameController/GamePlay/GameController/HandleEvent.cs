@@ -270,6 +270,7 @@ public partial class HandleEvent : MonoBehaviour
                 StartCoroutine(Effect(_enemyDeadEffect, _enemiesOnWave[enemy].transform.position, 0.3f));
             }
             _enemiesOnWave.Remove(enemy);
+            Lean.LeanPool.Despawn(enemy);
             EnemiesDestroy += 1;
             SoundController.PlaySoundEffect(SoundController.Instance.EnemyDead);
         }
@@ -441,7 +442,7 @@ public partial class HandleEvent : MonoBehaviour
         }
     }
 
-    public IEnumerator BlackHoleAttack(float seconds, int dame)
+    public void BlackHoleAttack(float seconds, int dame)
     {
         _blackHoleCentre.SetActive(true);
 
@@ -451,25 +452,27 @@ public partial class HandleEvent : MonoBehaviour
         {
             if (_enemiesOnWave[enemiesGO[i]].IsAlive())
             {
-                _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre);
+                _enemiesOnWave[enemiesGO[i]].BlackHoleAttack(_blackHoleCentre, seconds, dame);
             }
             else
             {
                 continue;
             }
         }
-        yield return new WaitForSeconds(seconds);
-        for (int i = 0; i < enemiesGO.Count; i++)
-        {
-            if (_enemiesOnWave.ContainsKey(enemiesGO[i]))
-            {
-                if (_enemiesOnWave[enemiesGO[i]].IsAlive())
-                {
-                    _enemiesOnWave[enemiesGO[i]].OnHit(dame);
-                }
-            }
-        }
-        _blackHoleCentre.SetActive(false);
+        StartCoroutine(DelayTime(5f, () => _blackHoleCentre.SetActive(false)));
+//        yield return new WaitForSeconds(seconds);
+//        Debug.Break();
+//        for (int i = 0; i < enemiesGO.Count; i++)
+//        {
+//            if (_enemiesOnWave.ContainsKey(enemiesGO[i]))
+//            {
+//                if (_enemiesOnWave[enemiesGO[i]].IsAlive())
+//                {
+//                    _enemiesOnWave[enemiesGO[i]].OnHit(dame);
+//                }
+//            }
+//        }
+//        _blackHoleCentre.SetActive(false);
     }
 
     public void TriggerLazerVsOther(GameObject other, int dame)
