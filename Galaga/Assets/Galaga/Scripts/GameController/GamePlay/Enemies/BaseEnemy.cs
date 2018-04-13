@@ -186,6 +186,7 @@ public class BaseEnemy : MonoBehaviour
     /// <param name="itemObject"></param>
     public void InstanceDropItem()
     {
+        if (!IsActiveOnScene()) return;
         // instance item
         if (_itemsDrop != null)
         {

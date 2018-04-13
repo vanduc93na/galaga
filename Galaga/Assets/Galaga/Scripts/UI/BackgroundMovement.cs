@@ -8,10 +8,37 @@ using UnityEngine;
 /// </summary>
 public class BackgroundMovement : MonoBehaviour
 {
+    public float scrollSpeed;
+    private float _scrollSpeed;
+    private Vector2 savedOffset;
+    private Renderer rend;
 
-    // Use this for initialization
+    void Awake()
+    {
+        this.RegisterListener(EventID.GameWin, (param) => StartCoroutine(GameWin()));
+    }
+
+    IEnumerator GameWin()
+    {
+        _scrollSpeed = 0.2f;
+        yield return new WaitForSeconds(2f);
+        _scrollSpeed = scrollSpeed;
+    }
+
     void Start()
     {
-        transform.DOMoveY(-12.7f, 10f, false).SetLoops(-1, LoopType.Restart);
+        _scrollSpeed = scrollSpeed;
+        rend = gameObject.GetComponent<Renderer>();
+        savedOffset = rend.sharedMaterial.GetTextureOffset("_MainTex");
+    }
+    void Update()
+    {
+        float y = Mathf.Repeat(Time.time * _scrollSpeed, 1);
+        Vector2 offset = new Vector2(savedOffset.x, y);
+        rend.sharedMaterial.SetTextureOffset("_MainTex", offset);
+    }
+    void OnDisable()
+    {
+        rend.sharedMaterial.SetTextureOffset("_MainTex", savedOffset);
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Spine;
+using Spine.Unity;
 using UnityEngine.EventSystems;
 //using NUnit.Framework.Internal.Builders;
 using UnityEngine.UI;
@@ -9,18 +11,23 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public bool isMove = false;
-
+    
     public ControlType ControlType;
     // game config
     [SerializeField]
     protected GamePlayConfig config;
 
-    private Vector3 _beginPos;
+    [SpineAnimation] [SerializeField] private string left, right, defaultAni;
+    [SerializeField] protected SkeletonAnimation[] skeletons;
+    protected SkeletonAnimation skeletonAnimation;
     private Vector3 _deltaPos;
     private Vector3 _tempPos;
     private Vector3 _onMovePos;
     private float _lerpSpeed;
     private int _eventIndex = 0;
+    Vector2 firstPressPos;
+    Vector2 secondPressPos;
+    Vector2 currentSwipe;
 
     void Start()
     {
@@ -42,6 +49,46 @@ public class PlayerController : MonoBehaviour
         {
             isMove = false;
         }
+#if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(0))
+        {
+            //save began touch 2d point
+            firstPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            //save ended touch 2d point
+            secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+            //create vector from the two points
+            currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+
+            //normalize the 2d vector
+            currentSwipe.Normalize();
+
+            //swipe upwards
+            if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+            {
+                Debug.Log("up swipe");
+            }
+            //swipe down
+            if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+            {
+                Debug.Log("down swipe");
+            }
+            //swipe left
+            if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+            {
+                LeftAni();
+            }
+            //swipe right
+            if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+            {
+                RightAni();
+            }
+        }
+        
+#endif
     }
     #region Movement
 
@@ -54,6 +101,8 @@ public class PlayerController : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
+                //save began touch 2d point
+                firstPressPos = new Vector2(touch.position.x, touch.position.y);
                 if (EventSystem.current.IsPointerOverGameObject(_eventIndex)) return;
                 StartMove(Camera.main.ScreenToWorldPoint(touch.position));
             }
@@ -61,11 +110,50 @@ public class PlayerController : MonoBehaviour
             {
                 if (EventSystem.current.IsPointerOverGameObject(_eventIndex)) return;
                 OnMove(Camera.main.ScreenToWorldPoint(touch.position));
+                //save ended touch 2d point
+                secondPressPos = new Vector2(touch.position.x, touch.position.y);
+
+                //create vector from the two points
+                currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+
+                //normalize the 2d vector
+                currentSwipe.Normalize();
+
+                //swipe upwards
+                if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+                {
+                    Debug.Log("up swipe");
+                }
+                //swipe down
+                else if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+                {
+                    Debug.Log("down swipe");
+                }
+                //swipe left
+                else if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+                {
+                    LeftAni();
+                }
+                //swipe right
+                else if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+                {
+                    RightAni();
+                }
+                else
+                {
+                    DefaultAni();
+                }
             }
             else if (touch.phase == TouchPhase.Ended)
             {
                 if (EventSystem.current.IsPointerOverGameObject(_eventIndex)) return;
                 EndMove(Camera.main.ScreenToWorldPoint(touch.position));
+                DefaultAni();
+            }
+            else if (touch.phase == TouchPhase.Stationary)
+            {
+                firstPressPos = new Vector2(touch.position.x, touch.position.y);
+                DefaultAni();
             }
         }
     }
@@ -96,8 +184,6 @@ public class PlayerController : MonoBehaviour
                 newPos.y < config.MinDy() ? config.MinDy() : newPos.y > config.MaxDy() ? config.MaxDy() : newPos.y);
             Vector3 smoothSpeed = Vector3.Lerp(transform.position, newPos, config.GetSmoothSpeed());
             transform.position = smoothSpeed;
-            // tạo hiệu ứng rung lắc
-            //            CameraMoveEffect();
         };
     }
 
@@ -114,19 +200,6 @@ public class PlayerController : MonoBehaviour
     {
         isMove = false;
     }
-
-    //        void CameraMoveEffect()
-    //        {
-    //            Vector3 playerPos = transform.position;
-    //            Vector3 playerPosWithZeroY = new Vector3(playerPos.x, 0, playerPos.z);
-    //    
-    //            float deltaLeft = Vector3.Distance(playerPosWithZeroY, border.transform.GetChild(0).transform.position);
-    //            float deltaRight = Vector3.Distance(playerPosWithZeroY, border.transform.GetChild(1).transform.position);
-    //    
-    //            bool isMoveLeft = deltaLeft < deltaRight ? true : false;
-    //            float deltaMoveX = isMoveLeft ? config.DeltaTransform() * (-1 * ((deltaLeft - deltaRight) / (deltaRight + deltaLeft))) : config.DeltaTransform() * ((deltaRight - deltaLeft) / (deltaRight + deltaLeft));
-    //            Camera.main.transform.position = new Vector3(deltaMoveX, 0, -10);
-    //        }
 #endif
     #endregion
 
@@ -155,7 +228,6 @@ public class PlayerController : MonoBehaviour
 
     void EndMove(Vector3 mousePos)
     {
-        _beginPos = mousePos;
         _deltaPos = mousePos;
         isMove = false;
     }
@@ -166,6 +238,24 @@ public class PlayerController : MonoBehaviour
         {
             //            SoundController.PlaySoundEffect(SoundController.Instance.PlayerHitBullet);
         }
+    }
+
+    void LeftAni()
+    {
+        skeletonAnimation.loop = false;
+        skeletonAnimation.AnimationName = left;
+    }
+
+    void RightAni()
+    {
+        skeletonAnimation.loop = false;
+        skeletonAnimation.AnimationName = right;
+    }
+
+    void DefaultAni()
+    {
+        skeletonAnimation.loop = true;
+        skeletonAnimation.AnimationName = defaultAni;
     }
 }
 

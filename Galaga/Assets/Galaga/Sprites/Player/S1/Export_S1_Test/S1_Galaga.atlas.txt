@@ -1,0 +1,55 @@
+
+S1_Galaga.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Body
+  rotate: false
+  xy: 2, 50
+  size: 42, 74
+  orig: 42, 74
+  offset: 0, 0
+  index: -1
+L_Wing_1
+  rotate: false
+  xy: 46, 52
+  size: 30, 36
+  orig: 30, 36
+  offset: 0, 0
+  index: -1
+L_Wing_2
+  rotate: false
+  xy: 2, 14
+  size: 40, 34
+  orig: 40, 34
+  offset: 0, 0
+  index: -1
+L_Wing_3
+  rotate: false
+  xy: 78, 58
+  size: 22, 30
+  orig: 22, 30
+  offset: 0, 0
+  index: -1
+R_Wing_1
+  rotate: true
+  xy: 88, 94
+  size: 30, 36
+  orig: 30, 36
+  offset: 0, 0
+  index: -1
+R_Wing_2
+  rotate: false
+  xy: 46, 90
+  size: 40, 34
+  orig: 40, 34
+  offset: 0, 0
+  index: -1
+R_Wing_3
+  rotate: false
+  xy: 102, 62
+  size: 22, 30
+  orig: 22, 30
+  offset: 0, 0
+  index: -1

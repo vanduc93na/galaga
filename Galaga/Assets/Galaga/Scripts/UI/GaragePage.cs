@@ -5,11 +5,23 @@ using UnityEngine.UI;
 
 public class GaragePage : MonoBehaviour
 {
+    [SerializeField] private Button _button;
     [SerializeField] private Text _buttonText;
+    [SerializeField] private Text _shipNameText;
     [SerializeField] private Text _coinText;
+    [SerializeField] private Text _shipDes;
+    [SerializeField] private Text _shipFunc;
+    [SerializeField] private Sprite _select;
+    [SerializeField] private Sprite _selected;
+    [SerializeField] private Sprite _buy;
+    [SerializeField] private string[] _shipName;
+    [SerializeField] private int[] _shipPrime;
+    [SerializeField] private string[] _shipSizeDes;
+    [SerializeField] private string[] _shipFunction;
     private const string SELECT = "SELECT";
     private const string SELECTED = "SELECTED";
     private const string PRIME = " $";
+
     private int _curShip;
 
     public int CurShip
@@ -19,7 +31,7 @@ public class GaragePage : MonoBehaviour
         {
             _curShip = value;
         }
-        
+
     }
 
     public ScrollLoop ScrollLoop;
@@ -37,20 +49,31 @@ public class GaragePage : MonoBehaviour
 
     void ActionReceiveIdShipSelect()
     {
+        _button.interactable = true;
         CurShip = ScrollLoop.CurIndex;
         InventoryHelper.Instance.LoadInventory();
         int idShip = CurShip % 3;
+        _shipNameText.text = _shipName[idShip];
+        _shipDes.text = _shipSizeDes[idShip];
+        _shipFunc.text = _shipFunction[idShip].Replace("\\n", "\n");
         if (idShip == InventoryHelper.Instance.UserInventory.shipSelected)
         {
             _buttonText.text = SELECTED;
+            _button.GetComponent<Image>().sprite = _selected;
         }
         else if (isShipPaid(idShip))
         {
             _buttonText.text = SELECT;
+            _button.GetComponent<Image>().sprite = _select;
         }
         else
         {
-            _buttonText.text = "2000$";
+            if (InventoryHelper.Instance.UserInventory.coin < _shipPrime[idShip])
+            {
+                _button.interactable = false;
+            }
+            _buttonText.text = _shipPrime[idShip].ToString();
+            _button.GetComponent<Image>().sprite = _buy;
         }
         InventoryHelper.Instance.SaveInventory();
     }
@@ -70,13 +93,13 @@ public class GaragePage : MonoBehaviour
         else
         {
             // buy item
-            if (InventoryHelper.Instance.RemoveCoin(2000))
+            if (InventoryHelper.Instance.RemoveCoin(_shipPrime[idShip]))
             {
                 InventoryHelper.Instance.AddIdShipPaid(idShip);
             }
             else
             {
-                print("not enough coin");
+
             }
             _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
         }

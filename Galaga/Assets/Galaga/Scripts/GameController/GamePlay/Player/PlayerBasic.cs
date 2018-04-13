@@ -68,6 +68,7 @@ public class PlayerBasic : PlayerController
     private float fireRate;
     private GameObject gunObject;
     private float _life;
+    private bool isDead;
     [SerializeField] private bool _isProtected;
     private Vector3 _rootPos;
 
@@ -83,6 +84,7 @@ public class PlayerBasic : PlayerController
         _gameWinPage.GetComponent<GameWin>().OnReplay += ReturnPlay;
         this.RegisterListener(EventID.Restart, (param) => Init());
         this.RegisterListener(EventID.NextLevel, (param) => Init());
+        this.RegisterListener(EventID.GameWin, (param) => GameWin());
         _rootPos = transform.position;
     }
 
@@ -158,9 +160,11 @@ public class PlayerBasic : PlayerController
         switch (obj.tag)
         {
             case GameTag.ITEM_ADD_BULLET:
+                if (isDead) break;
                 AddBullet();
                 break;
             case GameTag.ITEM_ADD_HEART:
+                if (isDead) break;
                 AddHeart();
                 break;
             case GameTag.ITEM_PLAYER_PROTECTED:
@@ -171,26 +175,38 @@ public class PlayerBasic : PlayerController
                 StartCoroutine(PlayerProtected(5));
                 break;
             case GameTag.ITEM_ARROW:
+                if (isDead) break;
                 StopCoroutine(FIRE_ARROW);
                 StartCoroutine(FireArrow());
                 break;
             case GameTag.ITEM_BLACK_HOLE:
-//                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
+                if (isDead) break;
                 HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
                 break;
             case GameTag.ITEM_SUPPER_GENADE:
+                if (isDead) break;
                 StopCoroutine(FIRE_GENADE);
                 StartCoroutine(FireGenade());
                 break;
             case GameTag.ITEM_SUPPER_TOMAHAWK:
+                if (isDead) break;
                 StopCoroutine(FIRE_TOMAHAWK);
                 StartCoroutine(FireTomahawk());
                 break;
             case GameTag.ITEM_LAZER:
+                if (isDead) break;
                 StopCoroutine(FIRE_LAZER);
                 StartCoroutine(FireLazer());
                 break;
         }
+    }
+
+    void GameWin()
+    {
+        transform.DOMoveY(7f, 1.5f).SetEase(Ease.InQuint).OnComplete(() =>
+        {
+//            transform.position = _rootPos;
+        });
     }
 
     void PlayerDead()
@@ -198,6 +214,7 @@ public class PlayerBasic : PlayerController
         if (_isProtected) return;
         if (_life == 0)
         {
+            isDead = true;
             StopAllCoroutines();
             _isProtected = true;
             CancelInvoke(FIRE_BULLET);
@@ -393,6 +410,7 @@ public class PlayerBasic : PlayerController
         transform.position = _rootPos;
         GameController.Instance.gameStage = GameStage.Play;
         _bullets = new Dictionary<int, GameObject>();
+        isDead = false;
         // init _bullets
         for (int i = 0; i < _bulletsMgr.transform.childCount; i++)
         {
@@ -409,14 +427,17 @@ public class PlayerBasic : PlayerController
         switch (InventoryHelper.Instance.UserInventory.shipSelected)
         {
             case 0:
+                skeletonAnimation = skeletons[0];
                 _life = 1;
                 _sprite.transform.GetChild(0).gameObject.SetActive(true);
                 break;
             case 1:
+                skeletonAnimation = skeletons[1];
                 _life = 2;
                 _sprite.transform.GetChild(1).gameObject.SetActive(true);
                 break;
             case 2:
+                skeletonAnimation = skeletons[2];
                 _life = 3;
                 _sprite.transform.GetChild(2).gameObject.SetActive(true);
                 break;
