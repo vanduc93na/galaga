@@ -85,43 +85,58 @@ public class SelectPage : MonoBehaviour
         var listWps = _path.GetComponent<DOTweenPath>().wps;
         for (int i = 0; i < listWps.Count - 1; i++)
         {
-            if (i % 4 == 0)
+            Vector3 direction = listWps[i + 1] - listWps[i];
+            direction.Normalize();
+            Vector3 linePos = listWps[i];
+            while (true)
             {
-                float posX = listWps[i].x;
-                while (posX + _deltaLight < listWps[i+1].x)
-                {
-                    posX += _deltaLight;
-                    var lighSpawn = Lean.LeanPool.Spawn(_light);
-                    lighSpawn.transform.SetParent(_lightParent.transform);
-                    lighSpawn.transform.position = new Vector3(posX, listWps[i].y);
-                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                }
-            }
-            if (i % 4 == 1 || i % 4 == 3)
-            {
-                float posY = listWps[i].y + _deltaLight;
-                while (posY < listWps[i + 1].y - 0.3f)
-                {
-                    var lighSpawn = Lean.LeanPool.Spawn(_light);
-                    lighSpawn.transform.SetParent(_lightParent.transform);
-                    lighSpawn.transform.position = new Vector3(listWps[i].x, posY);
-                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                    posY += _deltaLight;
-                }
-            }
-            if (i % 4 == 2)
-            {
-                float posX = listWps[i].x;
-                while (posX - _deltaLight > listWps[i + 1].x)
-                {
-                    posX -= _deltaLight;
-                    var lighSpawn = Lean.LeanPool.Spawn(_light);
-                    lighSpawn.transform.SetParent(_lightParent.transform);
-                    lighSpawn.transform.position = new Vector3(posX, listWps[i].y);
-                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                }
+                if (linePos.y >= listWps[i + 1].y) break;
+                var lighSpawn = Lean.LeanPool.Spawn(_light);
+                lighSpawn.transform.SetParent(_lightParent.transform);
+                lighSpawn.transform.position = linePos;
+                lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                linePos += direction * _deltaLight;
             }
         }
+        //        for (int i = 0; i < listWps.Count - 1; i++)
+        //        {
+        //            if (i % 4 == 0)
+        //            {
+        //                float posX = listWps[i].x;
+        //                while (posX + _deltaLight < listWps[i+1].x)
+        //                {
+        //                    posX += _deltaLight;
+        //                    var lighSpawn = Lean.LeanPool.Spawn(_light);
+        //                    lighSpawn.transform.SetParent(_lightParent.transform);
+        //                    lighSpawn.transform.position = new Vector3(posX, listWps[i].y);
+        //                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        //                }
+        //            }
+        //            if (i % 4 == 1 || i % 4 == 3)
+        //            {
+        //                float posY = listWps[i].y + _deltaLight;
+        //                while (posY < listWps[i + 1].y - 0.3f)
+        //                {
+        //                    var lighSpawn = Lean.LeanPool.Spawn(_light);
+        //                    lighSpawn.transform.SetParent(_lightParent.transform);
+        //                    lighSpawn.transform.position = new Vector3(listWps[i].x, posY);
+        //                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        //                    posY += _deltaLight;
+        //                }
+        //            }
+        //            if (i % 4 == 2)
+        //            {
+        //                float posX = listWps[i].x;
+        //                while (posX - _deltaLight > listWps[i + 1].x)
+        //                {
+        //                    posX -= _deltaLight;
+        //                    var lighSpawn = Lean.LeanPool.Spawn(_light);
+        //                    lighSpawn.transform.SetParent(_lightParent.transform);
+        //                    lighSpawn.transform.position = new Vector3(posX, listWps[i].y);
+        //                    lighSpawn.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        //                }
+        //            }
+        //        }
     }
 
     void DrawnLight()

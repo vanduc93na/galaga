@@ -22,6 +22,18 @@ public class InventoryHelper
         }
     }
 
+    public bool IsShowAds()
+    {
+        LoadInventory();
+        return UserInventory.adsOn;
+    }
+
+    public void SetShowAds(bool isShow)
+    {
+        LoadInventory();
+        UserInventory.adsOn = true;
+        SaveInventory();
+    }
 
     public void LoadInventory()
     {
@@ -96,7 +108,7 @@ public class InventoryHelper
     public void AddDamageRate(float rate)
     {
         LoadInventory();
-        if (UserInventory.damageRate + rate < 2f)
+        if (UserInventory.damageRate + rate <= 2f)
         {
             UserInventory.damageRate += rate;
         }

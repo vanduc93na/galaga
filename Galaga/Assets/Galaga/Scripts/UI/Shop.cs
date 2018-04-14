@@ -22,6 +22,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject _popupPage;
     [SerializeField] private string _textMessagePopupConfirm;
     [SerializeField] private string _textMessagePopupWarning;
+    [SerializeField] private Button[] _buyBtns;
 
     [SerializeField] private Image _imageBlackFilter;
 
@@ -82,6 +83,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     public void ClickBuyDMG()
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
+        InitUI();
         if (InventoryHelper.Instance.UserInventory.coin > _globalDMGPrime)
         {
             InventoryHelper.Instance.AddDamageRate(_damageRate);
@@ -143,22 +145,39 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     void InitUI()
     {
         InventoryHelper.Instance.LoadInventory();
+        if (InventoryHelper.Instance.UserInventory.coin < _mekitPrime)
+        {
+            _buyBtns[0].interactable = false;
+        }
+        else
+        {
+            _buyBtns[0].interactable = true;
+        }
+        if (InventoryHelper.Instance.UserInventory.coin < _globalDMGPrime)
+        {
+            _buyBtns[1].interactable = false;
+        }
+        else
+        {
+            _buyBtns[1].interactable = true;
+        }
         _statusMekitPrime.text = "YOUR STATUS: " + InventoryHelper.Instance.UserInventory.life.ToString() + " LIFE";
         _statusDMGPrime.text = "GIVE ALL SHIP \n" +
                                ((InventoryHelper.Instance.UserInventory.damageRate - 1) * 100).ToString() +
                                "% DMG IN COMBAT";
-        if (InventoryHelper.Instance.UserInventory.coin < _mekitPrime)
+        if (InventoryHelper.Instance.UserInventory.life > 4)
         {
             _overCoinMekit.text = "OUT OF STOCK";
+            _buyBtns[0].interactable = false;
         }
         else
         {
-            _overCoinMekit.text = ""
-                ;
+            _overCoinMekit.text = "";
         }
-        if (InventoryHelper.Instance.UserInventory.coin < _globalDMGPrime)
+        if (InventoryHelper.Instance.UserInventory.damageRate >= 2f)
         {
             _overCoinDMG.text = "OUT OF STOCK";
+            _buyBtns[1].interactable = false;
         }
         else
         {

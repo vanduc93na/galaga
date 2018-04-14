@@ -195,6 +195,7 @@ public class PlayerBasic : PlayerController
                 break;
             case GameTag.ITEM_LAZER:
                 if (isDead) break;
+                SoundController.PlaySoundEffect(SoundController.Instance.ShootLazer);
                 StopCoroutine(FIRE_LAZER);
                 StartCoroutine(FireLazer());
                 break;
@@ -529,6 +530,7 @@ public class PlayerBasic : PlayerController
     IEnumerator FireLazer()
     {
         _lazer.SetActive(true);
+//        SoundController.PlaySoundEffect(SoundController.Instance.LaserLoop);
         yield return new WaitForSeconds(5f);
         _lazer.SetActive(false);
     }

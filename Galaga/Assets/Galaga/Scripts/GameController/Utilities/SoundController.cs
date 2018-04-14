@@ -108,6 +108,12 @@ public partial class SoundController : MonoBehaviour
             return;
         Instance.PlaySound(infor.Clip, infor.Volume);
     }
+
+    public static void StopSoundEffect(SoundInfor infor)
+    {
+        if (infor.Clip == null) return;
+    }
+
     public static void PlaySoundEffect(AudioClip clip, float volume = 1)
     {
         Instance.PlaySound(clip, volume);

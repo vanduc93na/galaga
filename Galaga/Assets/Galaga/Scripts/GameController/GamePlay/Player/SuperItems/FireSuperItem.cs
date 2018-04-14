@@ -29,12 +29,15 @@ public class FireSuperItem : MonoBehaviour
         switch (_superItem)
         {
             case SuperItems.Tomahawk:
+                SoundController.PlaySoundEffect(SoundController.Instance.ShootTomahawk);
                 HandleEvent.Instance.AddTomahawk(bulletSpawn);
                 break;
             case SuperItems.Arrow:
+                SoundController.PlaySoundEffect(SoundController.Instance.ShootArrow);
                 HandleEvent.Instance.AddArrow(bulletSpawn);
                 break;
             case SuperItems.Genade:
+                SoundController.PlaySoundEffect(SoundController.Instance.ShootGenade);
                 HandleEvent.Instance.AddGenade(bulletSpawn);
                 break;
         }

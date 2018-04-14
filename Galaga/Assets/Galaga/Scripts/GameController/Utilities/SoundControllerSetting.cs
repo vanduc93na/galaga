@@ -16,6 +16,13 @@ public partial class SoundController
     public SoundInfor EatItem;
     public SoundInfor EnemyDead;
     public SoundInfor BossDead;
+    public SoundInfor ShootTomahawk;
+    public SoundInfor ShootArrow;
+    public SoundInfor ShootGenade;
+    public SoundInfor ShootLazer;
+    public SoundInfor BlackHoleDestroy;
+    public SoundInfor GenadeDestroy;
+    public SoundInfor LaserLoop;
 
     public void SoundButtonClick()
     {

@@ -103,21 +103,37 @@ public class UIInGameController : Singleton<UIInGameController>
     {
         StartCoroutine(Delay(1f, () =>
         {
-            API.ShowFull(() =>
+            if (InventoryHelper.Instance.IsShowAds())
+            {
+                API.ShowFull(() =>
+                {
+                    GameController.Instance.gameStage = GameStage.GameOver;
+                    _countDownPanel.gameObject.SetActive(true);
+                });
+            }
+            else
             {
                 GameController.Instance.gameStage = GameStage.GameOver;
                 _countDownPanel.gameObject.SetActive(true);
-            });
+            }
         }));
     }
 
     void ShowGameWin()
     {
-        API.ShowFull(() =>
-           {
-               GameController.Instance.gameStage = GameStage.Win;
-               StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
-           });
+        if (InventoryHelper.Instance.IsShowAds())
+        {
+            API.ShowFull(() =>
+            {
+                GameController.Instance.gameStage = GameStage.Win;
+                StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
+            });
+        }
+        else
+        {
+            GameController.Instance.gameStage = GameStage.Win;
+            StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
+        }
     }
 
     public int GetCoinInLevel()

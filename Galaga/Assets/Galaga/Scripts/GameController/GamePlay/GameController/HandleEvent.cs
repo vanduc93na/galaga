@@ -404,6 +404,7 @@ public partial class HandleEvent : MonoBehaviour
                     Lean.LeanPool.Despawn(expGO);
                 }));
                 Lean.LeanPool.Despawn(genade);
+                SoundController.PlaySoundEffect(SoundController.Instance.GenadeDestroy);
                 _genades.Remove(genade);
             }
         }
@@ -459,7 +460,11 @@ public partial class HandleEvent : MonoBehaviour
                 continue;
             }
         }
-        StartCoroutine(DelayTime(5f, () => _blackHoleCentre.SetActive(false)));
+        StartCoroutine(DelayTime(5f, () =>
+        {
+            SoundController.PlaySoundEffect(SoundController.Instance.ShootArrow);
+            _blackHoleCentre.SetActive(false);
+        }));
 //        yield return new WaitForSeconds(seconds);
 //        Debug.Break();
 //        for (int i = 0; i < enemiesGO.Count; i++)

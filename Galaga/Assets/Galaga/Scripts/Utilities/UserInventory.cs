@@ -13,4 +13,5 @@ public class UserInventory
     public float damageRate = 1f;
     public int selectedLevel = 0;
     public int life = 0;
+    public bool adsOn = true;
 }

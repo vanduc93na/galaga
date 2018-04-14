@@ -31,10 +31,10 @@ namespace CompleteProject
         public static string NO_ADS = "noads";
 
         // Apple App Store-specific product identifier for the subscription product.
-        private static string kProductNameAppleSubscription = "com.unity3d.subscription.new";
+        private static string kProductNameAppleSubscription = "com.galaticattack.battlegalagashooter";
 
         // Google Play Store-specific product identifier subscription product.
-        private static string kProductNameGooglePlaySubscription = "com.unity3d.subscription.original";
+        private static string kProductNameGooglePlaySubscription = "com.galaticattack.battlegalagashooter";
 
 
         void Awake()
@@ -215,12 +215,14 @@ namespace CompleteProject
             {
                 Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
                 // TODO: The non-consumable item has been successfully purchased, grant this item to the player.
+                InventoryHelper.Instance.AddCoin(20000);
             }
             // Or ... a subscription product has been purchased by this user.
             else if (String.Equals(args.purchasedProduct.definition.id, NO_ADS, StringComparison.Ordinal))
             {
                 Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
                 // TODO: The subscription item has been successfully purchased, grant this to the player.
+                InventoryHelper.Instance.SetShowAds(false);
             }
             // Or ... an unknown product has been purchased by this user. Fill in additional products here....
             else
