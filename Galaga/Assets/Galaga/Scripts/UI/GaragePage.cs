@@ -44,7 +44,7 @@ public class GaragePage : MonoBehaviour
         ScrollLoop.CurIndex = CurShip;
         print(CurShip);
         ScrollLoop.FocusWithID();
-        _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
+//        _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
     }
 
     void ActionReceiveIdShipSelect()
@@ -101,7 +101,7 @@ public class GaragePage : MonoBehaviour
             {
 
             }
-            _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
+//            _coinText.text = InventoryHelper.Instance.UserInventory.coin.ToString();
         }
         ActionReceiveIdShipSelect();
     }

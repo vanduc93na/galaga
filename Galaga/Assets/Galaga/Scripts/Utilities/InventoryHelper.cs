@@ -31,7 +31,7 @@ public class InventoryHelper
     public void SetShowAds(bool isShow)
     {
         LoadInventory();
-        UserInventory.adsOn = true;
+        UserInventory.adsOn = isShow;
         SaveInventory();
     }
 

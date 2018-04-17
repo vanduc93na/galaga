@@ -15,13 +15,17 @@ public class GameWin : MonoBehaviour
     [SerializeField] private Text _scoreTxt;
     [SerializeField] private Text _enemiesDestroyTxt;
     [SerializeField] private Text _rewardTxt;
+    [SerializeField] private Button _rewardButton;
     private int _level = 0;
     private int _score = 0;
     private int _enemiesDestroy = 0;
     private int _reward;
+    private int _countTapRewardButton;
 
     void OnEnable()
     {
+        _rewardButton.interactable = true;
+        _countTapRewardButton = 0;
         InventoryHelper.Instance.LoadInventory();
         _level = InventoryHelper.Instance.UserInventory.selectedLevel;
         _score = int.Parse(_coin.text);
@@ -69,11 +73,17 @@ public class GameWin : MonoBehaviour
 
     public void ShowAdsVideo()
     {
+        if (_countTapRewardButton >= 1)
+        {
+            _rewardButton.interactable = false;
+            return;
+        }
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
         API.ShowVideo((() =>
         {
             InventoryHelper.Instance.AddCoin(_reward);
             ShowResult();
+            _countTapRewardButton += 1;
         }));
     }
 }

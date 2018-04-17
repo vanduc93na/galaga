@@ -17,10 +17,14 @@ public class GamePlayUI: MonoBehaviour
 
     public void Pause()
     {
-        SoundController.PlaySoundEffect(SoundController.Instance.Click);
-        GameController.Instance.gameStage = GameStage.Pause;
-        Time.timeScale = 0;
-        _pausePanel.SetActive(true);
+        API.ShowFull(() =>
+        {
+            SoundController.PlaySoundEffect(SoundController.Instance.Click);
+            GameController.Instance.gameStage = GameStage.Pause;
+            Time.timeScale = 0;
+            _pausePanel.SetActive(true);
+        });
+        
     }
 
     public void SetCoin(int coin)

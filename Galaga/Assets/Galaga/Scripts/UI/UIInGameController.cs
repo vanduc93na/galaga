@@ -15,6 +15,8 @@ public class UIInGameController : Singleton<UIInGameController>
     [SerializeField] private GameObject _gamePlayPanel;
     [SerializeField] private GameObject _countDownPanel;
 
+    private int _respawn;
+
     private int _coinInLevel;
     // Use this for initialization
 
@@ -26,6 +28,7 @@ public class UIInGameController : Singleton<UIInGameController>
     void Start()
     {
         ResetUI();
+        _respawn = 0;
     }
 
     void ResetUI()
@@ -101,22 +104,32 @@ public class UIInGameController : Singleton<UIInGameController>
 
     void ShowGameOver()
     {
-        StartCoroutine(Delay(1f, () =>
+        if (_respawn < 1)
         {
-            if (InventoryHelper.Instance.IsShowAds())
+            StartCoroutine(Delay(1f, () =>
             {
-                API.ShowFull(() =>
+                if (InventoryHelper.Instance.IsShowAds())
+                {
+                    API.ShowFull(() =>
+                    {
+                        GameController.Instance.gameStage = GameStage.GameOver;
+                        _countDownPanel.gameObject.SetActive(true);
+                    });
+                }
+                else
                 {
                     GameController.Instance.gameStage = GameStage.GameOver;
                     _countDownPanel.gameObject.SetActive(true);
-                });
-            }
-            else
-            {
-                GameController.Instance.gameStage = GameStage.GameOver;
-                _countDownPanel.gameObject.SetActive(true);
-            }
-        }));
+                }
+            }));
+            _respawn += 1;
+        }
+        else
+        {
+            gameOverPanel.SetActive(true);
+            Time.timeScale = 0;
+            _respawn = 0;
+        }
     }
 
     void ShowGameWin()

@@ -16,13 +16,17 @@ public class GameLose : MonoBehaviour
     [SerializeField] private Text _enemiesDestroyTxt;
     [SerializeField] private Text _rewardTxt;
     [SerializeField] private GameObject _shopPanel;
+    [SerializeField] private Button _rewardBtn;
     private int _level = 0;
     private int _score = 0;
     private int _enemiesDestroy = 0;
     private int _reward;
+    private int _countTapRewardBtn;
 
     void OnEnable()
     {
+        _rewardBtn.interactable = true;
+        _countTapRewardBtn = 0;
         this.PostEvent(EventID.GameOver);
         _shopPanel.SetActive(false);
         InventoryHelper.Instance.LoadInventory();
@@ -69,11 +73,17 @@ public class GameLose : MonoBehaviour
 
     public void ShowAdsVideo()
     {
+        if (_countTapRewardBtn >= 1)
+        {
+            _rewardBtn.interactable = false;
+            return;
+        }
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
         API.ShowVideo((() =>
         {
             InventoryHelper.Instance.AddCoin(_reward);
             ShowResult();
+            _countTapRewardBtn += 1;
         }));
     }
 }

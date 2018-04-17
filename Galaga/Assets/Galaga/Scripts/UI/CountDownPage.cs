@@ -50,10 +50,11 @@ public class CountDownPage : MonoBehaviour
             GameController.Instance.gameStage = GameStage.Play;
             if (OnReturnPlay != null)
             {
+                gameObject.SetActive(false);
+                Time.timeScale = 1;
+                GameController.Instance.gameStage = GameStage.Play;
                 OnReturnPlay();
             }
-            gameObject.SetActive(false);
-            Time.timeScale = 1;
         });
     }
 

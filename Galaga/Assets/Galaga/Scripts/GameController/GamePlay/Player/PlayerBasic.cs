@@ -145,8 +145,8 @@ public class PlayerBasic : PlayerController
                 AddHeart();
                 break;
             case 6:
-                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
-                //                StartCoroutine(HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole));
+                InventoryHelper.Instance.AddCoin(10000);
+//                HandleEvent.Instance.BlackHoleAttack(_timeAttackBlackHole, _dameOfBlackHole);
                 break;
             case 7:
                 StopCoroutine(FIRE_LAZER);
