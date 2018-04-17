@@ -143,9 +143,8 @@ public class AdmobManager : MonoBehaviour
         {
             //Invoke("PlayAudio", 0);
             Invoke("InvockFullClose", 0);
-            RequestInterstitial();
             GaLog("admob_full", "closed");
-            
+            RequestInterstitial();
         };
         _interstitial.OnAdLeavingApplication += (sender, args) =>
         {
