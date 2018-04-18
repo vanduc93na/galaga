@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class BossController : Singleton<BossController>
+public class BossController : MonoBehaviour
 {
+    public static BossController Instance;
     [SerializeField] private GameObject _bossMgrGameObject;
     [SerializeField] private GameObject _pathBossMgrGameObject;
     private Dictionary<int, GameObject> _bossMgr;
@@ -12,6 +13,10 @@ public class BossController : Singleton<BossController>
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         _bossMgr = new Dictionary<int, GameObject>();
         for (int i = 0; i < _bossMgrGameObject.transform.childCount; i++)
         {

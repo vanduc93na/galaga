@@ -106,7 +106,7 @@ public class BaseBoss : MonoBehaviour
 
         Vector3[] wp = tmp.ToArray();
         _isMove = true;
-        transform.DOPath(wp, moveInfor.Duration, moveInfor.Type, PathMode.Sidescroller2D).OnComplete(() => _isMove = false);
+        transform.DOPath(wp, moveInfor.Duration, PathType.CatmullRom, PathMode.Sidescroller2D).OnComplete(() => _isMove = false);
     }
 
     /// <summary>

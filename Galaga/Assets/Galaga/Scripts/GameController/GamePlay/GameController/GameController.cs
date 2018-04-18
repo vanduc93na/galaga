@@ -76,6 +76,7 @@ public class GameController : MonoBehaviour
 
     public void Play()
     {
+        print("lv" + _currentLevelIndex + " +  wave:" + _currentWave.Enemies.Count);
         switch (_currentWave.TypeWave)
         {
             case TypeOfWave.Enemies:
@@ -102,7 +103,7 @@ public class GameController : MonoBehaviour
         HandleEvent.Instance.ResetLevel();
         this.PostEvent(EventID.NextLevel);
         _currentLevelIndex++;
-        Play();
+        StartCoroutine(WaitForSecondsNextWave(_gamePlayConfig.GetTimeDelayBetweenWaves()));
     }
 
     void NextWave()

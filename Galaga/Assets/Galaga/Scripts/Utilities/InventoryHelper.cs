@@ -105,14 +105,16 @@ public class InventoryHelper
         SaveInventory();
     }
 
-    public void AddDamageRate(float rate)
+    public bool AddDamageRate(float rate)
     {
         LoadInventory();
-        if (UserInventory.damageRate + rate <= 2f)
+        if (UserInventory.damageRate + rate > 2f)
         {
-            UserInventory.damageRate += rate;
+            return false;
         }
+        UserInventory.damageRate += rate;
         SaveInventory();
+        return true;
     }
 
     public void AddSelectedLevel(int level)
@@ -122,11 +124,24 @@ public class InventoryHelper
         SaveInventory();
     }
 
-    public void AddLife(int life)
+    public bool AddLife(int life)
     {
         LoadInventory();
-        UserInventory.life += life;
+        if (life > 0)
+        {
+            if (UserInventory.life >= 2 || UserInventory.life < 0) return false;
+            UserInventory.life += life;
+        }
+        else
+        {
+            if (UserInventory.life <= 0) return false;
+            else
+            {
+                UserInventory.life += life;
+            }
+        }
         SaveInventory();
+        return true;
     }
 
     public int GetLife()

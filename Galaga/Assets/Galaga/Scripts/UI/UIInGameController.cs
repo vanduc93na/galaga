@@ -106,21 +106,11 @@ public class UIInGameController : Singleton<UIInGameController>
     {
         if (_respawn < 1)
         {
+
             StartCoroutine(Delay(1f, () =>
             {
-                if (InventoryHelper.Instance.IsShowAds())
-                {
-                    API.ShowFull(() =>
-                    {
-                        GameController.Instance.gameStage = GameStage.GameOver;
-                        _countDownPanel.gameObject.SetActive(true);
-                    });
-                }
-                else
-                {
-                    GameController.Instance.gameStage = GameStage.GameOver;
-                    _countDownPanel.gameObject.SetActive(true);
-                }
+                GameController.Instance.gameStage = GameStage.GameOver;
+                _countDownPanel.gameObject.SetActive(true);
             }));
             _respawn += 1;
         }
@@ -129,23 +119,34 @@ public class UIInGameController : Singleton<UIInGameController>
             gameOverPanel.SetActive(true);
             Time.timeScale = 0;
             _respawn = 0;
+            if (InventoryHelper.Instance.IsShowAds())
+            {
+                API.ShowFull(() =>
+                {
+
+                });
+            }
+            else
+            {
+
+            }
         }
     }
 
     void ShowGameWin()
     {
+        GameController.Instance.gameStage = GameStage.Win;
+        StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
         if (InventoryHelper.Instance.IsShowAds())
         {
             API.ShowFull(() =>
             {
-                GameController.Instance.gameStage = GameStage.Win;
-                StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
+                
             });
         }
         else
         {
-            GameController.Instance.gameStage = GameStage.Win;
-            StartCoroutine(Show(2f, () => winPanel.gameObject.SetActive(true)));
+            
         }
     }
 

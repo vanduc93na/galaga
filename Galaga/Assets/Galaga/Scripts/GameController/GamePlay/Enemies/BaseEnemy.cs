@@ -95,10 +95,6 @@ public class BaseEnemy : MonoBehaviour
         _isFromBoss = isFromBoss;
         _health = infor.Health;
         _isLastEnemyOnWave = isLast;
-        if (_isLastEnemyOnWave)
-        {
-            print("last");
-        }
     }
 
     public void SetCoind(int coin)

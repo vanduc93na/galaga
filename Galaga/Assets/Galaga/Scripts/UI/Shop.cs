@@ -69,13 +69,16 @@ public class Shop : MonoBehaviour, IPointerClickHandler
         InventoryHelper.Instance.LoadInventory();
         if (InventoryHelper.Instance.UserInventory.coin > _mekitPrime)
         {
-            InventoryHelper.Instance.RemoveCoin(_mekitPrime);
-            InventoryHelper.Instance.AddLife(1);
-            if (OnCoinChange != null)
+            if (InventoryHelper.Instance.AddLife(1))
             {
-                OnCoinChange();
+                InventoryHelper.Instance.RemoveCoin(_mekitPrime);
+                if (OnCoinChange != null)
+                {
+                    OnCoinChange();
+                }
+                InitUI();
             }
-            InitUI();
+            
         }
         
     }
@@ -145,6 +148,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
     void InitUI()
     {
         InventoryHelper.Instance.LoadInventory();
+        Debug.Log(InventoryHelper.Instance.UserInventory.life);
         if (InventoryHelper.Instance.UserInventory.coin < _mekitPrime)
         {
             _buyBtns[0].interactable = false;
@@ -165,7 +169,7 @@ public class Shop : MonoBehaviour, IPointerClickHandler
         _statusDMGPrime.text = "GIVE ALL SHIP \n" +
                                ((InventoryHelper.Instance.UserInventory.damageRate - 1) * 100).ToString() +
                                "% DMG IN COMBAT";
-        if (InventoryHelper.Instance.UserInventory.life > 4)
+        if (InventoryHelper.Instance.UserInventory.life == 2)
         {
             _overCoinMekit.text = "OUT OF STOCK";
             _buyBtns[0].interactable = false;

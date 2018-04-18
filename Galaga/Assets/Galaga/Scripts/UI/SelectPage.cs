@@ -69,7 +69,6 @@ public class SelectPage : MonoBehaviour
     {
         SoundController.PlaySoundEffect(SoundController.Instance.Click);
         int level = btn.transform.GetSiblingIndex();
-        print(level);
         InventoryHelper.Instance.AddSelectedLevel(level);
         SceneManager.LoadScene(1);
     }

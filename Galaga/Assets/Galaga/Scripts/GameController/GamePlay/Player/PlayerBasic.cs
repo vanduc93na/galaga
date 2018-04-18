@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Com.LuisPedroFonseca.ProCamera2D;
 using DG.Tweening;
 //using UnityEditorInternal;
 using UnityEngine;
@@ -51,6 +52,8 @@ public class PlayerBasic : PlayerController
     [SerializeField] private Transform _parentBullet;
 
     [SerializeField] private Material[] _playerMaterial;
+
+    [SerializeField] private float[] _colliderRadius;
     // private variables
     /// <summary>
     /// dict chứa các viên đạn lấy từ _bulletMgr được cache lại
@@ -71,6 +74,7 @@ public class PlayerBasic : PlayerController
     private bool isDead;
     [SerializeField] private bool _isProtected;
     private Vector3 _rootPos;
+    private CircleCollider2D _collider2D;
 
     void Awake()
     {
@@ -86,6 +90,7 @@ public class PlayerBasic : PlayerController
         this.RegisterListener(EventID.NextLevel, (param) => Init());
         this.RegisterListener(EventID.GameWin, (param) => GameWin());
         _rootPos = transform.position;
+        _collider2D = GetComponent<CircleCollider2D>();
     }
 
     void Start()
@@ -213,6 +218,7 @@ public class PlayerBasic : PlayerController
     void PlayerDead()
     {
         if (_isProtected) return;
+        ProCamera2DShake.Instance.Shake("PlayerHit");
         if (_life == 0)
         {
             isDead = true;
@@ -232,7 +238,10 @@ public class PlayerBasic : PlayerController
         {
             _life -= 1;
             _lifeText.text = _life.ToString();
-            InventoryHelper.Instance.AddLife(-1);
+            if (_life > 0)
+            {
+                InventoryHelper.Instance.AddLife(-1);
+            }
             StartCoroutine(PlayerProtected(2));
         }
     }
@@ -283,7 +292,7 @@ public class PlayerBasic : PlayerController
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == GameTag.ENEMY || other.gameObject.tag == GameTag.ENEMY_BULLET)
+        if (other.gameObject.tag == GameTag.ENEMY || other.gameObject.tag == GameTag.ENEMY_BULLET || other.gameObject.tag == GameTag.BOSS)
         {
             PlayerDead();
         }
@@ -431,16 +440,19 @@ public class PlayerBasic : PlayerController
                 skeletonAnimation = skeletons[0];
                 _life = 1;
                 _sprite.transform.GetChild(0).gameObject.SetActive(true);
+                _collider2D.radius = _colliderRadius[0];
                 break;
             case 1:
                 skeletonAnimation = skeletons[1];
                 _life = 2;
                 _sprite.transform.GetChild(1).gameObject.SetActive(true);
+                _collider2D.radius = _colliderRadius[1];
                 break;
             case 2:
                 skeletonAnimation = skeletons[2];
                 _life = 3;
                 _sprite.transform.GetChild(2).gameObject.SetActive(true);
+                _collider2D.radius = _colliderRadius[2];
                 break;
         }
         _sprite.SetActive(true);

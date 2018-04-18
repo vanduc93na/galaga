@@ -274,7 +274,6 @@ public partial class HandleEvent : MonoBehaviour
             EnemiesDestroy += 1;
             SoundController.PlaySoundEffect(SoundController.Instance.EnemyDead);
         }
-
         if (_enemiesOnWave.Count == 0 && _bosses.Count == 0)
         {
             this.PostEvent(EventID.NextWave);
@@ -322,7 +321,7 @@ public partial class HandleEvent : MonoBehaviour
                     _bosses[targetTriggerObject].OnHit(dame);
                     if (_bosses[targetTriggerObject].IsAlive())
                     {
-                        StartCoroutine(Effect(_enemyOnHitEffect, _enemiesOnWave[targetTriggerObject].transform.position, 00.3f));
+                        StartCoroutine(Effect(_enemyOnHitEffect, _bosses[targetTriggerObject].transform.position, 00.3f));
                     }
                 }
             }
@@ -368,7 +367,7 @@ public partial class HandleEvent : MonoBehaviour
                 }
             }
 
-            if (targetObject.tag == GameTag.BORDER || targetObject.tag == GameTag.ENEMY)
+            if (targetObject.tag == GameTag.BORDER || targetObject.tag == GameTag.ENEMY || targetObject.tag == GameTag.BOSS)
             {
                 RemoveTomahawk(tomahawk);
             }
@@ -649,10 +648,15 @@ public partial class HandleEvent : MonoBehaviour
             }
         }
         _enemiesOnWave.Clear();
+        for (int i = 0; i < _tomahawks.Keys.ToList().Count; i++)
+        {
+            Lean.LeanPool.Despawn(_tomahawks.Keys.ToList()[i]);
+        }
         _tomahawks.Clear();
         _genades.Clear();
         _arrows.Clear();
         _bulletsSpawn.Clear();
+        _bosses.Clear();
     }
 
     public BaseEnemy GetBaseEnemyScript(GameObject obj)
