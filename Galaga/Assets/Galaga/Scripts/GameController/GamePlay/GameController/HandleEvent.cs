@@ -209,7 +209,7 @@ public partial class HandleEvent : MonoBehaviour
             List<GameObject> listEnemies = _enemiesOnWave.Keys.ToList();
             int random = Random.Range(0, listEnemies.Count - 1);
             int id = _enemiesOnWave[listEnemies[random]].id;
-            if (id == 5 || id == 6 || id == 13 || id == 14)
+            if (id == 2 || id == 3 || id == 10 || id == 11)
             {
                 if (!_enemiesOnWave[listEnemies[random]].OnMoving())
                 {
