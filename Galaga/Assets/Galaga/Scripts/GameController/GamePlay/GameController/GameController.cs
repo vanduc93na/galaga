@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Firebase.Analytics;
 using UnityEngine;
 
 /// <summary>
@@ -64,6 +65,8 @@ public class GameController : MonoBehaviour
         _currentLevelIndex = level;
         HandleEvent.Instance.EnemiesDestroy = 0;
         Play();
+
+        FirebaseAnalytics.LogEvent("level_start", "level", _currentLevelIndex);
     }
 
     public void Restart()
@@ -76,7 +79,6 @@ public class GameController : MonoBehaviour
 
     public void Play()
     {
-        print("lv" + _currentLevelIndex + " +  wave:" + _currentWave.Enemies.Count);
         switch (_currentWave.TypeWave)
         {
             case TypeOfWave.Enemies:
@@ -103,6 +105,7 @@ public class GameController : MonoBehaviour
         HandleEvent.Instance.ResetLevel();
         this.PostEvent(EventID.NextLevel);
         _currentLevelIndex++;
+        FirebaseAnalytics.LogEvent("level_complete", "level", _currentLevelIndex);
         StartCoroutine(WaitForSecondsNextWave(_gamePlayConfig.GetTimeDelayBetweenWaves()));
     }
 

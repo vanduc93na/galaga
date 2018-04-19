@@ -237,11 +237,13 @@ public partial class HandleEvent : MonoBehaviour
             int random = Random.Range(0, _enemiesOnWave.Count - 1);
             var listEnemy = _enemiesOnWave.Keys.ToList();
             int id = _enemiesOnWave[listEnemy[random]].id;
-            if (id == 0 || id == 1 || id == 2 || id == 8 || id == 9 || id == 10)
+            // ban dan thang xuong
+            if (id == 4 || id == 12)
             {
                 _enemiesOnWave[listEnemy[random]].AttackSpawnEgg(_bulletEnemy, _parentButtletOfEnemies);
             }
-            else if (id == 3 || id == 4 || id == 11 || id == 12)
+            // ban dan vao player
+            else if (id == 5 || id == 13)
             {
                 _enemiesOnWave[listEnemy[random]].AttackShotBulletToShip(_bulletEnemy, _parentButtletOfEnemies, _player.transform);
             }
@@ -657,6 +659,7 @@ public partial class HandleEvent : MonoBehaviour
         _arrows.Clear();
         _bulletsSpawn.Clear();
         _bosses.Clear();
+        _bulletsSpawn.Clear();
     }
 
     public BaseEnemy GetBaseEnemyScript(GameObject obj)

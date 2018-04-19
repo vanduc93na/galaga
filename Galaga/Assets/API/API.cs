@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Facebook.Unity.Settings;
+using Firebase.Analytics;
 using UnityEngine;
 
 public partial class API : MonoBehaviour

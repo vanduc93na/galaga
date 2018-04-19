@@ -234,6 +234,10 @@ public class BaseEnemy : MonoBehaviour
     {
         var go = Lean.LeanPool.Spawn(bullet);
         go.transform.position = transform.position;
+        Vector3 direction = Vector3.down - go.transform.position;
+        direction.Normalize();
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+        go.transform.eulerAngles = new Vector3(0, 0, angle);
     }
 
     public void AttackShotBulletToShip(GameObject bullet, Transform parentTransform, Transform shipTrs)
@@ -254,7 +258,8 @@ public class BaseEnemy : MonoBehaviour
             var go = Lean.LeanPool.Spawn(bullet);
             go.transform.position = transform.position;
             go.transform.SetParent(parentTransform);
-            go.GetComponent<Rigidbody2D>().AddForce(direction * 200);
+            go.transform.eulerAngles = new Vector3(0, 0, angle);
+//            go.GetComponent<Rigidbody2D>().AddForce(direction * 200);
             transform.DOLocalRotate(Vector3.zero, 0.3f);
         });
     }
