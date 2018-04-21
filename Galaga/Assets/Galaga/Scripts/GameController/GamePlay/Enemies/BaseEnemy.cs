@@ -9,6 +9,8 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] private int _health = 0;
     [SerializeField] private GameObject _deadEffect;
     [SerializeField] private GameObject _hitEffect;
+    [SerializeField] private GameObject _explodedBullet;
+    [SerializeField] private int _numberExploded;
     private bool isAlive;
 
     // danh sách items drop
@@ -221,6 +223,7 @@ public class BaseEnemy : MonoBehaviour
         isAlive = false;
         InstanceDropItem();
         DOTween.Kill(transform);
+        ExplodedAttack();
 //        transform.position = _rootPos;
     }
 
@@ -247,7 +250,7 @@ public class BaseEnemy : MonoBehaviour
         float distance = Vector2.Distance(transform.position, shipTrs.position);
         if (distance < 2) return;
         Vector3 direction = shipTrs.position - transform.position;
-        direction.Normalize();
+         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
         
         transform.DOLocalRotate(new Vector3(0, 0, angle), 0.7f).OnComplete(() =>
@@ -258,6 +261,39 @@ public class BaseEnemy : MonoBehaviour
             go.transform.eulerAngles = new Vector3(0, 0, angle);
             transform.DOLocalRotate(Vector3.zero, 0.3f);
         });
+    }
+
+    /// <summary>
+    /// sinh quả bom ra đến gần player
+    /// </summary>
+    public void SpawnBom(Vector3 playerPos, float radius, GameObject bom)
+    {
+        Vector3 triggerPos = (transform.position - playerPos) - (transform.position - playerPos).normalized * radius;
+        var bomSpawn = Lean.LeanPool.Spawn(bom);
+        bomSpawn.GetComponent<BulletEnemy>().SetTargetPos(playerPos, radius);
+        Vector3 direcltion = playerPos - transform.position;
+        direcltion.Normalize();
+        float angle = Mathf.Atan2(direcltion.y, direcltion.x) * Mathf.Rad2Deg - 90;
+
+        bomSpawn.transform.eulerAngles = new Vector3(0, 0, angle);
+    }
+
+    /// <summary>
+    /// lúc chết tạo hiệu ứng nổ văng
+    /// </summary>
+    public void ExplodedAttack()
+    {
+
+        if (id == 7 || id == 15)
+        {
+            float angle = 360 / _numberExploded;
+            for (int i = 0; i < _numberExploded; i++)
+            {
+                var explodedBullet = Lean.LeanPool.Spawn(_explodedBullet);
+                explodedBullet.transform.position = gameObject.transform.position;
+                explodedBullet.transform.eulerAngles = new Vector3(0, 0, angle * i);
+            }
+        }
     }
 
     #endregion

@@ -92,6 +92,7 @@ public class UIInGameController : Singleton<UIInGameController>
         this.RegisterListener(EventID.EatItem, (param) => EatCoin((GameObject)param));
         this.RegisterListener(EventID.Restart, (param) => ResetUI());
         this.RegisterListener(EventID.NextLevel, (param) => ResetUI());
+        this.RegisterListener(EventID.Restart, (param) => { _respawn = 0; });
     }
 
     #endregion

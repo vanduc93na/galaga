@@ -69,12 +69,11 @@ public class PlayerController : MonoBehaviour
             //swipe upwards
             if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
             {
-                Debug.Log("up swipe");
+
             }
             //swipe down
             if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
             {
-                Debug.Log("down swipe");
             }
             //swipe left
             if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)

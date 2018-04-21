@@ -54,6 +54,11 @@ public class GameController : MonoBehaviour
 
     #endregion
 
+    public WaveInformation GetCurrentWave()
+    {
+        return _currentWave;
+    }
+
     /// <summary>
     /// bắt đầu load level game
     /// </summary>

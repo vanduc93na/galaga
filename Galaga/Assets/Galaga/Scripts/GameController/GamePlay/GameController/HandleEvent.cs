@@ -53,6 +53,10 @@ public partial class HandleEvent : MonoBehaviour
 
     [SerializeField] private Transform _parentButtletOfEnemies;
 
+    [SerializeField] private GameObject _enemyBom;
+
+    [SerializeField] private float _enemyBomRadius;
+
     /// <summary>
     /// quản lý tất cả các enemy sau khi sinh ra, nếu enemy nào chết thì sẽ bị remove khỏi danh sách
     /// khi hoàn thành level thì danh sách này sẽ được reset về rỗng
@@ -75,6 +79,7 @@ public partial class HandleEvent : MonoBehaviour
     private const string MOVE_ALL_ENEMIES = "MoveAllEnemies";
     private const string MOVE_ON_WAVE_METHOD = "MoveEnemyOnWave";
     private const string ENEMY_ATTACK = "EnemyAttack";
+    private const string MOVE_GROUPS_METHOD = "MoveGroupsEnemies";
     /// <summary>
     /// danh sách vector 3 chứa các path của _pathMoveOnWave object
     /// </summary>
@@ -163,6 +168,7 @@ public partial class HandleEvent : MonoBehaviour
         {
             MoveAllEnemies();
             MoveEnemyOnWave();
+            MoveGroupsEnemies();
         });
 
         this.RegisterListener(EventID.Restart, (param) => RestartGame());
@@ -193,9 +199,50 @@ public partial class HandleEvent : MonoBehaviour
 
     void MoveAllEnemies()
     {
-        float nextXPossition = Random.Range(-1, 1);
+        float nextXPossition = Random.Range(-1, 2);
+        float nextYPossition = Random.Range(-0.5f, 0.5f);
+        _enemiesMgr.transform.DOMoveY(nextYPossition, 1f);
         _enemiesMgr.transform.DOMoveX(nextXPossition, 1f);
         Invoke(MOVE_ALL_ENEMIES, 1.5f);
+    }
+
+    /// <summary>
+    /// di chuyển theo nhóm
+    /// </summary>
+    void MoveGroupsEnemies()
+    {
+        var temp = _enemiesOnWave.Values.ToList().FindAll(s => s.id == 6);
+        StartCoroutine(StartMoveGroup(temp.ToList()));
+
+        float randomInvoke = Random.Range(7f, 9f);
+        Invoke(MOVE_GROUPS_METHOD, randomInvoke);
+    }
+
+    IEnumerator StartMoveGroup(List<BaseEnemy> groupsEnemy)
+    {
+        int randomPath = Random.Range(0, _listPathMoveOnWave.Count - 1);
+        var temp = _listPathMoveOnWave[randomPath].Waypoint;
+        Vector3[] wps = new Vector3[temp.Count + 1];
+        for (int i = 0; i < temp.Count; i++)
+        {
+            wps[i] = temp[i];
+        }
+        for (int i = 0; i < groupsEnemy.Count; i++)
+        {
+            yield return new WaitForSeconds(0.2f);
+            Vector3 rootPos = groupsEnemy[i].transform.localPosition;
+            wps[temp.Count] = rootPos;
+            var script = groupsEnemy[i];
+            groupsEnemy[i].transform
+                .DOLocalPath(wps, _listPathMoveOnWave[randomPath].Duration, PathType.CatmullRom, PathMode.Sidescroller2D)
+                .SetEase(Ease.Linear)
+                .SetLookAt(lookAhead: 0)
+                .OnComplete(
+                    () =>
+                    {
+                        script.transform.DOLocalRotate(Vector3.up, 0.2f);
+                    });
+        }
     }
 
     /// <summary>
@@ -209,7 +256,7 @@ public partial class HandleEvent : MonoBehaviour
             List<GameObject> listEnemies = _enemiesOnWave.Keys.ToList();
             int random = Random.Range(0, listEnemies.Count - 1);
             int id = _enemiesOnWave[listEnemies[random]].id;
-            if (id == 2 || id == 3 || id == 10 || id == 11)
+            if (id == 1 || id == 2 || id == 9 || id == 10)
             {
                 if (!_enemiesOnWave[listEnemies[random]].OnMoving())
                 {
@@ -238,14 +285,24 @@ public partial class HandleEvent : MonoBehaviour
             var listEnemy = _enemiesOnWave.Keys.ToList();
             int id = _enemiesOnWave[listEnemy[random]].id;
             // ban dan thang xuong
-            if (id == 4 || id == 12)
+            if (id == 3 || id == 11)
             {
                 _enemiesOnWave[listEnemy[random]].AttackSpawnEgg(_bulletEnemy, _parentButtletOfEnemies);
             }
             // ban dan vao player
-            else if (id == 5 || id == 13)
+            else if (id == 4 || id == 12)
             {
                 _enemiesOnWave[listEnemy[random]].AttackShotBulletToShip(_bulletEnemy, _parentButtletOfEnemies, _player.transform);
+            }
+            // tha bom
+            else if (id == 6 || id == 14)
+            {
+                _enemiesOnWave[listEnemy[random]].SpawnBom(_player.transform.position, _enemyBomRadius, _enemyBom);
+            }
+            // no vang thanh ca vien dan
+            else if (id == 7 || id == 15)
+            {
+                
             }
         }
         float timerInvoke = Random.Range(1f, 5f);
