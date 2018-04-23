@@ -16,11 +16,12 @@ public class Setting : MonoBehaviour, IPointerClickHandler
 
     void Start()
     {
-        Init();
+        
     }
 
     void OnEnable()
     {
+        Init();
         _groupsItem.anchoredPosition = new Vector2(0, -_groupsItem.rect.height/2-80);
         _groupsItem.DOAnchorPosY(280, .2f).SetUpdate(true);
     }

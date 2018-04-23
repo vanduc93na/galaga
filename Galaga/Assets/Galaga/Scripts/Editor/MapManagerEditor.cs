@@ -236,7 +236,7 @@ public class MapManagerEditor : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(20);
                 EditorGUITool.Label("Spawn Pos", 120, 80, false, "Điểm bắt đầu sinh enemy");
-                _startPos = (StartPosition)EditorGUILayout.EnumPopup(_startPos, GUILayout.Width(100));
+                _startPos = (StartPosition)EditorGUILayout.EnumPopup(wave.Enemies[0].StartPosition, GUILayout.Width(100));
                 for (int i = 0; i < wave.Enemies.Count; i++)
                 {
                     wave.Enemies[i].StartPosition = _startPos;
